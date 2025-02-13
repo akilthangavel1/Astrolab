@@ -1,0 +1,2490 @@
+{% extends 'base1.html' %}
+{% block head %}
+    <style>
+
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          -webkit-animation-name: fadeIn; /* Fade in the background */
+          -webkit-animation-duration: 0.4s;
+          animation-name: fadeIn;
+          animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+          position: fixed;
+          bottom: 0;
+          background-color: #fefefe;
+          width: 100%;
+          -webkit-animation-name: slideIn;
+          -webkit-animation-duration: 0.4s;
+          animation-name: slideIn;
+          animation-duration: 0.4s
+        }
+
+        /* The Close Button */
+        .close {
+          color: white;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .modal-header {
+          padding: 2px 16px;
+          background-color: #5cb85c;
+          color: white;
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+          padding: 2px 16px;
+          background-color: #5cb85c;
+          color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+          from {bottom: -300px; opacity: 0}
+          to {bottom: 0; opacity: 1}
+        }
+
+        @keyframes slideIn {
+          from {bottom: -300px; opacity: 0}
+          to {bottom: 0; opacity: 1}
+        }
+
+        @-webkit-keyframes fadeIn {
+          from {opacity: 0}
+          to {opacity: 1}
+        }
+
+        @keyframes fadeIn {
+          from {opacity: 0}
+          to {opacity: 1}
+        }
+        .checkflex-container {
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 12px;
+          text-align: center;
+        }
+
+        .checkflex-item-left {
+          background-color: #f1f1f1;
+          padding: 10px;
+          flex: 10%;
+        }
+
+        .checkflex-item-right {
+          background-color: dodgerblue;
+          padding: 10px;
+          flex: 10%;
+        }
+
+        /* Responsive layout - makes a one column-layout instead of a two-column layout */
+        @media (max-width: 800px) {
+          .checkflex-item-right, .checkflex-item-left {
+            flex: 100%;
+          }
+        }
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        .planetchangerbutton{
+            padding: 5px;
+            margin: 50px;
+
+        }
+        .table-container{
+            padding: 5px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            margin-right: 250px;
+            margin-left: 250px;
+        }
+        .chart-container{
+            margin-top: 50px;
+            margin-bottom: 50px;
+            margin-right: 150px;
+            margin-left: 150px;
+
+        }
+    </style>
+    <script>
+        var planet_dic;
+        function word_changer(){
+                  $.ajax({
+                    type: "GET",
+                    url: '{% url "wchanger" %}',
+                    data: {
+                      'pname': "wrd" // from form
+                    },
+                    success: function (response) {
+                      planet_dic = ((response.rword));
+                    }
+                  });
+        }
+
+    </script>
+    <script>
+        let interDataLis = {{data|safe}};
+        date_lis = {{date_lis|safe}}
+        var myChart=null;
+        function drawChart(graphData){
+            if(myChart!=null){
+              myChart.destroy();
+
+
+            }
+
+
+             $(function(){
+
+                  //get the line chart canvas
+                  //line chart data
+                  var data = {
+                    labels: date_lis,
+                    datasets: graphData
+                  };
+
+                  //options
+                  var options = {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero:true
+                              }
+                          }]
+                      }
+                  };
+                  var ctx = document.getElementById("planetchart").getContext("2d");
+
+                  //create Chart class object
+                  myChart = new Chart(ctx, { type: "line", data: data, options: options});
+
+                  });
+        }
+    </script>
+    <script>
+        var colorDic = {"Su": "#FFFF00", "Mo": "#2DFAFF", "Me": "#FF9900", "Ma": "#FF0033", "Ju": "#00A5E6", "Ve": "#FF33CC", "Sa": "#0000FF", "Ra": "#800080", "Ke": "#800000", "As": "#2FFF2F"};
+        const colorCodeList = [];
+        function color_code(planetOver){
+            colorCodeList.push(colorDic[planetOver.slice(0, 2)])
+            return planetOver
+        }
+    </script>
+    <script>
+        var borderDic = {"Su": [], "Mo": [5, 20], "Me": [10, 10], "Ma": [20, 5], "Ju": [15, 3, 3, 3], "Ve": [20, 3, 3, 3, 3, 3, 3, 3], "Sa": [12, 3, 3], "Ra":[15, 3, 3, 3, 10], "Ke": [15, 15, 15, 15], "As": []};
+        const borderDashList = [];
+        function border_code(planetOver){
+            borderDashList.push(borderDic[planetOver.slice(2, 5)])
+            return planetOver
+        }
+    </script>
+    <script>
+        function add_point_table(one_puntaje_lis_total, two_puntaje_lis_total, three_puntaje_lis_total, four_puntaje_lis_total, five_puntaje_lis_total, six_puntaje_lis_total, seven_puntaje_lis_total, eight_puntaje_lis_total, nine_puntaje_lis_total, ten_puntaje_lis_total, allOverTotal){
+            let d3 = document.getElementById('multiple-points-table');
+            console.log(d3);
+            if (d3 != null){
+                document.getElementById("multiple-points-table").innerHTML = "";
+                if (one){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + one  + "</td><td>"+ Math.round(one_puntaje_lis_total) +"</td></tr>");
+                }
+                if (two){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + two  + "</td><td>"+ Math.round(two_puntaje_lis_total) +"</td></tr>");
+                }
+                if (three){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + three  + "</td><td>"+ Math.round(three_puntaje_lis_total) +"</td></tr>");
+                }
+                if (four){
+                        d3.insertAdjacentHTML('beforeend', "<tr><td>" + four  + "</td><td>"+ Math.round(four_puntaje_lis_total) +"</td></tr>");
+                }
+                if (five){
+                d3.insertAdjacentHTML('beforeend', "<tr><td>" + five  + "</td><td>"+ Math.round(five_puntaje_lis_total) +"</td></tr>");
+                }
+                if (six){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + six  + "</td><td>"+ Math.round(six_puntaje_lis_total) +"</td></tr>");
+                }
+                if (seven){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + seven  + "</td><td>"+ Math.round(seven_puntaje_lis_total) +"</td></tr>");
+                }
+                if (eight){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + eight  + "</td><td>"+ Math.round(eight_puntaje_lis_total) +"</td></tr>");
+                }
+                if (nine){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + nine  + "</td><td>"+ Math.round(nine_puntaje_lis_total) +"</td></tr>");
+                }
+                if (ten){
+                    d3.insertAdjacentHTML('beforeend', "<tr><td>" + ten  + "</td><td>"+ Math.round(ten_puntaje_lis_total) +"</td></tr>");
+                }
+                d3.insertAdjacentHTML('beforeend', "<tr><td>" + "Total"  + "</td><td>"+ Math.round(allOverTotal) +"</td></tr>");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).on('submit','#specific-planets',function(e, response){
+        const poverLst = [];
+        function add_pover_fun(planetOver) {
+            if (planetOver != "False") {
+                poverLst.push(planetOver);
+                color_code(planetOver);
+                border_code(planetOver);
+
+            }
+            return planetOver;
+        }
+        e.preventDefault();
+             let SuSu = add_pover_fun($("#SuSu").val());
+             let MoSu = add_pover_fun($("#MoSu").val());
+             let MeSu = add_pover_fun($("#MeSu").val());
+             let MaSu = add_pover_fun($("#MaSu").val());
+             let JuSu = add_pover_fun($("#JuSu").val());
+             let VeSu = add_pover_fun($("#VeSu").val());
+             let SaSu = add_pover_fun($("#SaSu").val());
+             let RaSu = add_pover_fun($("#RaSu").val());
+             let KeSu = add_pover_fun($("#KeSu").val());
+             let AsSu = add_pover_fun($("#AsSu").val());
+
+             let SuMo = add_pover_fun($("#SuMo").val());
+             let MoMo = add_pover_fun($("#MoMo").val());
+             let MeMo = add_pover_fun($("#MeMo").val());
+             let MaMo = add_pover_fun($("#MaMo").val());
+             let JuMo = add_pover_fun($("#JuMo").val());
+             let VeMo = add_pover_fun($("#VeMo").val());
+             let SaMo = add_pover_fun($("#SaMo").val());
+             let RaMo = add_pover_fun($("#RaMo").val());
+             let KeMo = add_pover_fun($("#KeMo").val());
+             let AsMo = add_pover_fun($("#AsMo").val());
+
+             let SuMe = add_pover_fun($("#SuMe").val());
+             let MoMe = add_pover_fun($("#MoMe").val());
+             let MeMe = add_pover_fun($("#MeMe").val());
+             let MaMe = add_pover_fun($("#MaMe").val());
+             let JuMe = add_pover_fun($("#JuMe").val());
+             let VeMe = add_pover_fun($("#VeMe").val());
+             let SaMe = add_pover_fun($("#SaMe").val());
+             let RaMe = add_pover_fun($("#RaMe").val());
+             let KeMe = add_pover_fun($("#KeMe").val());
+             let AsMe = add_pover_fun($("#AsMe").val());
+
+             let SuMa = add_pover_fun($("#SuMa").val());
+             let MoMa = add_pover_fun($("#MoMa").val());
+             let MeMa = add_pover_fun($("#MeMa").val());
+             let MaMa = add_pover_fun($("#MaMa").val());
+             let JuMa = add_pover_fun($("#JuMa").val());
+             let VeMa = add_pover_fun($("#VeMa").val());
+             let SaMa = add_pover_fun($("#SaMa").val());
+             let RaMa = add_pover_fun($("#RaMa").val());
+             let KeMa = add_pover_fun($("#KeMa").val());
+             let AsMa = add_pover_fun($("#AsMa").val());
+
+             let SuJu = add_pover_fun($("#SuJu").val());
+             let MoJu = add_pover_fun($("#MoJu").val());
+             let MeJu = add_pover_fun($("#MeJu").val());
+             let MaJu = add_pover_fun($("#MaJu").val());
+             let JuJu = add_pover_fun($("#JuJu").val());
+             let VeJu = add_pover_fun($("#VeJu").val());
+             let SaJu = add_pover_fun($("#SaJu").val());
+             let RaJu = add_pover_fun($("#RaJu").val());
+             let KeJu = add_pover_fun($("#KeJu").val());
+             let AsJu = add_pover_fun($("#AsJu").val());
+
+             let SuVe = add_pover_fun($("#SuVe").val());
+             let MoVe = add_pover_fun($("#MoVe").val());
+             let MeVe = add_pover_fun($("#MeVe").val());
+             let MaVe = add_pover_fun($("#MaVe").val());
+             let JuVe = add_pover_fun($("#JuVe").val());
+             let VeVe = add_pover_fun($("#VeVe").val());
+             let SaVe = add_pover_fun($("#SaVe").val());
+             let RaVe = add_pover_fun($("#RaVe").val());
+             let KeVe = add_pover_fun($("#KeVe").val());
+             let AsVe = add_pover_fun($("#AsVe").val());
+
+             let SuSa = add_pover_fun($("#SuSa").val());
+             let MoSa = add_pover_fun($("#MoSa").val());
+             let MeSa = add_pover_fun($("#MeSa").val());
+             let MaSa = add_pover_fun($("#MaSa").val());
+             let JuSa = add_pover_fun($("#JuSa").val());
+             let VeSa = add_pover_fun($("#VeSa").val());
+             let SaSa = add_pover_fun($("#SaSa").val());
+             let RaSa = add_pover_fun($("#RaSa").val());
+             let KeSa = add_pover_fun($("#KeSa").val());
+             let AsSa = add_pover_fun($("#AsSa").val());
+
+             let SuRa = add_pover_fun($("#SuRa").val());
+             let MoRa = add_pover_fun($("#MoRa").val());
+             let MeRa = add_pover_fun($("#MeRa").val());
+             let MaRa = add_pover_fun($("#MaRa").val());
+             let JuRa = add_pover_fun($("#JuRa").val());
+             let VeRa = add_pover_fun($("#VeRa").val());
+             let SaRa = add_pover_fun($("#SaRa").val());
+             let RaRa = add_pover_fun($("#RaRa").val());
+             let KeRa = add_pover_fun($("#KeRa").val());
+             let AsRa = add_pover_fun($("#AsRa").val());
+
+             let SuKe = add_pover_fun($("#SuKe").val());
+             let MoKe = add_pover_fun($("#MoKe").val());
+             let MeKe = add_pover_fun($("#MeKe").val());
+             let MaKe = add_pover_fun($("#MaKe").val());
+             let JuKe = add_pover_fun($("#JuKe").val());
+             let VeKe = add_pover_fun($("#VeKe").val());
+             let SaKe = add_pover_fun($("#SaKe").val());
+             let RaKe = add_pover_fun($("#RaKe").val());
+             let KeKe = add_pover_fun($("#KeKe").val());
+             let AsKe = add_pover_fun($("#AsKe").val());
+
+             let SuAs = add_pover_fun($("#SuAs").val());
+             let MoAs = add_pover_fun($("#MoAs").val());
+             let MeAs = add_pover_fun($("#MeAs").val());
+             let MaAs = add_pover_fun($("#MaAs").val());
+             let JuAs = add_pover_fun($("#JuAs").val());
+             let VeAs = add_pover_fun($("#VeAs").val());
+             let SaAs = add_pover_fun($("#SaAs").val());
+             let RaAs = add_pover_fun($("#RaAs").val());
+             let KeAs = add_pover_fun($("#KeAs").val());
+             let AsAs = add_pover_fun($("#AsAs").val());
+             one_puntaje_lis = interDataLis[poverLst[0]];
+             two_puntaje_lis = interDataLis[poverLst[1]];
+             three_puntaje_lis = interDataLis[poverLst[2]];
+             four_puntaje_lis = interDataLis[poverLst[3]];
+             five_puntaje_lis = interDataLis[poverLst[4]];
+             six_puntaje_lis = interDataLis[poverLst[5]];
+             seven_puntaje_lis = interDataLis[poverLst[6]];
+             eight_puntaje_lis = interDataLis[poverLst[7]];
+             nine_puntaje_lis = interDataLis[poverLst[8]];
+             ten_puntaje_lis = interDataLis[poverLst[9]];
+             one = poverLst[0];
+             two = poverLst[1];
+             three  = poverLst[2];
+             four = poverLst[3];
+             five = poverLst[4];
+             six = poverLst[5];
+             seven = poverLst[6];
+             eight = poverLst[7];
+             nine = poverLst[8];
+             ten = poverLst[9];
+             let graphData = [];
+             if (planet_dic[one]){
+              one = planet_dic[one]
+            }
+            if (planet_dic[two]){
+              two = planet_dic[two]
+            }
+            if (planet_dic[three]){
+              three = planet_dic[three]
+            }
+            if (planet_dic[four]){
+              four = planet_dic[four]
+            }
+            if (planet_dic[five]){
+              five = planet_dic[five]
+            }
+            if (planet_dic[six]){
+              six = planet_dic[six]
+            }
+            if (planet_dic[seven]){
+              seven = planet_dic[seven]
+            }
+            if (planet_dic[eight]){
+              eight = planet_dic[eight]
+            }
+            if (planet_dic[nine]){
+              nine = planet_dic[nine]
+            }
+            if (planet_dic[ten]){
+              ten = planet_dic[ten]
+            }
+            if (one){
+                graphData.push({
+                  label: one,
+                    data: interDataLis[poverLst[0]],
+                    backgroundColor:colorCodeList[0] ,
+                    borderColor: colorCodeList[0],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[0],
+              });
+            }
+            if (two){
+                graphData.push({
+                    label: two,
+                    data: interDataLis[poverLst[1]],
+                    backgroundColor:colorCodeList[1] ,
+                    borderColor: colorCodeList[1],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[1],
+                });
+            }
+            if (three){
+                graphData.push({
+                  label: three,
+                  backgroundColor:colorCodeList[2] ,
+                  borderColor: colorCodeList[2],
+                  data: interDataLis[poverLst[2]],
+                  borderDash: borderDashList[2],
+                });
+            }
+            if (four){
+              graphData.push({
+                    label: four,
+                    data: interDataLis[poverLst[3]],
+                    backgroundColor:colorCodeList[3] ,
+                    borderColor: colorCodeList[3],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[3],
+
+                });
+            }
+            if (five){
+              graphData.push({
+                    label: five,
+                    data: interDataLis[poverLst[4]],
+                    backgroundColor:colorCodeList[4] ,
+                    borderColor: colorCodeList[4],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[4],
+                });
+            }
+            if (six){
+              graphData.push({
+                    label: six,
+                    data: interDataLis[poverLst[5]],
+                    backgroundColor:colorCodeList[5] ,
+                    borderColor: colorCodeList[5],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[5],
+                });
+            }
+            if (seven){
+              graphData.push({
+                    label: seven,
+                    data: interDataLis[poverLst[6]],
+                    backgroundColor:colorCodeList[6],
+                    borderColor: colorCodeList[6],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[6],
+                });
+            }
+            if (eight){
+              graphData.push({
+                    label: eight,
+                    data: interDataLis[poverLst[7]],
+                    backgroundColor:colorCodeList[7],
+                    borderColor: colorCodeList[7],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[7],
+                });
+
+            }
+            if (nine){
+              graphData.push({
+                    label: nine,
+                    data: interDataLis[poverLst[8]],
+                    backgroundColor:colorCodeList[8],
+                    borderColor: colorCodeList[8],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[8],
+                });
+            }
+            if (ten){
+              graphData.push({
+                    label: ten,
+                    data: interDataLis[poverLst[9]],
+                    backgroundColor:colorCodeList[9] ,
+                    borderColor: colorCodeList[9],
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                    borderDash: borderDashList[9],
+                });
+            }
+
+             function totalfun(array) {
+
+              let total = 0
+
+              for(let i in array)
+                {
+                    total += array[i]
+                }
+                return total;   // The function returns the product of p1 and p2
+             }
+
+             let one_puntaje_lis_total = totalfun(one_puntaje_lis)
+             let two_puntaje_lis_total = totalfun(two_puntaje_lis)
+             let three_puntaje_lis_total = totalfun(three_puntaje_lis)
+             let four_puntaje_lis_total = totalfun(four_puntaje_lis)
+             let five_puntaje_lis_total = totalfun(five_puntaje_lis)
+             let six_puntaje_lis_total = totalfun(six_puntaje_lis)
+             let seven_puntaje_lis_total = totalfun(seven_puntaje_lis)
+             let eight_puntaje_lis_total = totalfun(eight_puntaje_lis)
+             let nine_puntaje_lis_total = totalfun(nine_puntaje_lis)
+             let ten_puntaje_lis_total = totalfun(ten_puntaje_lis)
+             let allOverTotal = one_puntaje_lis_total+ two_puntaje_lis_total+ three_puntaje_lis_total+ four_puntaje_lis_total + five_puntaje_lis_total+ six_puntaje_lis_total+ seven_puntaje_lis_total+ eight_puntaje_lis_total+ nine_puntaje_lis_total+ ten_puntaje_lis_total
+            //add_point_table(one_puntaje_lis_total, two_puntaje_lis_total, three_puntaje_lis_total, four_puntaje_lis_total, five_puntaje_lis_total, six_puntaje_lis_total, seven_puntaje_lis_total, eight_puntaje_lis_total, nine_puntaje_lis_total, ten_puntaje_lis_total, allOverTotal);
+            drawChart(graphData);
+            });
+    </script>
+{% endblock %}
+
+{% block content %}
+<body onload="word_changer()">
+    <div>
+        <button class="planetchangerbutton" style="float:right;" id="myBtn">Planet Selection</button>
+    </div>
+    <!-- Trigger/Open The Modal -->
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+              <span class="close">&times;</span>
+              <h2>Planet Selection</h2>
+            </div>
+
+            <div class="modal-body">
+                <form method="GET" id="specific-planets">
+                    <div class="checkflex-container">
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="suparent" name="SuSu" value="False" onChange="viewroomSelected()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuSu" class="suchild" name="SuSu" value="False"></td>
+                                  <td>Su &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoSu" class="suchild" name="MoSu" value="False"></td>
+                                  <td>Mo &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeSu" class="suchild" name="MeSu" value="False"></td>
+                                  <td>Me &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaSu" class="suchild" name="MaSu" value="False"> </td>
+                                  <td>Ma &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuSu" class="suchild" name="JuSu" value="False"> </td>
+                                  <td>Ju &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeSu" class="suchild" name="VeSu" value="False"> </td>
+                                  <td>Ve &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaSu" class="suchild" name="SaSu" value="False"> </td>
+                                  <td>Sa &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaSu" class="suchild" name="RaSu" value="False"> </td>
+                                  <td>Ra &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeSu" class="suchild" name="KeSu" value="False"> </td>
+                                  <td>Ke &#60; Su</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsSu" class="suchild" name="AsSu" value="False"> </td>
+                                  <td>As &#60; Su</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="moparent" value="False" onChange="viewroomSelectedMO()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuMo" class="mochild" name="SuMo" value="False"></td>
+                                  <td>Su &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoMo" class="mochild" name="MoMo" value="False"></td>
+                                  <td>Mo &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeMo" class="mochild" name="MeMo" value="False"></td>
+                                  <td>Me &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaMo" class="mochild" name="MaMo" value="False"> </td>
+                                  <td>Ma &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuMo" class="mochild" name="JuMo" value="False"> </td>
+                                  <td>Ju &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeMo" class="mochild" name="VeMo" value="False"> </td>
+                                  <td>Ve &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaMo" class="mochild" name="SaMo" value="False"> </td>
+                                  <td>Sa &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaMo" class="mochild" name="RaMo" value="False"> </td>
+                                  <td>Ra &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeMo" class="mochild" name="KeMo" value="False"> </td>
+                                  <td>Ke &#60; Mo</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsMo" class="mochild" name="AsMo" value="False"> </td>
+                                  <td>As &#60; Mo</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="meparent" value="False" onChange="viewroomSelectedME()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuMe" class="mechild" name="SuMe" value="False"></td>
+                                  <td>Su &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoMe" class="mechild" name="MoMe" value="False"></td>
+                                  <td>Mo &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeMe" class="mechild" name="MeMe" value="False"></td>
+                                  <td>Me &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaMe" class="mechild" name="MaMe" value="False"> </td>
+                                  <td>Ma &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuMe" class="mechild" name="JuMe" value="False"> </td>
+                                  <td>Ju &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeMe" class="mechild" name="VeMe" value="False"> </td>
+                                  <td>Ve &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaMe" class="mechild" name="SaMe" value="False"> </td>
+                                  <td>Sa &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaMe" class="mechild" name="RaMe" value="False"> </td>
+                                  <td>Ra &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeMe" class="mechild" name="KeMe" value="False"> </td>
+                                  <td>Ke &#60; Me</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsMe" class="mechild" name="AsMe" value="False"> </td>
+                                  <td>As &#60; Me</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="maparent" value="False" onChange="viewroomSelectedMA()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuMa" class="machild" name="SuMa" value="False"></td>
+                                  <td>Su &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoMa" class="machild" name="MoMa" value="False"></td>
+                                  <td>Mo &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeMa" class="machild" name="MeMa" value="False"></td>
+                                  <td>Me &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaMa" class="machild" name="MaMa" value="False"> </td>
+                                  <td>Ma &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuMa" class="machild" name="JuMa" value="False"> </td>
+                                  <td>Ju &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeMa" class="machild" name="VeMa" value="False"> </td>
+                                  <td>Ve &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaMa" class="machild" name="SaMa" value="False"> </td>
+                                  <td>Sa &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaMa" class="machild" name="RaMa" value="False"> </td>
+                                  <td>Ra &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeMa" class="machild" name="KeMa" value="False"> </td>
+                                  <td>Ke &#60; Ma</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsMa" class="machild" name="AsMa" value="False"> </td>
+                                  <td>As &#60; Ma</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="juparent" value="False" onChange="viewroomSelectedJU()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuJu" class="juchild" name="SuJu" value="False"></td>
+                                  <td>Su &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoJu" class="juchild" name="MoJu" value="False"></td>
+                                  <td>Mo &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeJu" class="juchild" name="MeJu" value="False"></td>
+                                  <td>Me &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaJu" class="juchild" name="MaJu" value="False"> </td>
+                                  <td>Ma &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuJu" class="juchild" name="JuJu" value="False"> </td>
+                                  <td>Ju &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeJu" class="juchild" name="VeJu" value="False"> </td>
+                                  <td>Ve &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaJu" class="juchild" name="SaJu" value="False"> </td>
+                                  <td>Sa &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaJu" class="juchild" name="RaJu" value="False"> </td>
+                                  <td>Ra &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeJu" class="juchild" name="KeJu" value="False"> </td>
+                                  <td>Ke &#60; Ju</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsJu" class="juchild" name="AsJu" value="False"> </td>
+                                  <td>As &#60; Ju</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="veparent" value="False" onChange="viewroomSelectedVE()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuVe" class="vechild" name="SuVe" value="False"></td>
+                                  <td>Su &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoVe" class="vechild" name="MoVe" value="False"></td>
+                                  <td>Mo &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeVe" class="vechild" name="MeVe" value="False"></td>
+                                  <td>Me &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaVe" class="vechild" name="MaVe" value="False"> </td>
+                                  <td>Ma &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuVe" class="vechild" name="JuVe" value="False"> </td>
+                                  <td>Ju &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeVe" class="vechild" name="VeVe" value="False"> </td>
+                                  <td>Ve &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaVe" class="vechild" name="SaVe" value="False"> </td>
+                                  <td>Sa &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaVe" class="vechild" name="RaVe" value="False"> </td>
+                                  <td>Ra &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeVe" class="vechild" name="KeVe" value="False"> </td>
+                                  <td>Ke &#60; Ve</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsVe" class="vechild" name="AsVe" value="False"> </td>
+                                  <td>As &#60; Ve</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="saparent" value="False" onChange="viewroomSelectedSA()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuSa" class="sachild" name="SuSa" value="False"></td>
+                                  <td>Su &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoSa" class="sachild" name="MoSa" value="False"></td>
+                                  <td>Mo &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeSa" class="sachild" name="MeSa" value="False"></td>
+                                  <td>Me &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaSa" class="sachild" name="MaSa" value="False"> </td>
+                                  <td>Ma &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuSa" class="sachild" name="JuSa" value="False"> </td>
+                                  <td>Ju &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeSa" class="sachild" name="VeSa" value="False"> </td>
+                                  <td>Ve &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaSa" class="sachild" name="SaSa" value="False"> </td>
+                                  <td>Sa &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaSa" class="sachild" name="RaSa" value="False"> </td>
+                                  <td>Ra &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeSa" class="sachild" name="KeSa" value="False"> </td>
+                                  <td>Ke &#60; Sa</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsSa" class="sachild" name="AsSa" value="False"> </td>
+                                  <td>As &#60; Sa</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="raparent" value="False" onChange="viewroomSelectedRA()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuRa" class="rachild" name="SuRa" value="False"></td>
+                                  <td>Su &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoRa" class="rachild" name="MoRa" value="False"></td>
+                                  <td>Mo &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeRa" class="rachild" name="MeRa" value="False"></td>
+                                  <td>Me &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaRa" class="rachild" name="MaRa" value="False"> </td>
+                                  <td>Ma &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuRa" class="rachild" name="JuRa" value="False"> </td>
+                                  <td>Ju &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeRa" class="rachild" name="VeRa" value="False"> </td>
+                                  <td>Ve &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaRa" class="rachild" name="SaRa" value="False"> </td>
+                                  <td>Sa &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaRa" class="rachild" name="RaRa" value="False"> </td>
+                                  <td>Ra &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeRa" class="rachild" name="KeRa" value="False"> </td>
+                                  <td>Ke &#60; Ra</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsRa" class="rachild" name="AsRa" value="False"> </td>
+                                  <td>As &#60; Ra</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="keparent" value="False" onChange="viewroomSelectedKE()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuKe" class="kechild" name="SuKe" value="False"></td>
+                                  <td>Su &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoKe" class="kechild" name="MoKe" value="False"></td>
+                                  <td>Mo &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeKe" class="kechild" name="MeKe" value="False"></td>
+                                  <td>Me &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaKe" class="kechild" name="MaKe" value="False"> </td>
+                                  <td>Ma &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuKe" class="kechild" name="JuKe" value="False"> </td>
+                                  <td>Ju &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeKe" class="kechild" name="VeKe" value="False"> </td>
+                                  <td>Ve &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaKe" class="kechild" name="SaKe" value="False"> </td>
+                                  <td>Sa &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaKe" class="kechild" name="RaKe" value="False"> </td>
+                                  <td>Ra &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeKe" class="kechild" name="KeKe" value="False"> </td>
+                                  <td>Ke &#60; Ke</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsKe" class="kechild" name="AsKe" value="False"> </td>
+                                  <td>As &#60; Ke</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="checkflex-item-left">
+                            <table>
+                                <tr>
+                                  <td><input type="checkbox" id="asparent" value="False" onChange="viewroomSelectedAS()"></td>
+                                  <td>Select All</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SuAs" class="aschild" name="SuAs" value="False"></td>
+                                  <td>Su &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MoAs" class="aschild" name="MoAs" value="False"></td>
+                                  <td>Mo &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MeAs" class="aschild" name="MeAs" value="False"></td>
+                                  <td>Me &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="MaAs" class="aschild" name="MaAs" value="False"> </td>
+                                  <td>Ma &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="JuAs" class="aschild" name="JuAs" value="False"> </td>
+                                  <td>Ju &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="VeAs" class="aschild" name="VeAs" value="False"> </td>
+                                  <td>Ve &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="SaAs" class="aschild" name="SaAs" value="False"> </td>
+                                  <td>Sa &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="RaAs" class="aschild" name="RaAs" value="False"> </td>
+                                  <td>Ra &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="KeAs" class="aschild" name="KeAs" value="False"> </td>
+                                  <td>Ke &#60; As</td>
+                                </tr>
+                                <tr>
+                                  <td><input type="checkbox" id="AsAs" class="aschild" name="AsAs" value="False"> </td>
+                                  <td>As &#60; As</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- <h3>Modal Footer</h3> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="multiple-points-table">
+        </table>
+    </div>
+    <div class="chart-container">
+    <canvas id="planetchart" width="80%" height="40%"></canvas>
+    </div>
+
+
+     
+    <script>
+      var availableTags = [];
+        $( function() {
+            $( "#fname" ).autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : "{% url 'nchartlink' %}",
+                        success: function(response){
+                            availableTags = response;
+                        },
+                    });
+                    response($.map(availableTags, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#p2location').val(ui.item.place_of_birth) 
+                  $('#p1lat').val(ui.item.coordinates_lan)
+                  $('#p1lon').val(ui.item.coordinates_lon)
+                  $('#secdate').val(ui.item.date_of_birth)
+                  $('#sectime').val(ui.item.time_of_birth)
+              },
+            });
+        });
+    </script>
+    <script>
+        $("#mondays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+        });
+        $("#tuesdays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#wednesdays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#thursdays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#fridays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#saturdays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#sundays").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#specific15").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+        });
+        $("#specific115").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#specific110").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'True');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+
+          $("#SuSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#MaSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'VeSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#AsSu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'AsSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+
+
+          $("#SuMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          borderDashList
+          });
+          $("#MaMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'VeMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#AsMo").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'AsMo');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#SuMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#MaMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuSu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#AsMe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'AsMe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+
+
+          $("#SuMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#MaMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'VeMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#AsMa").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'AsMa');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+
+          $("#SuJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#MaJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'VeJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#AsJu").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'AsJu');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+
+
+          $("#SuVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SuVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+
+          $("#MoVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MoVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+          });
+
+          $("#MeVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MeVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#MaVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'MaVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#JuVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'JuVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#VeVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'VeVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#SaVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'SaVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#RaVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'RaVe');
+          } else {
+            $(this).attr('value', 'False');
+          }
+
+          });
+          $("#KeVe").on('change', function() {
+          if ($(this).is(':checked')) {
+            $(this).attr('value', 'KeVe');
+          } else {
+            $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#AsVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#SuSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#MoSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#MaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#JuSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#VeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#SaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#RaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#KeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#AsSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+
+  $("#SuRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#MoRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#MaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#JuRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#VeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#SaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#RaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#KeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#AsRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  
+  $("#SuKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#MoKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#MaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#JuKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#VeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#SaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#RaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#KeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#AsKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#SuAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+
+  $("#MoAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#MaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#JuAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#VeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#SaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#RaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#KeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#AsAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+</script>
+<script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  //document.getElementById('myBtn').style.visibility = 'hidden';
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+  <script>
+  $(function(){
+  $('#suparent').on('change',function(){
+     $('.suchild').prop('checked',$(this).prop('checked'));
+  });
+  $('.suchild').on('change',function(){
+     $('#suparent').prop('unchecked',$('.suchild:checked').length ? true: false);
+  });
+});
+
+  </script>
+    <script>
+      $(function(){
+      $('#moparent').on('change',function(){
+         $('.mochild').prop('checked',$(this).prop('checked'));
+      });
+      $('.mochild').on('change',function(){
+            $('#moparent').prop('unchecked',$('.mochild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#meparent').on('change',function(){
+         $('.mechild').prop('checked',$(this).prop('checked'));
+      });
+      $('.mechild').on('change',function(){
+            $('#meparent').prop('unchecked',$('.mechild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#maparent').on('change',function(){
+         $('.machild').prop('checked',$(this).prop('checked'));
+      });
+      $('.machild').on('change',function(){
+            $('#maparent').prop('unchecked',$('.machild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#juparent').on('change',function(){
+         $('.juchild').prop('checked',$(this).prop('checked'));
+      });
+      $('.juchild').on('change',function(){
+            $('#juparent').prop('unchecked',$('.juchild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#veparent').on('change',function(){
+         $('.vechild').prop('checked',$(this).prop('checked'));
+      });
+      $('.vechild').on('change',function(){
+            $('#veparent').prop('unchecked',$('.vechild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#saparent').on('change',function(){
+         $('.sachild').prop('checked',$(this).prop('checked'));
+      });
+      $('.sachild').on('change',function(){
+            $('#saparent').prop('unchecked',$('.sachild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#raparent').on('change',function(){
+         $('.rachild').prop('checked',$(this).prop('checked'));
+      });
+      $('.rachild').on('change',function(){
+            $('#raparent').prop('unchecked',$('raechild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#keparent').on('change',function(){
+         $('.kechild').prop('checked',$(this).prop('checked'));
+      });
+      $('.kechild').on('change',function(){
+            $('#keparent').prop('unchecked',$('.kechild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+      $(function(){
+      $('#asparent').on('change',function(){
+         $('.aschild').prop('checked',$(this).prop('checked'));
+      });
+      $('.aschild').on('change',function(){
+            $('#asparent').prop('unchecked',$('.aschild:checked').length ? true: false);
+          });
+        });
+    
+    </script>
+    <script>
+    function viewroomSelected(){
+      let sucheck=document.getElementById("suparent").value;  
+    if (sucheck == "False") {
+      document.getElementById("SuSu").value = "SuSu";
+      document.getElementById("MoSu").value = "MoSu";
+      document.getElementById("MeSu").value = "MeSu";
+      document.getElementById("MaSu").value = "MaSu";
+      document.getElementById("JuSu").value = "JuSu";
+      document.getElementById("VeSu").value = "VeSu";
+      document.getElementById("SaSu").value = "SaSu";
+      document.getElementById("RaSu").value = "RaSu";
+      document.getElementById("KeSu").value = "KeSu";
+      document.getElementById("AsSu").value = "AsSu";
+      document.getElementById("suparent").value = "True";
+    } else {
+      document.getElementById("SuSu").value = "False";
+      document.getElementById("MoSu").value = "False";
+      document.getElementById("MeSu").value = "False";
+      document.getElementById("MaSu").value = "False";
+      document.getElementById("JuSu").value = "False";
+      document.getElementById("VeSu").value = "False";
+      document.getElementById("SaSu").value = "False";
+      document.getElementById("RaSu").value = "False";
+      document.getElementById("KeSu").value = "False";
+      document.getElementById("AsSu").value = "False";
+      document.getElementById("suparent").value = "False";
+    }
+
+
+    }
+    </script>
+    <script>
+      function viewroomSelectedMO()
+      {
+        let mocheck=document.getElementById("moparent").value;  
+      if (mocheck == "False") {
+        document.getElementById("SuMo").value = "SuMo";
+        document.getElementById("MoMo").value = "MoMo";
+        document.getElementById("MeMo").value = "MeMo";
+        document.getElementById("MaMo").value = "MaMo";
+        document.getElementById("JuMo").value = "JuMo";
+        document.getElementById("VeMo").value = "VeMo";
+        document.getElementById("SaMo").value = "SaMo";
+        document.getElementById("RaMo").value = "RaMo";
+        document.getElementById("KeMo").value = "KeMo";
+        document.getElementById("AsMo").value = "AsMo";
+        document.getElementById("moparent").value = "True";
+      } else {
+        document.getElementById("SuMo").value = "False";
+        document.getElementById("MoMo").value = "False";
+        document.getElementById("MeMo").value = "False";
+        document.getElementById("MaMo").value = "False";
+        document.getElementById("JuMo").value = "False";
+        document.getElementById("VeMo").value = "False";
+        document.getElementById("SaMo").value = "False";
+        document.getElementById("RaMo").value = "False";
+        document.getElementById("KeMo").value = "False";
+        document.getElementById("AsMo").value = "False";
+        document.getElementById("moparent").value = "False";
+      }
+      }
+      </script>
+      <script>
+        function viewroomSelectedME()
+        {
+          let mecheck=document.getElementById("meparent").value;  
+        if (mecheck == "False") {
+          document.getElementById("SuMe").value = "SuMe";
+          document.getElementById("MoMe").value = "MoMe";
+          document.getElementById("MeMe").value = "MeMe";
+          document.getElementById("MaMe").value = "MaMe";
+          document.getElementById("JuMe").value = "JuMe";
+          document.getElementById("VeMe").value = "VeMe";
+          document.getElementById("SaMe").value = "SaMe";
+          document.getElementById("RaMe").value = "RaMe";
+          document.getElementById("KeMe").value = "KeMe";
+          document.getElementById("AsMe").value = "AsMe";
+          document.getElementById("meparent").value = "True";
+        } else {
+          document.getElementById("SuMe").value = "False";
+          document.getElementById("MoMe").value = "False";
+          document.getElementById("MeMe").value = "False";
+          document.getElementById("MaMe").value = "False";
+          document.getElementById("JuMe").value = "False";
+          document.getElementById("VeMe").value = "False";
+          document.getElementById("SaMe").value = "False";
+          document.getElementById("RaMe").value = "False";
+          document.getElementById("KeMe").value = "False";
+          document.getElementById("AsMe").value = "False";
+          document.getElementById("meparent").value = "False";
+        }
+    
+    
+        }
+        </script>
+        <script>
+          function viewroomSelectedMA()
+          {
+            let macheck=document.getElementById("maparent").value;  
+          if (macheck == "False") {
+            document.getElementById("SuMa").value = "SuMa";
+            document.getElementById("MoMa").value = "MoMa";
+            document.getElementById("MeMa").value = "MeMa";
+            document.getElementById("MaMa").value = "MaMa";
+            document.getElementById("JuMa").value = "JuMa";
+            document.getElementById("VeMa").value = "VeMa";
+            document.getElementById("SaMa").value = "SaMa";
+            document.getElementById("RaMa").value = "RaMa";
+            document.getElementById("KeMa").value = "KeMa";
+            document.getElementById("AsMa").value = "AsMa";
+            document.getElementById("maparent").value = "True";
+          } else {
+            document.getElementById("SuMa").value = "False";
+            document.getElementById("MoMa").value = "False";
+            document.getElementById("MeMa").value = "False";
+            document.getElementById("MaMa").value = "False";
+            document.getElementById("JuMa").value = "False";
+            document.getElementById("VeMa").value = "False";
+            document.getElementById("SaMa").value = "False";
+            document.getElementById("RaMa").value = "False";
+            document.getElementById("KeMa").value = "False";
+            document.getElementById("AsMa").value = "False";
+            document.getElementById("maparent").value = "False";
+          }
+          }
+          </script>
+          <script>
+            function viewroomSelectedJU()
+            {
+              let jucheck=document.getElementById("juparent").value;  
+            if (jucheck == "False") {
+              document.getElementById("SuJu").value = "SuJu";
+              document.getElementById("MoJu").value = "MoJu";
+              document.getElementById("MeJu").value = "MeJu";
+              document.getElementById("MaJu").value = "MaJu";
+              document.getElementById("JuJu").value = "JuJu";
+              document.getElementById("VeJu").value = "VeJu";
+              document.getElementById("SaJu").value = "SaJu";
+              document.getElementById("RaJu").value = "RaJu";
+              document.getElementById("KeJu").value = "KeJu";
+              document.getElementById("AsJu").value = "AsJu";
+              document.getElementById("juparent").value = "True";
+            } else {
+              document.getElementById("SuJu").value = "False";
+              document.getElementById("MoJu").value = "False";
+              document.getElementById("MeJu").value = "False";
+              document.getElementById("MaJu").value = "False";
+              document.getElementById("JuJu").value = "False";
+              document.getElementById("VeJu").value = "False";
+              document.getElementById("SaJu").value = "False";
+              document.getElementById("RaJu").value = "False";
+              document.getElementById("KeJu").value = "False";
+              document.getElementById("AsJu").value = "False";
+              document.getElementById("juparent").value = "False";
+            }
+            }
+            </script>
+            <script>
+              function viewroomSelectedVE()
+              {
+                let vecheck=document.getElementById("veparent").value;  
+              if (vecheck == "False") {
+                document.getElementById("SuVe").value = "SuVe";
+                document.getElementById("MoVe").value = "MoVe";
+                document.getElementById("MeVe").value = "MeVe";
+                document.getElementById("MaVe").value = "MaVe";
+                document.getElementById("JuVe").value = "JuVe";
+                document.getElementById("VeVe").value = "VeVe";
+                document.getElementById("SaVe").value = "SaVe";
+                document.getElementById("RaVe").value = "RaVe";
+                document.getElementById("KeVe").value = "KeVe";
+                document.getElementById("AsVe").value = "AsVe";
+                document.getElementById("veparent").value = "True";
+              } else {
+                document.getElementById("SuVe").value = "False";
+                document.getElementById("MoVe").value = "False";
+                document.getElementById("MeVe").value = "False";
+                document.getElementById("MaVe").value = "False";
+                document.getElementById("JuVe").value = "False";
+                document.getElementById("VeVe").value = "False";
+                document.getElementById("SaVe").value = "False";
+                document.getElementById("RaVe").value = "False";
+                document.getElementById("KeVe").value = "False";
+                document.getElementById("AsVe").value = "False";
+                document.getElementById("veparent").value = "False";
+              }
+              }
+              </script>
+              <script>
+                function viewroomSelectedSA()
+                {
+                  let sacheck=document.getElementById("saparent").value;  
+                if (sacheck == "False") {
+                  document.getElementById("SuSa").value = "SuSa";
+                  document.getElementById("MoSa").value = "MoSa";
+                  document.getElementById("MeSa").value = "MeSa";
+                  document.getElementById("MaSa").value = "MaSa";
+                  document.getElementById("JuSa").value = "JuSa";
+                  document.getElementById("VeSa").value = "VeSa";
+                  document.getElementById("SaSa").value = "SaSa";
+                  document.getElementById("RaSa").value = "RaSa";
+                  document.getElementById("KeSa").value = "KeSa";
+                  document.getElementById("AsSa").value = "AsSa";
+                  document.getElementById("saparent").value = "True";
+                } else {
+                  document.getElementById("SuSa").value = "False";
+                  document.getElementById("MoSa").value = "False";
+                  document.getElementById("MeSa").value = "False";
+                  document.getElementById("MaSa").value = "False";
+                  document.getElementById("JuSa").value = "False";
+                  document.getElementById("VeSa").value = "False";
+                  document.getElementById("SaSa").value = "False";
+                  document.getElementById("RaSa").value = "False";
+                  document.getElementById("KeSa").value = "False";
+                  document.getElementById("AsSa").value = "False";
+                  document.getElementById("saparent").value = "False";
+                }
+                }
+                </script>
+                <script>
+                  function viewroomSelectedRA()
+                  {
+                    let racheck=document.getElementById("raparent").value;  
+                  if (racheck == "False") {
+                    document.getElementById("SuRa").value = "SuRa";
+                    document.getElementById("MoRa").value = "MoRa";
+                    document.getElementById("MeRa").value = "MeRa";
+                    document.getElementById("MaRa").value = "MaRa";
+                    document.getElementById("JuRa").value = "JuRa";
+                    document.getElementById("VeRa").value = "VeRa";
+                    document.getElementById("SaRa").value = "SaRa";
+                    document.getElementById("RaRa").value = "RaRa";
+                    document.getElementById("KeRa").value = "KeRa";
+                    document.getElementById("AsRa").value = "AsRa";
+                    document.getElementById("raparent").value = "True";
+                  } else {
+                    document.getElementById("SuRa").value = "False";
+                    document.getElementById("MoRa").value = "False";
+                    document.getElementById("MeRa").value = "False";
+                    document.getElementById("MaRa").value = "False";
+                    document.getElementById("JuRa").value = "False";
+                    document.getElementById("VeRa").value = "False";
+                    document.getElementById("SaRa").value = "False";
+                    document.getElementById("RaRa").value = "False";
+                    document.getElementById("KeRa").value = "False";
+                    document.getElementById("AsRa").value = "False";
+                    document.getElementById("raparent").value = "False";
+                  }
+                  }
+                  </script>
+                  <script>
+                    function viewroomSelectedKE()
+                    {
+                      let kecheck=document.getElementById("keparent").value;  
+                    if (kecheck == "False") {
+                      document.getElementById("SuKe").value = "SuKe";
+                      document.getElementById("MoKe").value = "MoKe";
+                      document.getElementById("MeKe").value = "MeKe";
+                      document.getElementById("MaKe").value = "MaKe";
+                      document.getElementById("JuKe").value = "JuKe";
+                      document.getElementById("VeKe").value = "VeKe";
+                      document.getElementById("SaKe").value = "SaKe";
+                      document.getElementById("RaKe").value = "RaKe";
+                      document.getElementById("KeKe").value = "KeKe";
+                      document.getElementById("AsKe").value = "AsKe";
+                      document.getElementById("keparent").value = "True";
+                    } else {
+                      document.getElementById("SuKe").value = "False";
+                      document.getElementById("MoKe").value = "False";
+                      document.getElementById("MeKe").value = "False";
+                      document.getElementById("MaKe").value = "False";
+                      document.getElementById("JuKe").value = "False";
+                      document.getElementById("VeKe").value = "False";
+                      document.getElementById("SaKe").value = "False";
+                      document.getElementById("RaKe").value = "False";
+                      document.getElementById("KeKe").value = "False";
+                      document.getElementById("AsKe").value = "False";
+                      document.getElementById("keparent").value = "False";
+                    }
+                    }
+                    </script>
+                    <script>
+                      function viewroomSelectedAS()
+                      {
+                        let ascheck=document.getElementById("asparent").value;  
+                      if (ascheck == "False") {
+                        document.getElementById("SuAs").value = "SuAs";
+                        document.getElementById("MoAs").value = "MoAs";
+                        document.getElementById("MeAs").value = "MeAs";
+                        document.getElementById("MaAs").value = "MaAs";
+                        document.getElementById("JuAs").value = "JuAs";
+                        document.getElementById("VeAs").value = "VeAs";
+                        document.getElementById("SaAs").value = "SaAs";
+                        document.getElementById("RaAs").value = "RaAs";
+                        document.getElementById("KeAs").value = "KeAs";
+                        document.getElementById("AsAs").value = "AsAs";
+                        document.getElementById("asparent").value = "True";
+                      } else {
+                        document.getElementById("SuAs").value = "False";
+                        document.getElementById("MoAs").value = "False";
+                        document.getElementById("MeAs").value = "False";
+                        document.getElementById("MaAs").value = "False";
+                        document.getElementById("JuAs").value = "False";
+                        document.getElementById("VeAs").value = "False";
+                        document.getElementById("SaAs").value = "False";
+                        document.getElementById("RaAs").value = "False";
+                        document.getElementById("KeAs").value = "False";
+                        document.getElementById("AsAs").value = "False";
+                        document.getElementById("asparent").value = "False";
+                      }
+                      }
+                      </script>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+</head>
+<body>
+<style>
+    * {
+  box-sizing: border-box;
+}
+
+.row {
+  margin-left:-5px;
+  margin-right:-5px;
+
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.column {
+  width: 40%;
+  padding: 5px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.column-type-three {
+  padding: 5px;
+  width: 30%;
+  display: inline-block;
+}
+/* Clearfix (clear floats) */
+
+
+#table_container {
+    width: 100%;
+    text-align: center;
+}
+#table_container1 {
+    width: 100%;
+    text-align: center;
+}
+#table_container2 {
+    width: 100%;
+    text-align: center;
+}
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+/* Start Buttons */
+.signupbutton{
+
+    overflow: hidden;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    padding: 7px 20px 7px 20px;
+    margin: 8px 5px 1px 3px;
+    text-decoration: none;
+
+}
+
+.signupbutton:hover {
+  text-decoration: none;
+  background-color: #008CBA;
+  color: white;
+}
+
+.table-type-1 {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    border-collapse: collapse;
+    border-style: hidden;
+
+}
+.th-type-1{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid  #b3b3b3;
+}
+
+.td-type-1{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid  #b3b3b3;
+}
+
+
+.td-type-color-orange{
+    padding: 10px;
+    text-align: center;
+    background-color: #ff9999;
+    border: 1px solid  #b3b3b3;
+}
+
+.overflow-type-1{
+    overflow-x:auto;
+}
+
+
+.table-type-2 {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+
+
+}
+
+.th-type-2 {
+  text-align: center;
+  padding: 14px;
+}
+.td-type-2 {
+  text-align: center;
+  padding: 14px;
+  border: 1px solid  #b3b3b3;
+}
+.th-type-3 {
+  text-align: center;
+  padding: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #b3b3b3;
+}
+
+.td-type-3 {
+  text-align: center;
+  padding: 13.5px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #b3b3b3;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.tr-type-1:nth-child(even){background-color: #f2f2f2}
+.tr-type-2:nth-child(even){background-color: #ccd9ff}
+.tr-type-3:nth-child(even){background-color: #f7e6ff}
+.tr-type-4:nth-child(even){background-color: #ffcccc}
+.tr-type-5:nth-child(even){background-color: #ffe6e6}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+</style>
+
+<!-- NAVBAR START-->
+    <div class="navbarmenu">
+
+        <a class="navbarmenulink" href="{% url 'homemain' %}">Home</a>
+        <a class="navbarmenulink" href="{% url 'p2phome' %}">P1vsP1</a>
+        {% if request.user.is_staff %}
+        <a class="navbarmenulink" href="{% url 'p1home' %}">P1 pxp</a>
+        <a class="navbarmenulink" href="{% url 'p1xp2exform' %}">P1xP2 Exact</a>
+        <a class="navbarmenulink" href="{% url 'axhome' %}">Ax Report</a>
+        <a class="navbarmenulink" href="{% url 'ir_form' %}">IR Report</a>
+        <a class="navbarmenulink" href="{% url 'impeoples' %}">IM People</a>
+        <a class="navbarmenulink" href="{% url 'reinput' %}">Jyotish Maps</a>
+        <a class="navbarmenulink" href="{% url 'exaspecthome' %}">Ex Aspects</a>
+        <a class="navbarmenulink" href="{% url 'peekmultiple' %}">Multiple#1</a>
+        <a class="navbarmenulink" href="{% url 'multiple2home' %}">Multiple#2</a>
+        <a class="navbarmenulink" href="{% url 'multipleCategoryHome' %}">Multiple#3</a>
+        <a class="navbarmenulink" href="{% url 'multicategories' %}">Add Caegory#3</a>
+        <a class="navbarmenulink" href="{% url 'pointsHome' %}">Combination Points</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a style="float:right" class="signupbutton" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a style="float:right" class="signupbutton" href="{% url 'signup' %}">Signup</a>
+        <a style="float:right" class="signupbutton" href="{% url 'login' %}">Login</a>
+        {% endif %}
+        
+    </div>
+<!-- NAVBAR ENDS -->
+
+{% block content %}
+UNDER MAINTANCE
+{% endblock %}
+</body>
+</html>

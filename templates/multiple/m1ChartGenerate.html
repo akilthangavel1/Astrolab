@@ -1,0 +1,277 @@
+{% extends 'base1.html' %}
+{% block head %}
+
+    <script>
+    var planet_dic= {};
+    </script>
+<script>
+
+          function planet_groupers_trigger(glist){
+               $.ajax({
+                 type:'GET',
+                 url:'{% url "getgcHome" %}',
+                 data:
+                 {
+                     glist:$("#glist").val(),
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                 },
+                 success: function(response){
+                 planet_dic = response.gcDic;
+
+                 },
+                 })
+          }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#glist").click(function(){
+                let glist =  $("#glist").val();
+
+                planet_groupers_trigger(glist);
+
+            });
+        });
+    </script>
+
+
+
+    <script>
+        var searchInput = 'p1location';
+
+        $(document).ready(function () {
+            var autocomplete;
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+                types: ['geocode'],
+            });
+
+
+            });
+
+        var searchInput1 = 'p2location';
+        $(document).ready(function () {
+            var autocomplete;
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput1)), {
+                types: ['geocode'],
+            });
+
+
+            });
+
+    </script>
+
+
+
+    <script>
+            var colorDic = {"Su": "#FFFF00", "Mo": "#2DFAFF", "Me": "#FF9900", "Ma": "#FF0033", "Ju": "#00A5E6", "Ve": "#FF33CC", "Sa": "#0000FF", "Ra": "#800080", "Ke": "#800000", "As": "#2FFF2F"};
+            const colorCodeList = [];
+            function color_code(planetOver){
+                colorCodeList.push(colorDic[planetOver.slice(0, 2)])
+                return planetOver
+            }
+    </script>
+    <script>
+        let interDataLis;
+        let graphData = {{ data|safe }};
+
+        let date_lis = {{ dateLis|safe}};
+        var myChart=null;
+        function drawChart(){
+            if(myChart!=null){
+              myChart.destroy();
+            }
+
+
+                    $(function(){
+
+                  //get the line chart canvas
+                  //line chart data
+                  var data = {
+                    labels: date_lis,
+                    datasets: graphData
+                  };
+
+                  //options
+                  var options = {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero:true
+                              }
+                          }]
+                      }
+                  };
+                  var ctx = document.getElementById("planetchart").getContext("2d");
+
+                  //create Chart class object
+                  myChart = new Chart(ctx, { type: "line", data: data, options: options});
+
+                  });
+
+        }
+    window.onload = drawChart;
+    </script>
+    <script>
+          var borderDic = {"Su": [], "Mo": [5, 20], "Me": [10, 10], "Ma": [20, 5], "Ju": [15, 3, 3, 3], "Ve": [20, 3, 3, 3, 3, 3, 3, 3], "Sa": [12, 3, 3], "Ra":[15, 3, 3, 3, 10], "Ke": [15, 15, 15, 15], "As": []};
+          const borderDashList = [];
+          function border_code(planetOver){
+              borderDashList.push(borderDic[planetOver.slice(2, 5)])
+              return planetOver
+          }
+    </script>
+
+
+
+{% endblock %}
+{% block content %}
+
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    .center{
+        margin: 50px 250px 50px 250px;
+    }
+    .tradecontainer {
+        border-radius: 5px;
+        background-color: #e6eeff;
+        padding: 10px;
+        text-align: right;
+        margin:20px;
+    }
+    .tradeselect{
+        width: 10%;
+        padding: 8px 10px;
+        margin: 8px 4px;
+        box-sizing: border-box;
+        border: 2px solid #d9d9d9;
+        border-radius: 12px;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        -webkit-animation-name: fadeIn; /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: fixed;
+        bottom: 0;
+        background-color: #fefefe;
+        width: 100%;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .modal-body {padding: 2px 16px;}
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .checkflex-item-left {
+        background-color: #f1f1f1;
+        padding: 10px;
+        flex: 10%;
+    }
+
+    .checkflex-item-right {
+        background-color: dodgerblue;
+        padding: 10px;
+        flex: 10%;
+    }
+
+    /* Responsive layout - makes a one column-layout instead of a two-column layout */
+    @media (max-width: 800px) {
+      .checkflex-item-right, .checkflex-item-left {
+          flex: 100%;
+      }
+    }
+</style>
+<body>
+
+
+
+    <div class="center">
+    </div>
+        <canvas id="planetchart" width="100%" height="40%"></canvas>
+
+
+
+
+
+</body>
+{% endblock %}

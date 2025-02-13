@@ -1,0 +1,126 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish Maps</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+        integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"
+        integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {% block style %}
+    {% endblock %}
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
+        <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="#">My Website</a> -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navbar content -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Left-aligned items -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'homemain' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Maths
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                            <li><a class="dropdown-item" href="{% url 'p2phome' %}">P1vsP1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'p1home' %}">P1 pxp</a></li>
+                            <li><a class="dropdown-item" href="{% url 'p1xp2exform' %}">P1xP2 Exact</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Reports
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                            <li><a class="dropdown-item" href="{% url 'axhome' %}">Ax Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'ir_form' %}">IR Report</a></li>
+                            <li><a class="dropdown-item" href="{% url 'exaspecthome' %}">Ex Aspects</a></li>
+                            <li><a class="dropdown-item" href="{% url 'displayOne' %}">Display P1 #1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'displayTwo' %}">Display P1 #2</a></li>
+                            <li><a class="dropdown-item" href="{% url 'displayThree' %}">Display P1 #3</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Multiple
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                            <li><a class="dropdown-item" href="{% url 'peekmultiple' %}">Multiple#1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'multiple2home' %}">Multiple#2</a></li>
+                            <li><a class="dropdown-item" href="{% url 'multipleCategoryHome' %}">Multiple#3</a></li>
+                            <li><a class="dropdown-item" href="{% url 'multiple4Home' %}">Multiple#4</a></li>
+                            <li><a class="dropdown-item" href="{% url 'multiple5Home' %}">Multiple#5</a></li>
+                            <li><a class="dropdown-item" href="{% url 'm1ChartsView' %}">Trend Chart #1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'm2ChartsView' %}">Trend Chart #2</a></li>
+                            <li><a class="dropdown-item" href="{% url 'm3ChartsView' %}">Trend Chart #3</a></li>
+                            <li><a class="dropdown-item" href="{% url 'm4ChartsView' %}">Trend Chart #4</a></li>
+                            <li><a class="dropdown-item" href="{% url 'trendChartView' %}">Trend Charts</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="featuresDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Configure
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="featuresDropdown">
+                            <li><a class="dropdown-item" href="{% url 'multicategories' %}">Add Category#3</a></li>
+                            <li><a class="dropdown-item" href="{% url 'multipleCategoryList' %}">View Category#3</a></li>
+                            <li><a class="dropdown-item" href="{% url 'pointsHome' %}">Combination Points</a></li>
+                            <li><a class="dropdown-item" href="{% url 'impeoples' %}">IM People</a></li>
+                            <li><a class="dropdown-item" href="{% url 'planetGrouperView' %}">Planet Grouper View</a></li>
+                            <li><a class="dropdown-item" href="{% url 'planetGrouperNameAdd' %}">Grouper Name Add</a></li>
+                            <li><a class="dropdown-item" href="{% url 'planetGrouperAdd' %}">Planet Grouper Add</a></li>
+                            <li><a class="dropdown-item" href="{% url 'addCombinationGroupNames' %}">Add Comb Group Name</a></li>
+                            <li><a class="dropdown-item" href="{% url 'viewCombGroupName' %}">View Comb Group Name</a></li>
+                            <li><a class="dropdown-item" href="{% url 'addCombChanger' %}">Add Comb Changer</a></li>
+                            <li><a class="dropdown-item" href="{% url 'viewCombChanger' %}">View Comb Changer</a></li>
+                            <li><a class="dropdown-item" href="{% url 'downloadableCombChanger' %}">Download Comb Changer</a></li>
+                            <li><a class="dropdown-item" href="{% url 'downloadablePltChanger' %}">Download Plt Changer</a></li>
+                            <li><a class="dropdown-item" href="{% url 'downloadableCategory' %}">Download Category</a></li>
+                            <li><a class="dropdown-item" href="{% url 'downloadablePoints' %}">Download Points</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'reinput' %}">Jyotish Maps</a>
+                    </li>
+                </ul>
+    
+                <!-- Right-aligned items (User login/logout) -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% block content %}
+{% endblock %}
+
+
+</body>
+
+</html>

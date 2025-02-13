@@ -1,0 +1,366 @@
+{% extends 'mbase.html' %}
+{% load static %}   
+{% block style %}
+
+    <style>
+        /* Background Style */
+        body {
+            background: url('{% static "astroback.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Container Style */
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Custom Separator Style */
+        .separator {
+            border: none;
+            height: 2px;
+            background-color: #007bff;
+            /* Bootstrap primary color */
+            margin: 20px 0;
+            /* Adjust spacing */
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container border p-4 rounded shadow">
+        <h4 class="text-center mb-4">JYOTISH MAP</h4>
+        <form method="GET" action="{% url 'relocation_map3d' %}">
+            {% csrf_token %}
+
+            <!-- All form fields in one container -->
+            <div class="form-container">
+                <!-- Row for Name, Birth Date, Birth Time -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
+                            required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="birthDate" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate" name="birth_date" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="birthTime" class="form-label">Birth Time</label>
+                        <input type="time" class="form-control" id="birthTime" name="birth_time" required>
+                    </div>
+                </div>
+
+                <!-- Row for Place of Birth, Gender -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="placeOfBirth" class="form-label">Place of Birth</label>
+                        <input type="text" class="form-control" id="placeOfBirth" name="place_of_birth"
+                            placeholder="Enter your place of birth" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other" selected>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Separator -->
+                <hr class="separator">
+
+                <!-- Row for Latitude, Longitude -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="latitude" class="form-label">Latitude</label>
+                        <input type="text" class="form-control" id="latitude" name="latitude"
+                            placeholder="Enter latitude">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="longitude" class="form-label">Longitude</label>
+                        <input type="text" class="form-control" id="longitude" name="longitude"
+                            placeholder="Enter longitude">
+                    </div>
+                </div>
+
+                <!-- Separator -->
+                <hr class="separator">
+
+                <!-- First Row of Symbols -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="symbolSu" class="form-label">Su</label>
+                        <input type="text" class="form-control" id="symbolSu" name="symbol_su"
+                            placeholder="value for Su">
+                    </div>
+                    <div class="col">
+                        <label for="symbolMo" class="form-label">Mo</label>
+                        <input type="text" class="form-control" id="symbolMo" name="symbol_mo"
+                            placeholder="value for Mo">
+                    </div>
+                    <div class="col">
+                        <label for="symbolMe" class="form-label">Me</label>
+                        <input type="text" class="form-control" id="symbolMe" name="symbol_me"
+                            placeholder="value for Me">
+                    </div>
+                    <div class="col">
+                        <label for="symbolMa" class="form-label">Ma</label>
+                        <input type="text" class="form-control" id="symbolMa" name="symbol_ma"
+                            placeholder="value for Ma">
+                    </div>
+                    <div class="col">
+                        <label for="symbolJu" class="form-label">Ju</label>
+                        <input type="text" class="form-control" id="symbolJu" name="symbol_ju"
+                            placeholder="value for Ju">
+                    </div>
+                </div>
+
+                <!-- Second Row of Symbols -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="symbolVe" class="form-label">Ve</label>
+                        <input type="text" class="form-control" id="symbolVe" name="symbol_ve"
+                            placeholder="value for Ve">
+                    </div>
+                    <div class="col">
+                        <label for="symbolSa" class="form-label">Sa</label>
+                        <input type="text" class="form-control" id="symbolSa" name="symbol_sa"
+                            placeholder="value for Sa">
+                    </div>
+                    <div class="col">
+                        <label for="symbolRa" class="form-label">Ra</label>
+                        <input type="text" class="form-control" id="symbolRa" name="symbol_ra"
+                            placeholder="value for Ra">
+                    </div>
+                    <div class="col">
+                        <label for="symbolKe" class="form-label">Ke</label>
+                        <input type="text" class="form-control" id="symbolKe" name="symbol_ke"
+                            placeholder="value for Ke">
+                    </div>
+                    <div class="col">
+                        <label for="symbolAs" class="form-label">As</label>
+                        <input type="text" class="form-control" id="symbolAs" name="symbol_as"
+                            placeholder="value for As">
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Container for Session Input -->
+            <div class="container mt-4">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="person-label mb-0">Load session or start a new one</label>
+                        <input list="sessions_autocomplete" autocomplete="off" type="text" class="form-control"
+                            id="inputSession" name="inputSession" placeholder="Session" maxlength="200">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Centered Buttons -->
+            <div class="d-flex justify-content-center gap-3">
+                <button id="save_person" type="button" class="btn btn-primary">Save person</button>
+                <button type="submit" class="btn btn-secondary">Show on Map</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function showNotification(text, type) {
+            new Noty({
+                text: text,
+                type: type,
+                layout: 'topRight',
+                timeout: 3000,
+                animation: {
+                    open: 'noty_effects_open',
+                    close: 'noty_effects_close',
+                    easing: 'swing',
+                    speed: 500
+                }
+            }).show();
+        }
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie string begins with the name we want
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrfToken = getCookie('csrftoken');
+
+        $('#save_person').on('click', function () {
+            var name = $('#name').val().trim();
+            var bdate = $('#birthDate').val();
+            var btime = $('#birthTime').val();
+            var bplace = $('#placeOfBirth').val().trim();
+            var gender = $('#gender').val();
+            var suDegree = $('#symbolSu').val();
+            var moDegree = $('#symbolMo').val();
+            var meDegree = $('#symbolMe').val();
+            var maDegree = $('#symbolMa').val();
+            var juDegree = $('#symbolJu').val();
+            var veDegree = $('#symbolVe').val();
+            var saDegree = $('#symbolSa').val();
+            var raDegree = $('#symbolRa').val();
+            var keDegree = $('#symbolKe').val();
+            var asDegree = $('#symbolAs').val();
+
+
+            var $button = $(this);
+
+            if (name && bdate && btime && bplace && gender) {
+                $button.prop('disabled', true).html('<div class="spinner-border text-light" role="status"></div>');
+
+                $.ajax({
+                    url: 'maplatest/add_person/',
+                    type: 'POST',
+                    data: {
+                        name,
+                        bdate,
+                        btime,
+                        bplace,
+                        gender,
+                        suDegree,
+                        moDegree,
+                        meDegree,
+                        maDegree,
+                        juDegree,
+                        veDegree,
+                        saDegree,
+                        raDegree,
+                        keDegree,
+                        asDegree,
+                        csrfmiddlewaretoken: csrfToken  // Include the CSRF token here
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.state === '1') {
+                            showNotification("Person successfully saved!", "success");
+                            console.log(data.degree);
+                            if (data.degree) {
+                                $('#latitude').val(data.coordinates.latitude);
+                                $('#longitude').val(data.coordinates.longitude);
+                                $('#symbolSu').val(data.degree.Su);
+                                $('#symbolMo').val(data.degree.Mo);
+                                $('#symbolMe').val(data.degree.Me);
+                                $('#symbolMa').val(data.degree.Ma);
+                                $('#symbolJu').val(data.degree.Ju);
+                                $('#symbolVe').val(data.degree.Ve);
+                                $('#symbolSa').val(data.degree.Sa);
+                                $('#symbolRa').val(data.degree.Ra);
+                                $('#symbolKe').val(data.degree.Ke);
+                                $('#symbolAs').val(data.degree.As);
+                            }
+                        } else {
+                            showNotification(data.error, "error");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error saving person:", status, error);
+                        showNotification("Couldn't save person! Please try again later.", "error");
+                    },
+                    complete: function () {
+                        $button.prop('disabled', false).html('Save person');
+                    }
+                });
+            } else {
+                showNotification("To save a person, please fill in all fields", "warning");
+            }
+        });
+
+    </script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "{% url 'autocomplete-names' %}",
+                        data: { term: request.term },
+                        dataType: "json",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.fullname,
+                                    value: item.fullname,
+                                    data: item
+                                };
+                            }));
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    const person = ui.item.data;
+                    $('#birthDate').val(person.date_of_birth);
+                    $('#birthTime').val(person.time_of_birth);
+                    $('#placeOfBirth').val(person.place_of_birth);
+                    $('#latitude').val(person.coordinates_lan);
+                    $('#longitude').val(person.coordinates_lon);
+                    $('#symbolSu').val(person.Su);
+                    $('#symbolMo').val(person.Mo);
+                    $('#symbolMe').val(person.Me);
+                    $('#symbolMa').val(person.Ma);
+                    $('#symbolJu').val(person.Ju);
+                    $('#symbolVe').val(person.Ve);
+                    $('#symbolSa').val(person.Sa);
+                    $('#symbolRa').val(person.Ra);
+                    $('#symbolKe').val(person.Ke);
+                    $('#symbolAs').val(person.As);
+                }
+            });
+        });
+    </script>
+    <script>
+        var placeSearch, autocomplete;
+
+        function initAutocomplete() {
+            placeOfBirth = new google.maps.places.Autocomplete((document.getElementById('placeOfBirth')), {types: ['geocode']});
+        }
+
+        function geolocate() {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                var geolocation = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle({
+                  center: geolocation,
+                  radius: position.coords.accuracy
+                });
+                placeOfBirth.setBounds(circle.getBounds());
+              });
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpksPTT2PW4ZOSlzltN0QLV4zxT6U09pA&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+
+{% endblock %}

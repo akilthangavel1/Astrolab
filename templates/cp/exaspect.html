@@ -1,0 +1,792 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+.tradetdsell {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: red;
+
+}
+.tradetable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:95%;
+  margin-top : 50px;
+}
+.tradeth{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 15px;
+  text-align: center;
+}
+.tradetd {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+.tradetdsell {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: red;
+
+}
+.tradetdwin{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffff99;
+  text-align: center;
+}
+.tradetdloss{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffb3ff;
+  text-align: center;
+}
+.tradetdbbcons{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #eaccfc;
+  text-align: center;
+}
+
+.tradetdgreen60 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #99d6ad;
+  text-align: center;
+}
+.tradetdgreen70 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #80cc99;
+  text-align: center;
+}
+.tradetdgreen80 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #66c285;
+  text-align: center;
+}
+.tradetdgreen90 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #4cb870;
+  text-align: center;
+}
+.tradetdgreen100 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #33ad5c;
+  text-align: center;
+}
+.tradetdred50 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffb2b2;
+  text-align: center;
+}
+.tradetdred40 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff9999;
+  text-align: center;
+}
+.tradetdred30 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color:  #ff8080;
+  text-align: center;
+}
+.tradetdred20 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff6666;
+  text-align: center;
+}
+.tradetdred10 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff4c4c;
+  text-align: center;
+}
+.tradetdyellow {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffffb3;
+  text-align: center;
+}
+
+.tradetr:nth-child(even) {
+  background-color: #edf0f0;
+}
+* {
+  box-sizing: border-box;
+}
+
+.tradecontainer {
+  border-radius: 5px;
+  background-color: #e6eeff;
+  padding: 10px;
+  text-align: right;
+  margin:20px;
+}
+.tradeselect{
+  width: 10%;
+  padding: 8px 10px;
+  margin: 8px 4px;
+  box-sizing: border-box;
+  border: 2px solid #d9d9d9;
+  border-radius: 12px;
+}
+
+.tradebutton {
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 20px 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+  border-radius: 8px;
+}
+
+
+.tradebutton:hover {
+  background-color: #b3ecff;
+  color: black;
+}
+.tradeul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #002699;
+}
+
+.tradeli {
+    float: left;
+}
+
+.tradeli .tradea, .tradedropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 25px;
+    text-decoration: none;
+}
+
+.tradeli .tradea:hover, .tradedropdown:hover .tradedropbtn {
+    background-color: #4da6ff;
+}
+
+.tradeli .tradedropdown {
+    display: inline-block;
+}
+
+.tradedropdown-content {
+    display: none;
+    position: absolute;
+    background-color:#f1f1f1;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.tradedropdown-content .tradea {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.tradedropdown-content .tradea:hover {background-color: #4da6ff}
+
+.tradedropdown:hover .tradedropdown-content {
+    display: block;
+}
+
+.hpcoupon {
+  width: 30.3%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+  text-align : center;
+  float : left;
+  margin : 25px;
+
+}
+
+.hpcontainer {
+  padding: 1px;
+  background-color: #dfbf9f;
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #4CAF50;
+
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #cc6600;
+
+}
+.tradesubtitles{
+    text-align: center;
+    text-transform: uppercase;
+    color: #ff8000;
+}
+
+    /* Start style.css  */
+* {
+
+    box-sizing: border-box;
+}
+
+
+body {
+    color: #888;
+    background: white;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+/* Start HR TAG */
+hr.new1 {
+  border-top: 1px solid red;
+}
+/* END HR TAG */
+/* Start Logo Menu */
+
+.navbarlogo {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.brandlogo .brandlogolink {
+    overflow: hidden;
+    background-color:#f2f2f2;
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+
+.navbarlogo .navbarlogolink {
+    float: right;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+/* End Logo Menu */
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    margin : 15px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* End Buttons */
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+/* End style.css */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  text-align: center;
+}
+.flex-item-sidemenu {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 20%;
+}
+
+.flex-item-constanttable {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-eventtable{
+  /* background-color: dodgerblue; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-housetable {
+  /* background-color: #f1f1f1; */
+  padding: 50px;
+  flex: 80%;
+}
+/* Responsive layout - makes a one column-layout instead of two-column layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
+/* Start EVENT Table ONE*/
+.eventtable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.eventtd{
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.eventth {
+    padding: 8px;
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+}
+
+
+
+.eveonetr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+.evetwotr:nth-child(even) {
+    background-color: #ffddcc;
+}
+
+.housesigntr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+/* End EVENT Table ONE*/
+/* Start HOUSE Table */
+.housetable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.houseth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+.housetd{
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    padding: 8px;
+    text-align: center;
+
+}
+.housetdorange {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 8px;
+  background-color: #ffbf80;
+  text-align: center;
+}
+
+
+
+
+
+
+.housetr:nth-child(even) {
+    background-color: #e6f0ff;
+}
+
+/* End HOUSE Table */
+/* Start CONSTANT Table */
+.constanttable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.constanttd{
+    border: 1px solid  #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.constantth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+
+.basictr:nth-child(even) {
+    background-color: #e6ecff;
+}
+.conjtr:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr180:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr120l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr120g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr90l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr90g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr60l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr60g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr150g:nth-child(even) {
+    background-color: #ffd6cc;
+}
+
+/* End CONSTANT Table */
+/* H2 TITLE STYLE */
+.titleh2 {
+  display: block;
+  font-size: 1.8em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H2 TITLE END */
+/* H3 TITLE STYLE */
+.titleh3 {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H3 TITLE END */
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
+<body>
+
+<div class="tradecontainer">
+    <form method="post" >
+    {% csrf_token %}
+    <select class="tradeselect" name="ex_degree">
+        <option value="SU">SU</option>
+        <option value="MO">MO</option>
+        <option value="ME">ME</option>
+        <option value="MA">MA</option>
+        <option value="JU">JU</option>
+        <option value="VE">VE</option>
+        <option value="SA">SA</option>
+        <option value="RA">RA</option>
+        <option value="KE">KE</option>
+        <option value="AS">AS</option>
+        <option value="ALL">ALL</option>
+    </select>
+    <button class="tradebutton tradebutton" type="submit">Submit</button>
+  </form>
+</div>
+<div class="flex-container">
+  <div class="flex-item-sidemenu">1</div>
+  <div class="flex-item-eventtable">
+    <h3 align="center">GRAPH</h3>
+    <div class="chart-container" >
+        <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <div class="flex-item-eventtable">
+      <div align="center">
+          <h3>Interaccion</h3>
+          <table class="eventtable">
+              <tr class="basictr">
+                  <th class="eventth">Interaccion</th>
+                  <th class="eventth">Puntaje</th>
+              </tr>
+              {% for i in interaccion_df %}
+              <tr class="basictr">
+                  <td class="eventtd">{{i.INTERACCIÓN}}</td>
+                  <td class="eventtd">{{i.puntaje|floatformat:1}}</td>
+              </tr>
+              {% endfor %}
+          </table>
+      </div>
+  </div>
+</div>
+
+<script>
+  let planet_lis = {{interaccion_lis|safe}}
+  let total_lis = {{puntaje_lis|safe}}
+  
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: planet_lis,
+          datasets: [{
+              label: 'Graph of Planet Total',
+              data: total_lis,
+              backgroundColor: [
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)'
+              ],
+              borderColor: [
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)',
+                  'rgba(21, 117, 213, 1.0)'
+              ],
+              borderWidth: 1,
+              
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+  </script>
+
+
+{% endblock %}

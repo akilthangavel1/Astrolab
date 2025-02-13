@@ -1,0 +1,148 @@
+{% extends 'mbase.html' %}
+{% load static %}
+{% block style %}
+<style>
+/* Cesium Container Style */
+.cesium-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Checkbox Container Style */
+.checkbox-container {
+    position: absolute;
+    top: 10%; /* Adjust as needed for vertical positioning */
+    right: 10px; /* Fixed to the right side */
+    z-index: 1000; /* Ensure it stays on top */
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 200px; /* Limit width if necessary */
+    overflow: hidden;
+}
+
+/* SVG and Degree Group */
+.svg-degree-group {
+    display: flex;
+    flex-direction: column; /* Align SVGs and labels vertically */
+    gap: 10px; /* Space between each SVG and degree */
+    margin-bottom: 20px; /* Space between SVG group and checkboxes */
+}
+
+/* Individual SVG and Degree Item */
+.svg-degree-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space evenly between SVG and label */
+    gap: 10px; /* Space between SVG and text */
+}
+
+/* Degree Label Styling */
+.svg-degree-item p {
+    margin: 0;
+    font-size: 14px; /* Adjust text size */
+}
+
+/* Checkbox Group Styling */
+.checkbox-group {
+    display: flex;
+    flex-direction: column; /* Align checkboxes vertically */
+    gap: 10px; /* Space between checkboxes */
+}
+
+/* Label and Checkbox Style */
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-size: 14px; /* Adjust font size */
+    gap: 5px; /* Space between checkbox and label text */
+}
+
+/* Checkbox Styling */
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .checkbox-container {
+        top: 20px; /* Adjust for smaller screens */
+        right: 5px; /* Smaller margin for mobile */
+        max-width: 100%; /* Allow full width on smaller screens */
+    }
+
+    .checkbox-group {
+        font-size: 12px; /* Reduce font size on smaller screens */
+    }
+
+    .svg-degree-item p {
+        font-size: 12px; /* Reduce degree label size on smaller screens */
+    }
+}
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<div id="cesiumContainer" class="cesium-container">
+    <!-- Cesium Viewer (3D Map or Globe) -->
+    <div id="cesium-viewer"></div>
+
+    <!-- Right-Aligned Controls -->
+    <div class="checkbox-container">
+        <!-- SVGs and Degrees -->
+        <div class="svg-degree-group">
+            <div class="svg-degree-item">
+                <svg style="width: 50px;" viewBox="-3 0 133 20" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="1" x2="25" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="40" y1="1" x2="65" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="80" y1="1" x2="105" y2="1" stroke-width="15" stroke="blue" />
+                </svg>
+                <p>120°</p>
+            </div>
+            <div class="svg-degree-item">
+                <svg style="width: 50px;" viewBox="-3 0 133 20" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="1" x2="40" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="50" y1="1" x2="90" y2="1" stroke-width="15" stroke="blue" />
+                </svg>
+                <p>90°</p>
+            </div>
+        </div>
+
+        <!-- Planet Checkboxes -->
+        <div class="checkbox-group">
+            <label><input type="checkbox" value="earth" /> Earth</label>
+            <label><input type="checkbox" value="mars" /> Mars</label>
+            <label><input type="checkbox" value="jupiter" /> Jupiter</label>
+        </div>
+    </div>
+</div>
+
+
+<!-- Right-Aligned Checkboxes Container -->
+
+<!-- Load the latest version of Cesium -->
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<script>
+    // Set your Cesium Ion token
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNDRiYWYyZi04NTk4LTQ5OGItOTg0MS1hNDUzMjE0YjdiMzciLCJpZCI6MTQ5MDksInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjY2NzA0NTl9.6hTdETOJ7y9aJuzgu9avXRPJU5mMO_PqVWhMOgbeBWg';
+
+    // Initialize Cesium Viewer with Ion imagery provider
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: new Cesium.IonImageryProvider({
+            assetId: 2 // Asset ID 2 typically provides default Cesium imagery
+        }),
+        baseLayerPicker: true,          // Allow user to select base layers
+        timeline: false,                // Disable timeline
+        animation: false,               // Disable animation controls
+    });
+</script>
+{% endblock %}

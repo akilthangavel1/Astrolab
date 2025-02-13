@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  margin-left:-5px;
+  margin-right:-5px;
+
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.column {
+  width: 40%;
+  padding: 5px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.column-type-three {
+  padding: 5px;
+  width: 30%;
+  display: inline-block;
+}
+/* Clearfix (clear floats) */
+
+
+#table_container {
+    width: 100%;
+    text-align: center;
+}
+#table_container1 {
+    width: 100%;
+    text-align: center;
+}
+#table_container2 {
+    width: 100%;
+    text-align: center;
+}
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.table-type-1 {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    border-collapse: collapse;
+    border-style: hidden;
+
+}
+.th-type-1{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid  #b3b3b3;
+}
+
+.td-type-1{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid  #b3b3b3;
+}
+
+
+.td-type-color-orange{
+    padding: 10px;
+    text-align: center;
+    background-color: #ff9999;
+    border: 1px solid  #b3b3b3;
+}
+
+.overflow-type-1{
+    overflow-x:auto;
+}
+
+
+.table-type-2 {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+
+
+}
+
+.th-type-2 {
+  text-align: center;
+  padding: 14px;
+}
+.td-type-2 {
+  text-align: center;
+  padding: 14px;
+  border: 1px solid  #b3b3b3;
+}
+.th-type-3 {
+  text-align: center;
+  padding: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #b3b3b3;
+}
+
+.td-type-3 {
+  text-align: center;
+  padding: 13.5px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #b3b3b3;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.tr-type-1:nth-child(even){background-color: #f2f2f2}
+.tr-type-2:nth-child(even){background-color: #ccd9ff}
+.tr-type-3:nth-child(even){background-color: #f7e6ff}
+.tr-type-4:nth-child(even){background-color: #ffcccc}
+.tr-type-5:nth-child(even){background-color: #ffe6e6}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}

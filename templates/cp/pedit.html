@@ -1,0 +1,219 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+  table {
+  border-collapse: collapse;
+  width: 95%;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    padding: 7px 20px 7px 20px;
+    margin: 8px 5px 1px 3px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+
+/* Start Buttons */
+.greenbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #9fdf9f;
+    padding: 7px 20px 7px 20px;
+    margin: 8px 5px 1px 3px;
+
+}
+
+.greenbutton:hover {
+  background-color: #9fdf9f;
+  color: white;
+}
+
+/* Start Buttons */
+.redbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #ff9999;
+    padding: 7px 20px 7px 20px;
+    margin: 8px 5px 1px 3px;
+
+}
+
+.redbutton:hover {
+  background-color: #ff9999;
+  color: white;
+}
+th, td {
+  text-align: left;
+  padding: 22px;
+}
+
+tr:nth-child(even) {background-color: #ccccff;}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #ff9999;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: right;
+  margin: 30px;
+
+}
+.inputsearch {
+  width: 15%;
+  padding: 8px 5px;
+  margin: 8px 5px 1px 3px;
+  box-sizing: border-box;
+  border: 1px solid #008CBA;
+  border-radius: 4px;
+}
+
+
+</style>
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+
+
+<div style="overflow-x:auto;">
+  <table>
+    <tr>
+      <th>Degree</th>
+      <th>Symbol</th>
+      <th>Points</th>
+    </tr>
+    {% for tb in cpdata %}
+      <tr>
+        <form method="POST">
+          {% csrf_token %}
+          <input class="inputsearch" type="hidden" name="id" value="{{ tb.id }}">
+          <td>{{ tb.con_type }}<input class="inputsearch" type="hidden" name="comtype" value="{{ tb.con_type }}"></td>
+          <td>{{ tb.con_name }}<input class="inputsearch" type="hidden" name="comname" value="{{ tb.con_name }}"></td>
+          <td><input class="inputsearch" type="text" name="compoint" value="{{ tb.con_points|floatformat:4 }}"></td>
+          <td><button class="greenbutton" type="submit"><span class="glyphicon glyphicon-pencil" >Update</span></button></td>
+        </form>
+      </tr>
+
+    {% endfor %}
+  </table>
+</div>
+
+
+</body>user
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB7h3PspGaJV_aba1ZkPz9jh-KkGQaKYfw&libraries=places"></script>
+    
+
+ 
+{% endblock %}  

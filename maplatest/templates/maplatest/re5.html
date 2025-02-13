@@ -1,0 +1,275 @@
+{% extends 'mbase.html' %}
+{% load static %}
+{% block style %}
+<style>
+/* Cesium Container Style */
+.cesium-container {
+    position: relative;
+    width: 100%;
+    height: 85vh; /* Use 90% of the screen height */
+}
+
+/* Natal Chart Button - Small Version Positioned Left */
+.natal-chart-btn {
+    width: auto; /* Allow the button to adjust its width */
+    padding: 10px 20px;
+    background-color: #17a2b8;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute; /* Position it absolutely */
+    left: 20px; /* 20px from the left side of the screen */
+    bottom: 20px; /* 20px from the bottom of the screen */
+    transition: background-color 0.3s ease;
+}
+
+.natal-chart-btn:hover {
+    background-color: #138496;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    width: 250px;
+    height: 100%;
+    background-color: #343a40;
+    color: white;
+    transition: left 0.3s ease-in-out;
+    z-index: 1001; /* Ensure it is above Cesium Viewer */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    left: 0; /* Make the sidebar visible when open */
+}
+
+/* Save Session Button */
+.save-session-btn {
+    width: 100%; /* Utilizes 100% width of sidebar */
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    border-bottom: 1px solid #474f56;
+    transition: background-color 0.3s ease;
+}
+
+.save-session-btn:hover {
+    background-color: #218838;
+}
+
+/* Sidebar Links */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px; /* To avoid overlap with the save session button */
+}
+
+.sidebar ul li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #474f56;
+}
+
+/* Toggle Button Style */
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: -30px; /* Adjust position for symbols */
+    transform: translateY(-50%);
+    padding: 10px;
+    cursor: pointer;
+    background-color: #343a40;
+    color: white;
+    border: none;
+    font-size: 18px;
+    width: 30px; /* Set fixed width for symbol */
+    height: 40px;
+    text-align: center;
+}
+
+/* Right Controls - Checkbox Container */
+.checkbox-container {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 200px;
+    overflow: hidden;
+}
+
+/* SVG and Degree Group */
+.svg-degree-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Individual SVG and Degree Item */
+.svg-degree-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Degree Label Styling */
+.svg-degree-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Checkbox Group Styling */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Label and Checkbox Style */
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 5px;
+}
+
+/* Checkbox Styling */
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .checkbox-container {
+        top: 20px;
+        right: 5px;
+        max-width: 100%;
+    }
+
+    .checkbox-group {
+        font-size: 12px;
+    }
+
+    .svg-degree-item p {
+        font-size: 12px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="cesiumContainer" class="cesium-container">
+    <!-- Cesium Viewer (3D Map or Globe) -->
+    <div id="cesium-viewer"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Save Session Button -->
+        <button class="save-session-btn" id="saveSessionBtn">Save Session</button>
+
+        <button class="toggle-btn" id="toggleBtn">&gt;</button>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Services</li> 
+            <li>Contact</li>
+        </ul>
+    </div>
+
+    <!-- Right-Aligned Controls (SVG and Checkboxes) -->
+    <div class="checkbox-container">
+        <!-- SVGs and Degrees -->
+        <div class="svg-degree-group">
+            <div class="svg-degree-item">
+                <svg style="width: 50px;" viewBox="-3 0 133 20" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="1" x2="25" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="40" y1="1" x2="65" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="80" y1="1" x2="105" y2="1" stroke-width="15" stroke="blue" />
+                </svg>
+                <p>120°</p>
+            </div>
+            <div class="svg-degree-item">
+                <svg style="width: 50px;" viewBox="-3 0 133 20" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="1" x2="40" y2="1" stroke-width="15" stroke="blue" />
+                    <line x1="50" y1="1" x2="90" y2="1" stroke-width="15" stroke="blue" />
+                </svg>
+                <p>90°</p>
+            </div>
+        </div>
+
+        <!-- Planet Checkboxes -->
+        <div class="checkbox-group">
+            <label><input type="checkbox" value="earth" /><div style="width: 40px; height: 15px; background-color: white;"></div>MO</label>
+            <label><input type="checkbox" value="mars" /> <div style="width: 40px; height: 15px; background-color: white;"></div>MO</label>
+            <label><input type="checkbox" value="jupiter" /> <div style="width: 40px; height: 15px; background-color: white;"></div>SU</label>
+        </div>
+    </div>
+</div>
+
+<!-- Natal Chart Button Positioned to the Left -->
+<button class="natal-chart-btn" id="natalChartBtn">Natal Chart</button>
+
+<!-- Load the latest version of Cesium -->
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<script>
+    // Set your Cesium Ion token
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNDRiYWYyZi04NTk4LTQ5OGItOTg0MS1hNDUzMjE0YjdiMzciLCJpZCI6MTQ5MDksInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjY2NzA0NTl9.6hTdETOJ7y9aJuzgu9avXRPJU5mMO_PqVWhMOgbeBWg';
+
+    // Initialize Cesium Viewer with Ion imagery provider
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: new Cesium.IonImageryProvider({
+            assetId: 2 // Asset ID 2 typically provides default Cesium imagery
+        }),
+        baseLayerPicker: true,          // Allow user to select base layers
+        timeline: false,                // Disable timeline
+        animation: false,               // Disable animation controls
+    });
+
+    // JavaScript to toggle sidebar visibility
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        // Change button text based on the state of the sidebar
+        if (sidebar.classList.contains('open')) {
+            toggleBtn.innerHTML = '&lt;'; // Display < when sidebar is open
+        } else {
+            toggleBtn.innerHTML = '&gt;'; // Display > when sidebar is closed
+        }
+    });
+
+    // Add functionality for Save Session Button
+    const saveSessionBtn = document.getElementById('saveSessionBtn');
+    saveSessionBtn.addEventListener('click', () => {
+        alert("Session Saved!");
+        // Add logic to save the session here
+    });
+
+    // Add functionality for Natal Chart Button
+    const natalChartBtn = document.getElementById('natalChartBtn');
+    natalChartBtn.addEventListener('click', () => {
+        alert("Natal Chart Feature");
+        // Add logic for natal chart feature here
+    });
+</script>
+{% endblock %}

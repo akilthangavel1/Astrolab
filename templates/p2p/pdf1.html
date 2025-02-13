@@ -1,0 +1,283 @@
+
+<html>
+<head>
+<style>
+@page {
+  size: Letter; /* Change from the default size of A4 */
+  margin: 2.5cm; /* Set margin on each page */
+}
+table {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  width: 90%;
+  color: black;
+  margin-top: 50px;
+  border-collapse: collapse;
+  border-style: hidden;
+  margin-top : 50px;
+  margin-bottom : 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-left : 1px solid #bababa;
+  border-bottom: 1px solid #bababa;
+  text-align: center;
+}
+tr:nth-child(even) {background-color: #99b3ff;}
+
+</style>
+</head>
+<body>
+
+<h2>INTEGRATED REPORT</h2>
+<hr>
+
+  {% if df_conj %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_conj %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_180 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_180 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_lesser120 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_lesser120 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_greater120 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_greater120 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_lesser90 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_lesser90 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_greater90 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_greater90 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div|safe }}
+    {% endautoescape %}
+  </div>
+  {% if df_lesser60 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_lesser60 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_greater60 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_greater60 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+  {% if df_greater150 %}
+    <div>
+      <table>
+        <tr>
+          <th>Type</th>
+          <th>Planet</th>
+          <th>Conca</th>
+          <th>Distance</th>
+          <th>Point</th>
+        </tr>
+        {% for i in df_greater150 %}
+        <tr>
+          <td class="eventtd">{{i.type}}</td>
+          <td class="eventtd">{{i.planet}}</td>
+          <td class="eventtd">{{i.conca}}</td>
+          <td class="eventtd">{{i.distance|floatformat:1}}</td>
+          <td class="eventtd">{{i.point|floatformat:1}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+  <div>
+    {% autoescape off %}
+    {{ bar_div }}
+    {% endautoescape %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,1898 @@
+{% extends 'base1.html' %}
+{% block content %}
+<head>
+  <script type="text/javascript">
+  $(document).on('submit','#task-form',function(e){
+      e.preventDefault();
+      $.ajax({
+          type:'GET',
+          url:'{% url "peekmultiple" %}',
+          data:
+          {
+              fdate:$("#fdate").val(),
+              tdate:$("#tdate").val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+          },
+          
+          })
+      });
+  </script>
+  <script type="text/javascript">
+    $(document).on('submit','#clear-form',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "peekclear" %}',
+            data:
+            {
+                fdate:$("#fdate").val(),
+                tdate:$("#tdate").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            })
+        });
+    </script>
+  <script>
+    
+    var myChart=null;
+    let date_lis;
+    let one;
+    let two;
+    let three;
+    let four;
+    let five;
+    let six;
+    let seven;
+    let eight;
+    let nine;
+    let ten;
+    let one_puntaje_lis;
+    let two_puntaje_lis;
+    let three_puntaje_lis;
+    let four_puntaje_lis;
+    let five_puntaje_lis;
+    let six_puntaje_lis; 
+    let seven_puntaje_lis; 
+    let eight_puntaje_lis; 
+    let nine_puntaje_lis;
+    let ten_puntaje_lis;
+   
+
+    function drawChart(data){ 
+        if(myChart!=null){
+          myChart.destroy();
+        }
+        context = data;
+        date_lis = context.date_lis;
+        one = context.one;
+        two = context.two;
+        three = context.three;
+        four = context.four;
+        five = context.five;
+        six = context.six;
+        seven= context.seven;
+        eight = context.eight;
+        nine = context.nine;
+        ten = context.ten;
+        one_puntaje_lis = context.one_puntaje_lis 
+        two_puntaje_lis = context.two_puntaje_lis
+        three_puntaje_lis = context.three_puntaje_lis
+        four_puntaje_lis = context.four_puntaje_lis
+        five_puntaje_lis = context.five_puntaje_lis
+        six_puntaje_lis = context.six_puntaje_lis
+        seven_puntaje_lis = context.seven_puntaje_lis
+        eight_puntaje_lis = context.eight_puntaje_lis
+        nine_puntaje_lis = context.nine_puntaje_lis
+        ten_puntaje_lis = context.ten_puntaje_lis
+                
+                $(function(){
+  
+              //get the line chart canvas
+              
+  
+              //line chart data
+              var data = {
+                labels: date_lis,
+                datasets: [
+                  {
+                    label: one,
+                    data: one_puntaje_lis,
+                    backgroundColor:"#ffe680" ,
+                    borderColor: "#ffcc00",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: two,
+                    data: two_puntaje_lis,
+                    backgroundColor: "#cceeff",
+                    borderColor: "#66ccff",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: three,
+                    data: three_puntaje_lis,
+                    backgroundColor: "#ffd9b3",
+                    borderColor: "#ff9933",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: four,
+                    data: four_puntaje_lis,
+                    backgroundColor: "#ffb3b3",
+                    borderColor:"#ff0000" ,
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: five,
+                    data: five_puntaje_lis,
+                    backgroundColor: "#b3e0ff",
+                    borderColor: "#0099ff",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: six,
+                    data: six_puntaje_lis,
+                    backgroundColor: "#ffb3ff",
+                    borderColor: "#ff66ff",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: seven,
+                    data: seven_puntaje_lis,
+                    backgroundColor: "#9999ff",
+                    borderColor: "#0000ff",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: eight,
+                    data: eight_puntaje_lis,
+                    backgroundColor: "#bfbfbf",
+                    borderColor: "#0d0d0d",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: nine,
+                    data: nine_puntaje_lis,
+                    backgroundColor: "#ffb3ff",
+                    borderColor: "#990099",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                  {
+                    label: ten,
+                    data: ten_puntaje_lis,
+                    backgroundColor: "#c2f0c2" ,
+                    borderColor:"#33cc33",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5
+                  },
+                 
+                ]
+              };
+  
+              //options
+              var options = {
+                responsive: true,
+                title: {
+                  display: true,
+                  position: "top",
+                  text: "Line Graph",
+                  fontSize: 18,
+                  fontColor: "#111"
+                },
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: {
+                    fontColor: "#333",
+                    fontSize: 16
+                  }
+                }
+              };
+              var ctx = document.getElementById("planetchart").getContext("2d");
+              
+              //create Chart class object
+              myChart = new Chart(ctx, { type: "line", data: data, options: options});
+              
+              });
+
+    }
+
+  </script>
+  <script type="text/javascript">
+   
+       $(document).on('submit','#task-planet',function(e, response){
+          e.preventDefault();
+          $.ajax({
+              type:'GET',
+              url:'{% url "peekmultipleplanets" %}',
+              data:
+              {     
+                  p1place:$("#p1location").val(),
+                  p2place:$("#p2location").val(),
+                  planets_sel:$("#plt").val(),
+                  ttime:$("#ttime").val(),
+                  csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+              },
+              success: function(response){
+                interDataLis = (response.data);
+                date_lis = (response.date_lis);
+                console.log(interDataLis, date_lis);
+              },
+  
+              })
+              
+          });
+           
+  
+      </script>
+      <script type="text/javascript">
+          $(document).on('submit','#planet-button',function(e, response){
+              e.preventDefault();
+              console.log("############################");
+              //  $.ajax({
+              //      type:'GET',
+              //      url:'{% url "peekmultipleplanets" %}',
+              //      data:
+              //      {     
+              //          p1place:$("#p1location").val(),
+              //          p2place:$("#p2location").val(),
+              //          planets_sel:$("#plt").val(),
+              //          ttime:$("#ttime").val(),
+              //          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+              //      },
+              //      success: function(response){
+              //        interDataLis = (response.data);
+              //        date_lis = (response.date_lis);
+              //      },
+      
+              //      })
+               
+          });
+            
+   
+      </script>
+      <script>
+        var searchInput = 'p1location';
+    
+        $(document).ready(function () {
+            var autocomplete;
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+                types: ['geocode'],
+            });
+    
+            
+            });
+           
+        var searchInput1 = 'p2location';
+        $(document).ready(function () {
+            var autocomplete;
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput1)), {
+                types: ['geocode'],
+            });
+    
+            
+            });
+            
+        </script>
+        <script type="text/javascript">
+   
+          $(document).on('submit','#task-singledate',function(e, response){
+             e.preventDefault();
+             $.ajax({
+                 type:'GET',
+                 url:'{% url "addsingle" %}',
+                 data:
+                 {   
+                     addsdate:$("#singledate").val(),
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+                 },
+                 success: function(response){
+                   
+                 },
+     
+                 })
+                 
+             });
+              
+     
+         </script>
+         <script type="text/javascript">
+   
+          $(document).on('submit','#task-checkbox',function(e, response){
+             e.preventDefault();
+             $.ajax({
+                 type:'GET',
+                 url:'{% url "weekcheckers" %}',
+                 data:
+                 {   
+                     monvalue:$("#mondays").val(),
+                     tuevalue:$("#tuesdays").val(),
+                     wedvalue:$("#wednesdays").val(),
+                     thuvalue:$("#thursdays").val(),
+                     frivalue:$("#fridays").val(),
+                     satvalue:$("#saturdays").val(),
+                     sunvalue:$("#sundays").val(),
+                     fyear:$("#fyear").val(),
+                     s15:$("#specific15").val(),
+                     s115:$("#specific115").val(),
+                     s110:$("#specific110").val(),
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+                 },
+                 success: function(response){
+                   
+                 },
+     
+                 })
+                 
+             });
+              
+     
+         </script>
+         <script type="text/javascript">
+   
+          $(document).on('submit','#specific-form',function(e, response){
+             e.preventDefault();
+             $.ajax({
+                 type:'GET',
+                 url:'{% url "specificdyears" %}',
+                 data:
+                 {   
+                     sday:$("#sday").val(),
+                     sfyear:$("#sfyear").val(),
+                     styear:$("#styear").val(),
+                     smonth:$("#smonth").val(),
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+                 },
+                 success: function(response){
+                 },
+     
+                 })
+                 
+             });
+              
+     
+         </script>
+</head>
+<style>
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+.tradetdsell {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: red;
+
+}
+.tradetable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:95%;
+  margin-top : 50px;
+}
+.tradeth{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 15px;
+  text-align: center;
+}
+.tradetd {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+
+.tradetdbbcons{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #eaccfc;
+  text-align: center;
+}
+
+.tradetdgreen60 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #99d6ad;
+  text-align: center;
+}
+.tradetdgreen70 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #80cc99;
+  text-align: center;
+}
+.tradetdgreen80 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #66c285;
+  text-align: center;
+}
+.tradetdgreen90 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #4cb870;
+  text-align: center;
+}
+.tradetdgreen100 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #33ad5c;
+  text-align: center;
+}
+.tradetdred50 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffb2b2;
+  text-align: center;
+}
+.tradetdred40 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff9999;
+  text-align: center;
+}
+.tradetdred30 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color:  #ff8080;
+  text-align: center;
+}
+.tradetdred20 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff6666;
+  text-align: center;
+}
+.tradetdred10 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff4c4c;
+  text-align: center;
+}
+.tradetdyellow {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffffb3;
+  text-align: center;
+}
+
+.tradetr:nth-child(even) {
+  background-color: #edf0f0;
+}
+* {
+  box-sizing: border-box;
+}
+
+.tradecontainer {
+  border-radius: 5px;
+  background-color: #e6eeff;
+  padding: 10px;
+  text-align: right;
+  margin:20px;
+}
+.tradeselect{
+  width: 10%;
+  padding: 8px 10px;
+  margin: 8px 4px;
+  box-sizing: border-box;
+  border: 2px solid #d9d9d9;
+  border-radius: 12px;
+}
+
+.tradebutton {
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 20px 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+  border-radius: 8px;
+}
+
+
+.tradebutton:hover {
+  background-color: #b3ecff;
+  color: black;
+}
+.tradeul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #002699;
+}
+
+.tradeli {
+    float: left;
+}
+
+.tradeli .tradea, .tradedropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 25px;
+    text-decoration: none;
+}
+
+.tradeli .tradea:hover, .tradedropdown:hover .tradedropbtn {
+    background-color: #4da6ff;
+}
+
+.tradeli .tradedropdown {
+    display: inline-block;
+}
+
+.tradedropdown-content {
+    display: none;
+    position: absolute;
+    background-color:#f1f1f1;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.tradedropdown-content .tradea {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.tradedropdown-content .tradea:hover {background-color: #4da6ff}
+
+.tradedropdown:hover .tradedropdown-content {
+    display: block;
+}
+
+.hpcoupon {
+  width: 30.3%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+  text-align : center;
+  float : left;
+  margin : 25px;
+
+}
+
+.hpcontainer {
+  padding: 1px;
+  background-color: #dfbf9f;
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #4CAF50;
+
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #cc6600;
+
+}
+.tradesubtitles{
+    text-align: center;
+    text-transform: uppercase;
+    color: #ff8000;
+}
+
+    /* Start style.css  */
+* {
+
+    box-sizing: border-box;
+}
+
+
+body {
+    color: #888;
+    background: white;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+/* Start HR TAG */
+hr.new1 {
+  border-top: 1px solid red;
+}
+/* END HR TAG */
+/* Start Logo Menu */
+
+.navbarlogo {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.brandlogo .brandlogolink {
+    overflow: hidden;
+    background-color:#f2f2f2;
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+
+.navbarlogo .navbarlogolink {
+    float: right;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+/* End Logo Menu */
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    margin : 15px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* End Buttons */
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+/* End style.css */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  text-align: center;
+}
+.flex-item-sidemenu {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 20%;
+}
+
+.flex-item-constanttable {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-eventtable{
+  /* background-color: dodgerblue; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-housetable {
+  /* background-color: #f1f1f1; */
+  padding: 50px;
+  flex: 80%;
+}
+/* Responsive layout - makes a one column-layout instead of two-column layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
+/* Start EVENT Table ONE*/
+.eventtable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.eventtd{
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.eventth {
+    padding: 8px;
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+}
+
+
+
+.eveonetr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+.evetwotr:nth-child(even) {
+    background-color: #ffddcc;
+}
+
+.housesigntr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+/* End EVENT Table ONE*/
+/* Start HOUSE Table */
+.housetable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.houseth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+.housetd{
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    padding: 8px;
+    text-align: center;
+
+}
+.housetdorange {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 8px;
+  background-color: #ffbf80;
+  text-align: center;
+}
+
+
+
+
+
+
+.housetr:nth-child(even) {
+    background-color: #e6f0ff;
+}
+
+/* End HOUSE Table */
+/* Start CONSTANT Table */
+.constanttable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.constanttd{
+    border: 1px solid  #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.constantth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+
+.basictr:nth-child(even) {
+    background-color: #e6ecff;
+}
+.conjtr:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr180:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr120l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr120g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr90l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr90g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr60l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr60g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr150g:nth-child(even) {
+    background-color: #ffd6cc;
+}
+
+/* End CONSTANT Table */
+/* H2 TITLE STYLE */
+.titleh2 {
+  display: block;
+  font-size: 1.8em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H2 TITLE END */
+/* H3 TITLE STYLE */
+.titleh3 {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H3 TITLE END */
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  width: 95%;
+  height: 480px;
+  margin: 100px auto;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed;
+  float: right;
+  bottom: 0;
+  background-color: #fefefe;
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;* {
+
+box-sizing: border-box;
+}
+
+
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0} 
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0} 
+  to {opacity: 1}
+}
+.checkflex-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  text-align: center;
+}
+
+.checkflex-item-left {
+  background-color: #f1f1f1;
+  padding: 10px;
+  flex: 10%;
+}
+
+.checkflex-item-right {
+  background-color: dodgerblue;
+  padding: 10px;
+  flex: 10%;
+}
+
+/* Responsive layout - makes a one column-layout instead of a two-column layout */
+@media (max-width: 800px) {
+  .checkflex-item-right, .checkflex-item-left {
+    flex: 100%;
+  }
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<body>
+
+    <div class="tradecontainer">
+        <form method="GET" id="task-form">
+            {% csrf_token %}
+            <label> From Date</label>
+            <input id="fdate" type="date" class="tradeselect" name="fdate">
+            <label> To Date</label>
+            <input id = "tdate" type="date" class="tradeselect" name="tdate">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="task-singledate">
+            {% csrf_token %}
+            <label>Add Date</label>
+            <input id = "singledate" type="date" class="tradeselect" name="singledate">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="task-checkbox">
+            {% csrf_token %}
+            <input type="checkbox" id="mondays" name="mondays" value="False">
+            <label for="mondays"> Each Monday of Specific year</label>
+            <input type="checkbox" id="tuesdays" name="tuesdays" value="False">
+            <label for="tuesdays"> Each Tuesday of Specific year</label>
+            <input type="checkbox" id="wednesdays" name="wednesdays" value="False">
+            <label for="wednesdays"> Each Wednesday of Specific year</label>
+            <input type="checkbox" id="thursdays" name="thursdays" value="False">
+            <label for="thursdays"> Each Thursday of Specific year</label>
+            <input type="checkbox" id="fridays" name="fridays" value="False">
+            <label for="fridays"> Each Friday of Specific year</label>
+            <input type="checkbox" id="saturdays" name="saturdays" value="False">
+            <label for="saturdays"> Each Saturday of Specific year</label>
+            </br>
+            <input type="checkbox" id="sundays" name="sundays" value="False">
+            <label for="sundays"> Each Sunday of Specific year</label>
+            <input type="checkbox" id="specific15" name="specific15" value="False">
+            <label for="specific15"> All 15th of each month</label>
+            <input type="checkbox" id="specific115" name="specific115" value="specific115">
+            <label for="specific115"> All 1th and 15th of each month.</label>
+            <input type="checkbox" id="specific110" name="specific110" value="specific110">
+            <label for="specific110"> All 1th,10th, 20th, 30th each month.</label>
+            </br>
+            <label>From Year</label>
+            <input id = "fyear" type="text" class="tradeselect" name="fyear">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="specific-form">
+            {% csrf_token %}
+            <label>sday</label>
+            <input id = "sday" type="text" class="tradeselect" name="sday">
+            <label>smonth</label>
+            <input id = "smonth" type="text" class="tradeselect" name="smonth">
+            <label>From Year</label>
+            <input id = "sfyear" type="text" class="tradeselect" name="sfyear">
+            <label>To Year</label>
+            <input id = "styear" type="text" class="tradeselect" name="styear">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="clear-form">
+          {% csrf_token %}
+          <button class="tradebutton tradebutton" type="submit">Clear</button>
+        </form>
+    </div>
+    <div class="tradecontainer">
+        <form method="POST" id="task-planet">
+            {% csrf_token %}
+            <label> Time</label>
+            <input id = "ttime" type="time" class="tradeselect" name="ttime">
+            <label>P1 Location</label>
+            <input id = "p1location" type="text" class="tradeselect" name="place">
+            <label>P2 Location</label>
+            <input id = "p2location" type="text" class="tradeselect" name="place">
+            <label> Planet</label>
+            <select class="tradeselect" id="plt" name="plt">
+                <option value="SU">SU</option>
+                <option value="MO">MO</option>
+                <option value="ME">ME</option>
+                <option value="MA">MA</option>
+                <option value="JU">JU</option>
+                <option value="VE">VE</option>
+                <option value="SA">SA</option>
+                <option value="RA">RA</option>
+                <option value="KE">KE</option>
+                <option value="AS">AS</option>
+                <option value="ALL">ALL</option>
+            </select>
+            <button class="tradebutton tradebutton" type="submit">Generate Scores</button>
+        </form>
+        <button class="tradebutton tradebutton" id="myBtn">Planet Selection</button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close">&times;</span>
+              <h2>Modal Header</h2>
+            </div>
+            <div class="modal-body">
+              <p>Some text in the Modal Body</p>
+              <p>Some other text...</p>
+            </div>
+            <div class="modal-footer">
+              <h3>Modal Footer</h3>
+            </div>
+          </div>
+
+        </div>
+    
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                  <span class="close">&times;</span>
+                  <h2>Planet Selection</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="checkflex-container">
+                        <form method="GET" id="specific-planets">
+                            <div class="checkflex-item-left">
+                                <table >
+                                    <tr>
+                                      <td><input type="checkbox" id="suparent" name="SuSu" value="False" onChange="viewroomSelected()"></td>
+                                      <td>Select All</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SuSu" class="suchild" name="SuSu" value="False"></td>
+                                      <td>Su &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MoSu" class="suchild" name="MoSu" value="False"></td>
+                                      <td>Mo &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MeSu" class="suchild" name="MeSu" value="False"></td>
+                                      <td>Me &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MaSu" class="suchild" name="MaSu" value="False"> </td>
+                                      <td>Ma &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="JuSu" class="suchild" name="JuSu" value="False"> </td>
+                                      <td>Ju &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="VeSu" class="suchild" name="VeSu" value="False"> </td>
+                                      <td>Ve &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SaSu" class="suchild" name="SaSu" value="False"> </td>
+                                      <td>Sa &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="RaSu" class="suchild" name="RaSu" value="False"> </td>
+                                      <td>Ra &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="KeSu" class="suchild" name="KeSu" value="False"> </td>
+                                      <td>Ke &#60; Su</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="AsSu" class="suchild" name="AsSu" value="False"> </td>
+                                      <td>As &#60; Su</td>
+                                    </tr>
+                                </table>    
+                            </div>
+                            <div class="checkflex-item-left">
+                                <table>
+                                    <tr>
+                                      <td><input type="checkbox" id="moparent" value="False" onChange="viewroomSelectedMO()"></td>
+                                      <td>Select All</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SuMo" class="mochild" name="SuMo" value="False"></td>
+                                      <td>Su &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MoMo" class="mochild" name="MoMo" value="False"></td>
+                                      <td>Mo &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MeMo" class="mochild" name="MeMo" value="False"></td>
+                                      <td>Me &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MaMo" class="mochild" name="MaMo" value="False"> </td>
+                                      <td>Ma &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="JuMo" class="mochild" name="JuMo" value="False"> </td>
+                                      <td>Ju &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="VeMo" class="mochild" name="VeMo" value="False"> </td>
+                                      <td>Ve &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SaMo" class="mochild" name="SaMo" value="False"> </td>
+                                      <td>Sa &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="RaMo" class="mochild" name="RaMo" value="False"> </td>
+                                      <td>Ra &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="KeMo" class="mochild" name="KeMo" value="False"> </td>
+                                      <td>Ke &#60; Mo</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="AsMo" class="mochild" name="AsMo" value="False"> </td>
+                                      <td>As &#60; Mo</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="checkflex-item-left">
+                                <table>
+                                    <tr>
+                                      <td><input type="checkbox" id="meparent" value="False" onChange="viewroomSelectedME()"></td>
+                                      <td>Select All</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SuMe" class="mechild" name="SuMe" value="False"></td>
+                                      <td>Su &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MoMe" class="mechild" name="MoMe" value="False"></td>
+                                      <td>Mo &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MeMe" class="mechild" name="MeMe" value="False"></td>
+                                      <td>Me &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MaMe" class="mechild" name="MaMe" value="False"> </td>
+                                      <td>Ma &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="JuMe" class="mechild" name="JuMe" value="False"> </td>
+                                      <td>Ju &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="VeMe" class="mechild" name="VeMe" value="False"> </td>
+                                      <td>Ve &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SaMe" class="mechild" name="SaMe" value="False"> </td>
+                                      <td>Sa &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="RaMe" class="mechild" name="RaMe" value="False"> </td>
+                                      <td>Ra &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="KeMe" class="mechild" name="KeMe" value="False"> </td>
+                                      <td>Ke &#60; Me</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="AsMe" class="mechild" name="AsMe" value="False"> </td>
+                                      <td>As &#60; Me</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="checkflex-item-left">
+                                <table>
+                                    <tr>
+                                      <td><input type="checkbox" id="maparent" value="False" onChange="viewroomSelectedMA()"></td>
+                                      <td>Select All</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SuMa" class="machild" name="SuMa" value="False"></td>
+                                      <td>Su &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MoMa" class="machild" name="MoMa" value="False"></td>
+                                      <td>Mo &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MeMa" class="machild" name="MeMa" value="False"></td>
+                                      <td>Me &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MaMa" class="machild" name="MaMa" value="False"> </td>
+                                      <td>Ma &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="JuMa" class="machild" name="JuMa" value="False"> </td>
+                                      <td>Ju &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="VeMa" class="machild" name="VeMa" value="False"> </td>
+                                      <td>Ve &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SaMa" class="machild" name="SaMa" value="False"> </td>
+                                      <td>Sa &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="RaMa" class="machild" name="RaMa" value="False"> </td>
+                                      <td>Ra &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="KeMa" class="machild" name="KeMa" value="False"> </td>
+                                      <td>Ke &#60; Ma</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="AsMa" class="machild" name="AsMa" value="False"> </td>
+                                      <td>As &#60; Ma</td>
+                                    </tr>
+                                </table>
+                            </div>            
+                            <div class="checkflex-item-left">
+                                <table>
+                                    <tr>
+                                      <td><input type="checkbox" id="juparent" value="False" onChange="viewroomSelectedJU()"></td>
+                                      <td>Select All</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SuJu" class="juchild" name="SuJu" value="False"></td>
+                                      <td>Su &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MoJu" class="juchild" name="MoJu" value="False"></td>
+                                      <td>Mo &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MeJu" class="juchild" name="MeJu" value="False"></td>
+                                      <td>Me &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="MaJu" class="juchild" name="MaJu" value="False"> </td>
+                                      <td>Ma &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="JuJu" class="juchild" name="JuJu" value="False"> </td>
+                                      <td>Ju &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="VeJu" class="juchild" name="VeJu" value="False"> </td>
+                                      <td>Ve &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="SaJu" class="juchild" name="SaJu" value="False"> </td>
+                                      <td>Sa &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="RaJu" class="juchild" name="RaJu" value="False"> </td>
+                                      <td>Ra &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="KeJu" class="juchild" name="KeJu" value="False"> </td>
+                                      <td>Ke &#60; Ju</td>
+                                    </tr>
+                                    <tr>
+                                      <td><input type="checkbox" id="AsJu" class="juchild" name="AsJu" value="False"> </td>
+                                      <td>As &#60; Ju</td>
+                                    </tr>
+                                </table>
+                            </div>            
+                          <div class="checkflex-item-left">
+                              <table>
+                                  <tr>
+                                    <td><input type="checkbox" id="veparent" value="False" onChange="viewroomSelectedVE()"></td>
+                                    <td>Select All</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SuVe" class="vechild" name="SuVe" value="False"></td>
+                                    <td>Su &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MoVe" class="vechild" name="MoVe" value="False"></td>
+                                    <td>Mo &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MeVe" class="vechild" name="MeVe" value="False"></td>
+                                    <td>Me &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MaVe" class="vechild" name="MaVe" value="False"> </td>
+                                    <td>Ma &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="JuVe" class="vechild" name="JuVe" value="False"> </td>
+                                    <td>Ju &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="VeVe" class="vechild" name="VeVe" value="False"> </td>
+                                    <td>Ve &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SaVe" class="vechild" name="SaVe" value="False"> </td>
+                                    <td>Sa &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="RaVe" class="vechild" name="RaVe" value="False"> </td>
+                                    <td>Ra &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="KeVe" class="vechild" name="KeVe" value="False"> </td>
+                                    <td>Ke &#60; Ve</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="AsVe" class="vechild" name="AsVe" value="False"> </td>
+                                    <td>As &#60; Ve</td>
+                                  </tr>
+                              </table>
+                          </div>            
+                          <div class="checkflex-item-left">
+                              <table>
+                                  <tr>
+                                    <td><input type="checkbox" id="saparent" value="False" onChange="viewroomSelectedSA()"></td>
+                                    <td>Select All</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SuSa" class="sachild" name="SuSa" value="False"></td>
+                                    <td>Su &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MoSa" class="sachild" name="MoSa" value="False"></td>
+                                    <td>Mo &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MeSa" class="sachild" name="MeSa" value="False"></td>
+                                    <td>Me &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MaSa" class="sachild" name="MaSa" value="False"> </td>
+                                    <td>Ma &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="JuSa" class="sachild" name="JuSa" value="False"> </td>
+                                    <td>Ju &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="VeSa" class="sachild" name="VeSa" value="False"> </td>
+                                    <td>Ve &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SaSa" class="sachild" name="SaSa" value="False"> </td>
+                                    <td>Sa &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="RaSa" class="sachild" name="RaSa" value="False"> </td>
+                                    <td>Ra &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="KeSa" class="sachild" name="KeSa" value="False"> </td>
+                                    <td>Ke &#60; Sa</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="AsSa" class="sachild" name="AsSa" value="False"> </td>
+                                    <td>As &#60; Sa</td>
+                                  </tr>
+                              </table>
+                          </div>    
+                          <div class="checkflex-item-left">
+                              <table>
+                                  <tr>
+                                    <td><input type="checkbox" id="raparent" value="False" onChange="viewroomSelectedRA()"></td>
+                                    <td>Select All</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SuRa" class="rachild" name="SuRa" value="False"></td>
+                                    <td>Su &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MoRa" class="rachild" name="MoRa" value="False"></td>
+                                    <td>Mo &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MeRa" class="rachild" name="MeRa" value="False"></td>
+                                    <td>Me &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MaRa" class="rachild" name="MaRa" value="False"> </td>
+                                    <td>Ma &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="JuRa" class="rachild" name="JuRa" value="False"> </td>
+                                    <td>Ju &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="VeRa" class="rachild" name="VeRa" value="False"> </td>
+                                    <td>Ve &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SaRa" class="rachild" name="SaRa" value="False"> </td>
+                                    <td>Sa &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="RaRa" class="rachild" name="RaRa" value="False"> </td>
+                                    <td>Ra &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="KeRa" class="rachild" name="KeRa" value="False"> </td>
+                                    <td>Ke &#60; Ra</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="AsRa" class="rachild" name="AsRa" value="False"> </td>
+                                    <td>As &#60; Ra</td>
+                                  </tr>
+                              </table>
+                          </div>
+                          <div class="checkflex-item-left">
+                              <table>
+                                  <tr>
+                                    <td><input type="checkbox" id="keparent" value="False" onChange="viewroomSelectedKE()"></td>
+                                    <td>Select All</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SuKe" class="kechild" name="SuKe" value="False"></td>
+                                    <td>Su &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MoKe" class="kechild" name="MoKe" value="False"></td>
+                                    <td>Mo &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MeKe" class="kechild" name="MeKe" value="False"></td>
+                                    <td>Me &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MaKe" class="kechild" name="MaKe" value="False"> </td>
+                                    <td>Ma &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="JuKe" class="kechild" name="JuKe" value="False"> </td>
+                                    <td>Ju &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="VeKe" class="kechild" name="VeKe" value="False"> </td>
+                                    <td>Ve &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SaKe" class="kechild" name="SaKe" value="False"> </td>
+                                    <td>Sa &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="RaKe" class="kechild" name="RaKe" value="False"> </td>
+                                    <td>Ra &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="KeKe" class="kechild" name="KeKe" value="False"> </td>
+                                    <td>Ke &#60; Ke</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="AsKe" class="kechild" name="AsKe" value="False"> </td>
+                                    <td>As &#60; Ke</td>
+                                  </tr>
+                              </table>
+                          </div>
+                          <div class="checkflex-item-left">
+                              <table>
+                                  <tr>
+                                    <td><input type="checkbox" id="asparent" value="False" onChange="viewroomSelectedAS()"></td>
+                                    <td>Select All</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SuAs" class="aschild" name="SuAs" value="False"></td>
+                                    <td>Su &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MoAs" class="aschild" name="MoAs" value="False"></td>
+                                    <td>Mo &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MeAs" class="aschild" name="MeAs" value="False"></td>
+                                    <td>Me &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="MaAs" class="aschild" name="MaAs" value="False"> </td>
+                                    <td>Ma &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="JuAs" class="aschild" name="JuAs" value="False"> </td>
+                                    <td>Ju &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="VeAs" class="aschild" name="VeAs" value="False"> </td>
+                                    <td>Ve &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="SaAs" class="aschild" name="SaAs" value="False"> </td>
+                                    <td>Sa &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="RaAs" class="aschild" name="RaAs" value="False"> </td>
+                                    <td>Ra &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="KeAs" class="aschild" name="KeAs" value="False"> </td>
+                                    <td>Ke &#60; As</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox" id="AsAs" class="aschild" name="AsAs" value="False"> </td>
+                                    <td>As &#60; As</td>
+                                  </tr>
+                              </table>
+                          </div>
+                      
+                      <button type="submit">Submit</button>
+                  </form>
+                </div>
+              </div>
+        </div>  
+  </div>
+  </div>
+
+    <hr class="new1">
+    <div class="chart-container">
+        <canvas id="planetchart" width="80%" height="30%"></canvas>
+    </div>
+    <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+      
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+      // document.getElementById('myBtn').style.visibility = 'hidden';
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      
+      // When the user clicks the button, open the modal 
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }
+      
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+      
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+      </script>
+<script>
+  $("#mondays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#tuesdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#wednesdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#thursdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#fridays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');AIzaSyB7h3PspGaJV_aba1ZkPz9jh-KkGQaKYfw
+  }
+  
+  });
+  $("#saturdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#sundays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#specific15").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#specific115").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+  $("#specific110").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  
+  });
+</script>
+    
+{% endblock %}

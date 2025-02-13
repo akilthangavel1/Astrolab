@@ -1,0 +1,22 @@
+{% extends 'base1.html' %}
+{% block content %}
+    <div style="overflow-x:auto;">
+        <table class="table-list">
+            <tr>
+                <th class="th-list">Group Name</th>
+                <th class="th-list">Planet Name</th>
+                <th class="th-list">Planet Changed Name</th>
+            </tr>
+            {% for i in gcList %}
+            <tr>
+                <td class="td-list">{{i.groupName}}  </td>
+                <td class="td-list">{{i.planetName}}  </td>
+                <td class="td-list">{{i.planetChangedName}}  </td>
+                <td><a class="updatebutton" href="planetgrouperupdate/{{ i.id }}">View</a></td>
+                <td><a class="deletebutton" href="planetgrouperdelete/{{ i.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Autocomplete - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+</head>
+<body>
+<label for="target">Com </label>
+<input type="text" id="target">
+<div class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+
+
+   <script>
+   var availableTags = ["AAAAA", "AAASD"];
+    $("#target").keyup(function() {
+       let comValue = $("#target").val()
+       if ((comValue.length) > 4){
+          $.ajax({
+                 type:'GET',
+                 url:'{% url "combinationPltReq" %}',
+                 data:
+                 {
+                     combValue:comValue,
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                 },
+                 success: function(response){
+                     availableTags = [];
+                     availableTags = response.endResult;
+                     console.log(response.endResult);
+                      $( function() {
+
+                        $( "#target" ).autocomplete({
+                          source: availableTags
+                        });
+                      } );
+                 },
+                 })
+       }
+    });
+  </script>
+  <script>
+
+  </script>
+</body>
+</html>

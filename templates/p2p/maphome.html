@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Enter Task" name="task" id="task" required>
+        <input class="input-type-1" type="text" id="fname" name="p1fname" placeholder="Full Name"><br/>
+        <input class="input-type-1" type="text" id="p1location" name="p1location"><br/>
+        <input class="input-type-2" type="text" id="p1lat" name="p1lat" placeholder="Latitude">
+        <input class="input-type-2" type="text" id="p1lon" name="p1lon" placeholder="Longitude"><br/><br/>
+        <input class="input-type-2" type="date" id='p1date' name="p1date">
+        <input class="input-type-2" type="time" id='p1time' name="p1time"><br/><br/>
+        <input class="input-type-2" type="text" id="p1su" name="p1su" placeholder="SU Degree">
+        <input class="input-type-2" type="text" id="p1mo" name="p1mo" placeholder="MO Degree"><br/><br/>
+        <input class="input-type-2" type="text" id="p1me" name="p1me" placeholder="ME Degree">
+        <input class="input-type-2" type="text" id="p1ma" name="p1ma" placeholder="MA Degree"><br/><br/>
+        <input class="input-type-2" type="text" id="p1ju" name="p1ju" placeholder="JU Degree">
+        <input class="input-type-2" type="text" id="p1ve" name="p1ve" placeholder="VE Degree"><br/><br/>
+        <input class="input-type-2" type="text" id="p1sa" name="p1sa" placeholder="SA Degree">
+        <input class="input-type-2" type="text" id="p1ra" name="p1ra" placeholder="RA Degree"><br/><br/>
+        <input class="input-type-2" type="text" id="p1ke" name="p1ke" placeholder="KE Degree">
+        <input class="input-type-2" type="text" id="p1as" name="p1as" placeholder="AS Degree"><br/><br/>
+
+        <button type="submit" id="subButton">Save</button>
+        <button type="submit" id="subButton1">Degrees</button>
+    </form>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB7h3PspGaJV_aba1ZkPz9jh-KkGQaKYfw&libraries=places"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    <script>
+    var searchInput = 'p1location';
+
+    $(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+        types: ['geocode'],
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var near_place = autocomplete.getPlace();
+        document.getElementById('p1lat').value = near_place.geometry.location.lat();
+        document.getElementById('p1lon').value = near_place.geometry.location.lng();
+
+        document.getElementById('p1lat').innerHTML = near_place.geometry.location.lat();
+        document.getElementById('p1lon').innerHTML = near_place.geometry.location.lng();
+    });
+    });
+    $(document).on('change', '#'+searchInput, function () {
+        document.getElementById('p1lat').value = '';
+        document.getElementById('p1lon').value = '';
+        document.getElementById('p1lat').innerHTML = '';
+        document.getElementById('p1lon').innerHTML = '';
+    });
+    </script>
+
+    <script type="text/javascript">
+    $("#subButton").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "maptesting" %}',
+            data:
+            {
+                task:$("#task").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success:function(){
+                  alert('Saved');
+                    }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+    $("#subButton1").click(function(e){
+        e.preventDefault();
+        let p1fname = $("#fname").val();
+        let p1location = $("#p1location").val();
+        let p1lat = $("#p1lat").val();
+        let p1lon = $("#p1lon").val();
+        let p1date = $("#p1date").val();
+        let p1time = $("#p1time").val();
+
+        $.ajax({
+            type:'GET',
+            url:'{% url "homedegree" %}',
+            data:
+            {
+                pfname: p1fname,
+                plocation: p1location,
+                plat: p1lat,
+                plon: p1lon,
+                pdate: p1date,
+                ptime: p1time,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response){
+                  let deg_lis = response;
+                  console.log(deg_lis);
+                  let a= deg_lis[0]['sudegree']
+                  $('#p1su').val("GeeksForGeeks");
+                  console.log(a);
+             },
+            })
+        });
+</script>
+
+</body>
+</html>

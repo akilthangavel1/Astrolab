@@ -1,0 +1,977 @@
+{% extends "base1.html" %}
+{% block content %}
+<style>
+
+/* Start style.css  */
+* {
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    color: #888;
+    background: white;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+/* Start HR TAG */
+hr.new1 {
+  border-top: 1px solid red;
+}
+/* END HR TAG */
+/* Start Logo Menu */
+
+.navbarlogo {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.brandlogo .brandlogolink {
+    overflow: hidden;
+    background-color:#f2f2f2;
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+
+.navbarlogo .navbarlogolink {
+    float: right;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+/* End Logo Menu */
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    margin : 15px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* End Buttons */
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+/* End style.css */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  text-align: center;
+}
+.flex-item-sidemenu {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 20%;
+}
+
+.flex-item-constanttable {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-eventtable{
+  /* background-color: dodgerblue; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-housetable {
+  /* background-color: #f1f1f1; */
+  padding: 50px;
+  flex: 80%;
+}
+/* Responsive layout - makes a one column-layout instead of two-column layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
+/* Start EVENT Table ONE*/
+.eventtable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.eventtd{
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.eventth {
+    padding: 8px;
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+}
+
+
+
+.eveonetr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+.evetwotr:nth-child(even) {
+    background-color: #ffddcc;
+}
+
+.housesigntr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+/* End EVENT Table ONE*/
+/* Start HOUSE Table */
+.housetable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.houseth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+.housetd{
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    padding: 8px;
+    text-align: center;
+
+}
+.housetdorange {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 8px;
+  background-color: #ffbf80;
+  text-align: center;
+}
+
+
+
+
+
+
+.housetr:nth-child(even) {
+    background-color: #e6f0ff;
+}
+
+/* End HOUSE Table */
+/* Start CONSTANT Table */
+.constanttable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.constanttd{
+    border: 1px solid  #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.constantth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+
+
+.basictr:nth-child(even) {
+    background-color: #e6ecff;
+}
+.conjtr:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr180:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr120l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr120g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr90l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr90g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr60l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr60g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr150g:nth-child(even) {
+    background-color: #ffd6cc;
+}
+
+/* End CONSTANT Table */
+/* H2 TITLE STYLE */
+.titleh2 {
+  display: block;
+  font-size: 1.8em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H2 TITLE END */
+/* H3 TITLE STYLE */
+.titleh3 {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H3 TITLE END */
+</style>
+
+</head>
+<body>
+    <h2 class="titleh2">INTEGRATED REPORT</h2>
+    <hr class="new1">
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                  
+                    {% for i in df_conj %}
+                    
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_Conj"></canvas>
+            <script>
+                let conca = {{df_conj_conca| safe}}
+                let dis = {{df_conj_dis| safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_Conj").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_180 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_180"></canvas>
+            <script>
+                conca = {{df_180_conca| safe}}
+                dis = {{df_180_dis| safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_180").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+        
+    </div>
+
+
+
+
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_lesser120 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_120_g"></canvas>
+            <script>
+                conca = {{df_lesser120_graph| first | safe}}
+                dis = {{df_lesser120_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_120_g").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_greater120 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_120_l"></canvas>
+            <script>
+                conca = {{df_greater120_graph| first | safe}}
+                dis = {{df_greater120_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_120_l").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_lesser90 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_90_l"></canvas>
+            <script>
+                conca = {{df_lesser90_graph| first | safe}}
+                dis = {{df_lesser90_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_90_l").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_greater90 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_90_g"></canvas>
+            <script>
+                conca = {{df_greater90_graph| first | safe}}
+                dis = {{df_greater90_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_90_g").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+
+
+
+
+
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_lesser60 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_60_l"></canvas>
+            <script>
+                conca = {{df_lesser60_graph| first | safe}}
+                dis = {{df_lesser60_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_60_l").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+
+    </div>
+     <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_greater60 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_60_g"></canvas>
+            <script>
+                conca = {{df_greater60_graph| first | safe}}
+                dis = {{df_greater60_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_60_g").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+
+    </div>
+
+
+    <div class="flex-container">
+        <div class="flex-item-eventtable">
+            <div align="center">
+                <table class="eventtable">
+                    <tr>
+                        <th class="eventth">Type</th>
+                        <th class="eventth"> Planet </th>
+                        <th class="eventth"> Conca< </th>
+                        <th class="eventth"> Distance< </th>
+                        <th class="eventth"> Point </th>
+                    </tr>
+                    {% for i in df_greater150 %}
+                    <tr class="basictr">
+                        <td class="eventtd">{{i.type}}</td>
+                        <td class="eventtd">{{i.planet}}</td>
+                        <td class="eventtd">{{i.conca}}</td>
+                        <td class="eventtd">{{i.distance|floatformat:1}}</td>
+                        <td class="eventtd">{{i.point|floatformat:1}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="flex-item-eventtable">
+            <h2>GRAPH</h2>
+            <canvas id="df_150_g"></canvas>
+            <script>
+                conca = {{df_greater150_graph| first | safe}}
+                dis = {{df_greater150_graph| last | safe}}
+                console.log(conca)
+                var MeSeContext = document.getElementById("df_150_g").getContext("2d");
+                    var MeSeData = {
+                        labels:conca,
+                        datasets: [{
+                            label: "Point",
+                            data: dis,
+                            backgroundColor: ['rgba(21, 117, 213, 1.0)'],
+                            hoverBackgroundColor: ["#FCCE56"]
+                        }]
+                    };
+
+                    var MeSeChart = new Chart(MeSeContext, {
+                        type: 'bar',
+                        data: MeSeData,
+                        options: {
+                        indexAxis: 'y',
+                    
+
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+
+                        }
+                    });
+
+            </script>
+
+        </div>
+    </div>
+
+{% endblock %}

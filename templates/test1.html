@@ -1,0 +1,748 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+    .tradecontainer {
+        border-radius: 5px;
+        background-color: #e6eeff;
+        padding: 10px;
+        text-align: right;
+        margin:20px;
+    }
+    .tradeselect{
+        width: 10%;
+        padding: 8px 10px;
+        margin: 8px 4px;
+        box-sizing: border-box;
+        border: 2px solid #d9d9d9;
+        border-radius: 12px;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        -webkit-animation-name: fadeIn; /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: fixed;
+        bottom: 0;
+        background-color: #fefefe;
+        width: 100%;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .modal-body {padding: 2px 16px;}
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+* {
+  box-sizing: border-box;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 30px;
+  text-align: center;
+}
+
+.flex-item-left {
+  background-color: #f1f1f1;
+  padding: 10px;
+  flex: 50%;
+}
+
+.flex-item-right {
+  background-color: dodgerblue;
+  padding: 10px;
+  flex: 50%;
+}
+
+/* Responsive layout - makes a one column-layout instead of a two-column layout */
+@media (max-width: 800px) {
+  .flex-item-right, .flex-item-left {
+    flex: 100%;
+  }
+}
+</style>
+<body>
+    <div class="tradecontainer">
+        <form method="GET" id="task-form">
+            {% csrf_token %}
+            <label> From Date</label>
+            <input id="fdate" type="date" class="tradeselect" name="fdate">
+            <label> To Date</label>
+            <input id = "tdate" type="date" class="tradeselect" name="tdate">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="task-singledate">
+            {% csrf_token %}
+            <label>Add Date</label>
+            <input id = "singledate" type="date" class="tradeselect" name="singledate">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="task-checkbox">
+            {% csrf_token %}
+            <input type="checkbox" id="mondays" name="mondays" value="False">
+            <label for="mondays"> Each Monday of Specific year</label>
+            <input type="checkbox" id="tuesdays" name="tuesdays" value="False">
+            <label for="tuesdays"> Each Tuesday of Specific year</label>
+            <input type="checkbox" id="wednesdays" name="wednesdays" value="False">
+            <label for="wednesdays"> Each Wednesday of Specific year</label>
+            <input type="checkbox" id="thursdays" name="thursdays" value="False">
+            <label for="thursdays"> Each Thursday of Specific year</label>
+            <input type="checkbox" id="fridays" name="fridays" value="False">
+            <label for="fridays"> Each Friday of Specific year</label>
+            <input type="checkbox" id="saturdays" name="saturdays" value="False">
+            <label for="saturdays"> Each Saturday of Specific year</label>
+            </br>
+            <input type="checkbox" id="sundays" name="sundays" value="False">
+            <label for="sundays"> Each Sunday of Specific year</label>
+            <input type="checkbox" id="specific15" name="specific15" value="False">
+            <label for="specific15"> All 15th of each month</label>
+            <input type="checkbox" id="specific115" name="specific115" value="specific115">
+            <label for="specific115"> All 1th and 15th of each month.</label>
+            <input type="checkbox" id="specific110" name="specific110" value="specific110">
+            <label for="specific110"> All 1th,10th, 20th, 30th each month.</label>
+            </br>
+            <label>From Year</label>
+            <input id = "fyear" type="text" class="tradeselect" name="fyear">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="specific-form">
+            {% csrf_token %}
+            <label>sday</label>
+            <input id = "sday" type="text" class="tradeselect" name="sday">
+            <label>smonth</label>
+            <input id = "smonth" type="text" class="tradeselect" name="smonth">
+            <label>From Year</label>
+            <input id = "sfyear" type="text" class="tradeselect" name="sfyear">
+            <label>To Year</label>
+            <input id = "styear" type="text" class="tradeselect" name="styear">
+            <button class="tradebutton tradebutton" type="submit">Add Date</button>
+        </form>
+        <form method="GET" id="clear-form">
+            {% csrf_token %}
+            <button class="tradebutton tradebutton" type="submit">Clear</button>
+        </form>
+    </div>
+    <div class="tradecontainer">
+        <form method="POST" id="task-planet">
+            {% csrf_token %}
+            <label> Time</label>
+            <input id = "ttime" type="time" class="tradeselect" name="ttime">
+            <label>P1 Location</label>
+            <input id = "p1location" type="text" class="tradeselect" name="place">
+            <label>P2 Location</label>
+            <input id = "p2location" type="text" class="tradeselect" name="place">
+            <label> Planet</label>
+            <select class="tradeselect" id="plt" name="plt">
+                <option value="SU">SU</option>
+                <option value="MO">MO</option>
+                <option value="ME">ME</option>
+                <option value="MA">MA</option>
+                <option value="JU">JU</option>
+                <option value="VE">VE</option>
+                <option value="SA">SA</option>
+                <option value="RA">RA</option>
+                <option value="KE">KE</option>
+                <option value="AS">AS</option>
+                <option value="ALL">ALL</option>
+            </select>
+            <button class="tradebutton tradebutton" type="submit">Generate Scores</button>
+        </form>
+        <button class="tradebutton tradebutton" id="myBtn">Planet Selection</button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>Modal Header</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="checkflex-container">
+                        <form method="GET" id="specific-planets">
+                            <div class="checkflex-item-left">
+                                    1
+<!--                                <table >-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="suparent" name="SuSu" value="False" onChange="viewroomSelected()"></td>-->
+<!--                                      <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SuSu" class="suchild" name="SuSu" value="False"></td>-->
+<!--                                      <td>Su &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MoSu" class="suchild" name="MoSu" value="False"></td>-->
+<!--                                      <td>Mo &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MeSu" class="suchild" name="MeSu" value="False"></td>-->
+<!--                                      <td>Me &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MaSu" class="suchild" name="MaSu" value="False"> </td>-->
+<!--                                      <td>Ma &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="JuSu" class="suchild" name="JuSu" value="False"> </td>-->
+<!--                                      <td>Ju &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="VeSu" class="suchild" name="VeSu" value="False"> </td>-->
+<!--                                      <td>Ve &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SaSu" class="suchild" name="SaSu" value="False"> </td>-->
+<!--                                      <td>Sa &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="RaSu" class="suchild" name="RaSu" value="False"> </td>-->
+<!--                                      <td>Ra &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="KeSu" class="suchild" name="KeSu" value="False"> </td>-->
+<!--                                      <td>Ke &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="AsSu" class="suchild" name="AsSu" value="False"> </td>-->
+<!--                                      <td>As &#60; Su</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+                                1
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="moparent" value="False" onChange="viewroomSelectedMO()"></td>-->
+<!--                                      <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SuMo" class="mochild" name="SuMo" value="False"></td>-->
+<!--                                      <td>Su &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MoMo" class="mochild" name="MoMo" value="False"></td>-->
+<!--                                      <td>Mo &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MeMo" class="mochild" name="MeMo" value="False"></td>-->
+<!--                                      <td>Me &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MaMo" class="mochild" name="MaMo" value="False"> </td>-->
+<!--                                      <td>Ma &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="JuMo" class="mochild" name="JuMo" value="False"> </td>-->
+<!--                                      <td>Ju &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="VeMo" class="mochild" name="VeMo" value="False"> </td>-->
+<!--                                      <td>Ve &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SaMo" class="mochild" name="SaMo" value="False"> </td>-->
+<!--                                      <td>Sa &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="RaMo" class="mochild" name="RaMo" value="False"> </td>-->
+<!--                                      <td>Ra &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="KeMo" class="mochild" name="KeMo" value="False"> </td>-->
+<!--                                      <td>Ke &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="AsMo" class="mochild" name="AsMo" value="False"> </td>-->
+<!--                                      <td>As &#60; Mo</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+                                1
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="meparent" value="False" onChange="viewroomSelectedME()"></td>-->
+<!--                                      <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SuMe" class="mechild" name="SuMe" value="False"></td>-->
+<!--                                      <td>Su &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MoMe" class="mechild" name="MoMe" value="False"></td>-->
+<!--                                      <td>Mo &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MeMe" class="mechild" name="MeMe" value="False"></td>-->
+<!--                                      <td>Me &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MaMe" class="mechild" name="MaMe" value="False"> </td>-->
+<!--                                      <td>Ma &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="JuMe" class="mechild" name="JuMe" value="False"> </td>-->
+<!--                                      <td>Ju &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="VeMe" class="mechild" name="VeMe" value="False"> </td>-->
+<!--                                      <td>Ve &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SaMe" class="mechild" name="SaMe" value="False"> </td>-->
+<!--                                      <td>Sa &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="RaMe" class="mechild" name="RaMe" value="False"> </td>-->
+<!--                                      <td>Ra &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="KeMe" class="mechild" name="KeMe" value="False"> </td>-->
+<!--                                      <td>Ke &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="AsMe" class="mechild" name="AsMe" value="False"> </td>-->
+<!--                                      <td>As &#60; Me</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="maparent" value="False" onChange="viewroomSelectedMA()"></td>-->
+<!--                                      <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SuMa" class="machild" name="SuMa" value="False"></td>-->
+<!--                                      <td>Su &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MoMa" class="machild" name="MoMa" value="False"></td>-->
+<!--                                      <td>Mo &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MeMa" class="machild" name="MeMa" value="False"></td>-->
+<!--                                      <td>Me &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MaMa" class="machild" name="MaMa" value="False"> </td>-->
+<!--                                      <td>Ma &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="JuMa" class="machild" name="JuMa" value="False"> </td>-->
+<!--                                      <td>Ju &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="VeMa" class="machild" name="VeMa" value="False"> </td>-->
+<!--                                      <td>Ve &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SaMa" class="machild" name="SaMa" value="False"> </td>-->
+<!--                                      <td>Sa &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="RaMa" class="machild" name="RaMa" value="False"> </td>-->
+<!--                                      <td>Ra &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="KeMa" class="machild" name="KeMa" value="False"> </td>-->
+<!--                                      <td>Ke &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="AsMa" class="machild" name="AsMa" value="False"> </td>-->
+<!--                                      <td>As &#60; Ma</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="juparent" value="False" onChange="viewroomSelectedJU()"></td>-->
+<!--                                      <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SuJu" class="juchild" name="SuJu" value="False"></td>-->
+<!--                                      <td>Su &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MoJu" class="juchild" name="MoJu" value="False"></td>-->
+<!--                                      <td>Mo &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MeJu" class="juchild" name="MeJu" value="False"></td>-->
+<!--                                      <td>Me &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="MaJu" class="juchild" name="MaJu" value="False"> </td>-->
+<!--                                      <td>Ma &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="JuJu" class="juchild" name="JuJu" value="False"> </td>-->
+<!--                                      <td>Ju &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="VeJu" class="juchild" name="VeJu" value="False"> </td>-->
+<!--                                      <td>Ve &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="SaJu" class="juchild" name="SaJu" value="False"> </td>-->
+<!--                                      <td>Sa &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="RaJu" class="juchild" name="RaJu" value="False"> </td>-->
+<!--                                      <td>Ra &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="KeJu" class="juchild" name="KeJu" value="False"> </td>-->
+<!--                                      <td>Ke &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                      <td><input type="checkbox" id="AsJu" class="juchild" name="AsJu" value="False"> </td>-->
+<!--                                      <td>As &#60; Ju</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="veparent" value="False" onChange="viewroomSelectedVE()"></td>-->
+<!--                                        <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SuVe" class="vechild" name="SuVe" value="False"></td>-->
+<!--                                        <td>Su &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MoVe" class="vechild" name="MoVe" value="False"></td>-->
+<!--                                        <td>Mo &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MeVe" class="vechild" name="MeVe" value="False"></td>-->
+<!--                                        <td>Me &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MaVe" class="vechild" name="MaVe" value="False"> </td>-->
+<!--                                        <td>Ma &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="JuVe" class="vechild" name="JuVe" value="False"> </td>-->
+<!--                                        <td>Ju &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="VeVe" class="vechild" name="VeVe" value="False"> </td>-->
+<!--                                        <td>Ve &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SaVe" class="vechild" name="SaVe" value="False"> </td>-->
+<!--                                        <td>Sa &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="RaVe" class="vechild" name="RaVe" value="False"> </td>-->
+<!--                                        <td>Ra &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="KeVe" class="vechild" name="KeVe" value="False"> </td>-->
+<!--                                        <td>Ke &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="AsVe" class="vechild" name="AsVe" value="False"> </td>-->
+<!--                                        <td>As &#60; Ve</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="saparent" value="False" onChange="viewroomSelectedSA()"></td>-->
+<!--                                        <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SuSa" class="sachild" name="SuSa" value="False"></td>-->
+<!--                                        <td>Su &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MoSa" class="sachild" name="MoSa" value="False"></td>-->
+<!--                                        <td>Mo &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MeSa" class="sachild" name="MeSa" value="False"></td>-->
+<!--                                        <td>Me &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MaSa" class="sachild" name="MaSa" value="False"> </td>-->
+<!--                                        <td>Ma &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="JuSa" class="sachild" name="JuSa" value="False"> </td>-->
+<!--                                        <td>Ju &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="VeSa" class="sachild" name="VeSa" value="False"> </td>-->
+<!--                                        <td>Ve &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SaSa" class="sachild" name="SaSa" value="False"> </td>-->
+<!--                                        <td>Sa &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="RaSa" class="sachild" name="RaSa" value="False"> </td>-->
+<!--                                        <td>Ra &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="KeSa" class="sachild" name="KeSa" value="False"> </td>-->
+<!--                                        <td>Ke &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="AsSa" class="sachild" name="AsSa" value="False"> </td>-->
+<!--                                        <td>As &#60; Sa</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="raparent" value="False" onChange="viewroomSelectedRA()"></td>-->
+<!--                                        <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SuRa" class="rachild" name="SuRa" value="False"></td>-->
+<!--                                        <td>Su &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MoRa" class="rachild" name="MoRa" value="False"></td>-->
+<!--                                        <td>Mo &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MeRa" class="rachild" name="MeRa" value="False"></td>-->
+<!--                                        <td>Me &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MaRa" class="rachild" name="MaRa" value="False"> </td>-->
+<!--                                        <td>Ma &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="JuRa" class="rachild" name="JuRa" value="False"> </td>-->
+<!--                                        <td>Ju &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="VeRa" class="rachild" name="VeRa" value="False"> </td>-->
+<!--                                        <td>Ve &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SaRa" class="rachild" name="SaRa" value="False"> </td>-->
+<!--                                        <td>Sa &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="RaRa" class="rachild" name="RaRa" value="False"> </td>-->
+<!--                                        <td>Ra &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="KeRa" class="rachild" name="KeRa" value="False"> </td>-->
+<!--                                        <td>Ke &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="AsRa" class="rachild" name="AsRa" value="False"> </td>-->
+<!--                                        <td>As &#60; Ra</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="keparent" value="False" onChange="viewroomSelectedKE()"></td>-->
+<!--                                        <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SuKe" class="kechild" name="SuKe" value="False"></td>-->
+<!--                                        <td>Su &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MoKe" class="kechild" name="MoKe" value="False"></td>-->
+<!--                                        <td>Mo &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MeKe" class="kechild" name="MeKe" value="False"></td>-->
+<!--                                        <td>Me &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MaKe" class="kechild" name="MaKe" value="False"> </td>-->
+<!--                                        <td>Ma &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="JuKe" class="kechild" name="JuKe" value="False"> </td>-->
+<!--                                        <td>Ju &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="VeKe" class="kechild" name="VeKe" value="False"> </td>-->
+<!--                                        <td>Ve &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SaKe" class="kechild" name="SaKe" value="False"> </td>-->
+<!--                                        <td>Sa &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="RaKe" class="kechild" name="RaKe" value="False"> </td>-->
+<!--                                        <td>Ra &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="KeKe" class="kechild" name="KeKe" value="False"> </td>-->
+<!--                                        <td>Ke &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="AsKe" class="kechild" name="AsKe" value="False"> </td>-->
+<!--                                        <td>As &#60; Ke</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                            <div class="checkflex-item-left">
+<!--                                <table>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="asparent" value="False" onChange="viewroomSelectedAS()"></td>-->
+<!--                                        <td>Select All</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SuAs" class="aschild" name="SuAs" value="False"></td>-->
+<!--                                        <td>Su &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MoAs" class="aschild" name="MoAs" value="False"></td>-->
+<!--                                        <td>Mo &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MeAs" class="aschild" name="MeAs" value="False"></td>-->
+<!--                                        <td>Me &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="MaAs" class="aschild" name="MaAs" value="False"> </td>-->
+<!--                                        <td>Ma &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="JuAs" class="aschild" name="JuAs" value="False"> </td>-->
+<!--                                        <td>Ju &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="VeAs" class="aschild" name="VeAs" value="False"> </td>-->
+<!--                                        <td>Ve &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="SaAs" class="aschild" name="SaAs" value="False"> </td>-->
+<!--                                        <td>Sa &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="RaAs" class="aschild" name="RaAs" value="False"> </td>-->
+<!--                                        <td>Ra &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="KeAs" class="aschild" name="KeAs" value="False"> </td>-->
+<!--                                        <td>Ke &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td><input type="checkbox" id="AsAs" class="aschild" name="AsAs" value="False"> </td>-->
+<!--                                        <td>As &#60; As</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <h3>Modal Footer</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+</body>
+{% endblock %}

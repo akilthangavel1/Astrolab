@@ -1,0 +1,57 @@
+{% extends 'base1.html' %}
+{% block head %}
+<style>
+    .wrapper{
+          max-width: 100%;
+          margin: auto;
+          border: 10px solid white;
+          background-color: white;
+          padding-bottom: 20px;
+
+        }
+
+
+        input{
+        padding: 5px;
+        }
+</style>
+{% endblock %}
+{% block content %}
+
+    <div class="wrapper wrapper-color" >
+        <div style="float: right;">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" class="searchTerm" placeholder="What are you looking for?" name="searchBar">
+                <button type="submit" class="combutton">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div style="overflow-x:auto;">
+        <div class="search-align" style="float: right">
+
+        </div>
+        <table class="table-list">
+            <tr>
+                <th class="th-list">Division Name</th>
+                <th class="th-list">Full Name</th>
+                <th class="th-list">Birth DateTime</th>
+                <th class="th-list">Location</th>
+            </tr>
+            {% for i in categoriesName %}
+            <tr>
+                <td class="td-list">{{i.modelcategory}}  </td>
+                <td class="td-list">{{i.modelFullName}}  </td>
+                <td class="td-list">{{i.birthDateTime}}  </td>
+                <td class="td-list">{{i.modelLocation}}  </td>
+                <td><a class="updatebutton" href="multiplecategoryedit/{{ i.id }}">Update</a></td>
+                <td><a class="deletebutton" href="multiplecategorydelete/{{ i.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends 'base1.html' %}
+{% block content %}
+    <div style="overflow-x:auto;">
+        <table class="table-list">
+            <tr>
+                <th class="th-list">Chart Name</th>
+            </tr>
+            {% for i in chartDetails %}
+            <tr>
+                <td class="td-list">{{i.cName}}  </td>
+                <td class="td-list"><a href="http://174.138.63.49/controlpanel/trendchartsview/trendchartsedit/{{ i.id }}">http://174.138.63.49/controlpanel/trendchartsview/trendchartsedit/{{ i.id }}</a></td>
+                <td><a class="updatebutton" href="trendchartsedit/{{ i.id }}">View</a></td>
+                <td><a class="deletebutton" href="trendchartsdelete/{{ i.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

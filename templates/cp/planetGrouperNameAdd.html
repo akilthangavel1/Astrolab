@@ -1,0 +1,22 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+    .content-center {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    background: rgb(239, 243, 248);
+    padding: 10px;
+    }
+</style>
+
+    <div class="content-center">
+        <form method="post">
+            {% csrf_token %}
+            <label for="groupName">Group Name</label>
+            <input type="text" id="groupName" name="groupName"><br>
+            <input type="submit" name="submit" value="Submit"><br>
+        </form>
+    </div>
+
+{% endblock %}

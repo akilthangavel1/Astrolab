@@ -1,0 +1,75 @@
+{% extends 'mbase.html' %}
+{% load static %}
+{% block style %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid m-0 p-0">
+    <div class="row">
+        <div class="col pr-0" style="height: 800px;">
+            <div id="cesiumContainer" style="width: 100%; height: 100%;"></div>
+            <button id="drawLineButton" class="btn btn-primary" style="position: absolute; top: 10px; left: 10px; z-index: 100;">
+                Start Drawing Line
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNDRiYWYyZi04NTk4LTQ5OGItOTg0MS1hNDUzMjE0YjdiMzciLCJpZCI6MTQ5MDksInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjY2NzA0NTl9.6hTdETOJ7y9aJuzgu9avXRPJU5mMO_PqVWhMOgbeBWg';
+
+    // Initialize Cesium Viewer
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: new Cesium.IonImageryProvider({ assetId: 2 }),
+        baseLayerPicker: true,
+        timeline: false,
+        animation: false,
+    });
+
+    // State variables
+    var drawing = false;
+    var activeLineEntity;
+    var activeLinePositions = [];
+
+    // Set up event handler
+    var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+
+    document.getElementById('drawLineButton').addEventListener('click', function () {
+        if (!drawing) {
+            // Enable drawing mode
+            drawing = true;
+            activeLinePositions = [];
+            document.getElementById('drawLineButton').textContent = "Stop Drawing Line";
+
+            // Create a dynamic polyline entity
+            activeLineEntity = viewer.entities.add({
+                polyline: {
+                    positions: new Cesium.CallbackProperty(function () {
+                        return activeLinePositions;
+                    }, false),
+                    width: 3,
+                    material: Cesium.Color.RED,
+                },
+            });
+
+            // Set up mouse click handler
+            handler.setInputAction(function (event) {
+                // Get the Cartesian position
+                var cartesian = viewer.scene.globe.pick(viewer.camera.getPickRay(event.position), viewer.scene);
+                if (cartesian) {
+                    activeLinePositions.push(cartesian);
+                }
+            }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+        } else {
+            // Disable drawing mode
+            drawing = false;
+            document.getElementById('drawLineButton').textContent = "Start Drawing Line";
+            handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        }
+    });
+</script>
+{% endblock %}

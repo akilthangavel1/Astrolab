@@ -1,0 +1,911 @@
+{% extends 'base1.html' %}
+{% block head %}
+
+    <style> 
+
+        .wrapper{
+          max-width: 100%;
+          margin: auto;
+          border: 10px solid white;
+          background-color: white;
+        }
+        .wrapper-color{
+          background-color: #edf4ff;
+        }
+        /*Basic Grid Styles*/
+        .Grid {
+          display: flex;
+          flex-flow: row;
+          flex-wrap: wrap;
+        }
+        .u-textCenter {
+         text-align: center;
+        }
+        .Grid-cell {
+          flex: 1;
+        }
+
+        .Demo {
+          padding: .8em 1em 0;
+          margin-bottom: 1em;
+          background: $demoMain;
+          transition: background-color 0.3s ease;
+          border: 1px solid $demoBorder;
+          border-radius: 3px;
+          &:after {
+            content: "";
+            display: block;
+            margin-top: .8em;
+            height: 1px;
+           }
+          &:hover {
+            background: $demoMainDark;
+          }
+        }
+
+        .Demo.Holly {
+            background: $demoHolly;
+            &:hover {
+              background: $demoHollyDark;
+            }
+          }
+
+
+
+        // Grid Style Modifiers
+
+        /* With gutters*/
+        $gutter: 1em;
+        .Grid--gutters {
+          margin-left: -$gutter;
+          .Grid-cell {
+            padding-left: $gutter;
+          }
+          .Grid--nested {
+            .Grid-cell:first-of-type {
+              .Demo {
+                margin-right: 1em;
+              }
+            }
+          }
+        }
+
+
+
+
+        /* Justify per row*/
+        .Grid--right {
+          justify-content: flex-end;
+        }
+        .Grid--center {
+          justify-content: center;
+        }
+
+        /* Alignment per row */
+        .Grid--top {
+          align-items: flex-start;
+        }
+        .Grid--bottom {
+          align-items: flex-end;
+        }
+        .Grid--center {
+          align-items: center;
+        }
+
+        /* Alignment per cell */
+        .Grid-cell--top {
+          align-self: flex-start;
+        }
+        .Grid-cell--bottom {
+          align-self: flex-end;
+        }
+        .Grid-cell--center {
+          align-self: center;
+        }
+
+        // Menu
+        .navigation {
+          list-style: none;
+          /*background: deepskyblue;*/
+          background: $demoHolly;
+          margin: 0 0 1em;
+          border: 1px solid $demoBorder;
+          border-radius: 3px;
+
+          display: flex;
+
+          -webkit-flex-flow: row wrap;
+          justify-content: flex-end;
+            a {
+              text-decoration: none;
+              display: block;
+              padding: 1em;
+              color: #333;
+              &:hover {
+                background: darken($demoHolly, 10%);
+                border-radius:3px;
+              }
+            }
+          &:hover {
+            background: $demoHollyDark;
+          }
+        }
+
+        @media all and (max-width: 800px) {
+          .navigation {
+            justify-content: space-around;
+          }
+        }
+
+        @media all and (max-width: 600px) {
+          .navigation {
+            -webkit-flex-flow: column wrap;
+            flex-flow: column wrap;
+            padding: 0;
+            a {
+              text-align: center;
+              padding: 10px;
+              border-top: 1px solid rgba(255,255,255,0.3);
+              border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+            li:last-of-type a {
+              border-bottom: none;
+            }
+          }
+        }
+
+
+        /*===========================================*/
+        /* Base classes for all media - Mobile first */
+        .Grid--cols-2 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-3 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-4 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-6 > .Grid-cell {
+          flex: 0 0 calc(50% - #{$gutter});
+        }
+
+        .Grid--cols-12 > .Grid-cell {
+          flex: 0 0 calc(33.3333% - #{$gutter});
+        }
+
+        .Grid--holly-grail {
+          .aside, .main {
+            flex: 1 100%;
+          }
+        }
+
+        /* One of -- columns*/
+        .Grid--1of2 > .Grid-cell,
+        .Grid--1of4 > .Grid-cell:first-of-type,
+        .Grid--1of3 > .Grid-cell:first-of-type{
+          flex: 0 0 100%;
+        }
+        .Grid--1of6 > .Grid-cell:first-of-type {
+          flex: 0 0 50%;
+        }
+
+        .Grid--fit > .Grid-cell {
+          flex: 1;
+        }
+        .Grid--full > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        /* Tablet (medium) screens */
+        @media (min-width: 30em) {
+          .Grid--cols-4 > .Grid-cell {
+            flex: 0 0 calc(50% - #{$gutter});
+          }
+          .Grid--cols-6 > .Grid-cell {
+            flex: 0 0 calc(33.3333% - #{$gutter});
+          }
+          .Grid--cols-12 > .Grid-cell {
+            flex: 0 0 calc(16.6666% - #{$gutter});
+          }
+          .Grid--holly-grail {
+            .aside {
+              flex: 1 calc(25% - #{$gutter});
+            }
+          }
+          .Grid--1of2 > .Grid-cell {
+            flex: 0 0 50%;
+          }
+          .Grid--1of6 > .Grid-cell:first-of-type {
+            flex: 0 0 30%;
+          }
+          .Grid--1of4 > .Grid-cell:first-of-type {
+            flex: 0 0 50%;
+          }
+          .Grid--1of3 > .Grid-cell:first-of-type {
+            flex: 0 0 100%;
+          }
+        }
+
+        /* Large screens */
+        @media (min-width: 48em) {
+          .Grid--cols-2 > .Grid-cell,
+          .Grid--cols-3 > .Grid-cell,
+          .Grid--cols-4 > .Grid-cell,
+          .Grid--cols-6 > .Grid-cell,
+          .Grid--cols-12 > .Grid-cell{
+            flex: 1;
+          }
+        .Grid--holly-grail {
+            .main    { flex: 2; }
+            .aside   { flex: 1; }
+            .aside-1 { order: 1; }
+            .main    { order: 2; }
+            .aside-2 { order: 3; }
+        }
+        .Grid--1of2 > .Grid-cell {
+            flex: 0 0 50%;
+        }
+        .Grid--1of6 > .Grid-cell:first-of-type {
+            flex: 0 0 16.6666%;
+        }
+        .Grid--1of4 > .Grid-cell:first-of-type {
+            flex: 0 0 25%;
+        }
+        .Grid--1of3 > .Grid-cell:first-of-type {
+            flex: 0 0 30%;
+        }
+        .Grid--gutters.Grid--nested {
+            .Grid-cell:first-of-type {
+              .Demo {
+                margin-right: 0;
+              }
+            }
+          }
+        }
+        .input-jumbotron {
+          padding: 5px;
+          width: 70%;
+          font-size: 17px;
+          font-family: Proxima Nova;
+          border: 1px solid #aaaaaa;
+        }
+        .input-jumbotron2 {
+          padding: 5px;
+          width: 50%;
+          font-size: 17px;
+          font-family: Proxima Nova;
+          border: 1px solid #aaaaaa;
+        }
+
+        button{
+            padding: 7px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        textarea {
+         height: auto;
+        }
+        .hide-out{
+         display:none;
+        }
+
+
+
+        .loader-container{
+            display: none;
+        }
+
+        .planet {
+
+        }
+
+        .planet h2 {
+            color: #ffffff;
+            font: 600 4rem 'Poppins', sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .planet .container {
+            align-items: center;
+            -webkit-box-reflect: below 1px linear-gradient(
+                                                                                rgba(0, 0, 0, 0.07),
+                                                                                rgba(0, 0, 0, 0.013)
+                                                                            );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .planet .loader:before {
+                background-repeat: no-repeat;
+            background-size: 200px 360px;
+            border-bottom-left-radius: 200px;
+            border-top-left-radius: 200px;
+            content: '';
+            height: 100%;
+            left: -20px;
+            position: absolute;
+            top: 0;
+            width: 50%;
+        }
+
+        .planet .loader {
+            animation: animate 4s linear infinite;
+            border-radius: 50%;
+            height: 400px;
+            position: relative;
+            width: 400px;
+        }
+
+
+
+
+
+        /* Earth */
+        .planet.planet-earth {
+            background-color: white;
+        }
+
+        .planet.planet-earth .loader:before {
+            background-image: linear-gradient(
+                                                    to top,
+                                                    rgba(0, 0, 0, 0),
+                                                    rgba(0, 255, 249, 0.4)
+                                                );
+        }
+
+        .planet.planet-earth .loader {
+            animation: animate 4s linear infinite;
+            border-radius: 50%;
+            height: 400px;
+            position: relative;
+            width: 400px;
+        }
+
+        .planet.planet-earth .loader:after {
+            border-radius: 50%;
+            content: '';
+            height: 10px;
+            left: 50%;
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            width: 10px;
+            z-index: 10;
+        }
+
+
+
+        .planet.planet-earth .loader span {
+            background-color: white;
+        }
+
+        .planet.planet-earth .container .earth {
+            animation: animated-earth 20s linear infinite;
+            background-image: url('https://firebasestorage.googleapis.com/v0/b/fire-fotos-8e3f9.appspot.com/o/img%2Fearth.jpg?alt=media&token=c121750a-14ec-4a0f-8e35-e3dde8be40cc');
+            background-position-x: 0%;
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #03a9f4 inset,
+                                    0 0 120px #03a9f4;
+            height: 240px;
+            position: absolute;
+            width: 240px;
+        }
+
+
+
+        @keyframes animate {
+            to {
+                transform: rotateZ(1turn);
+            }
+        }
+
+        @keyframes animated-earth {
+            to {
+                background-position-x: 162.5%;
+            }
+        }
+        .table-responsive {
+          border: 1px solid #ccc;
+          border-collapse: collapse;
+          padding: 0;
+          width: 100%;
+          table-layout: fixed;
+          max-width: 80%;
+          margin: 1em auto 2em;
+        }
+
+        table caption {
+          font-size: 1.5em;
+          margin: .5em 0 .75em;
+        }
+        caption{
+          font-size : 18px;
+          text-transform: uppercase;
+          color: #5469d4;
+        }
+
+        table tr {
+          background-color: #f8f8f8;
+          border: 1px solid #ddd;
+          padding: .35em;
+        }
+
+        table th,
+        table td {
+          padding: .625em;
+          text-align: center;
+        }
+
+        table th {
+          font-size: .85em;
+          letter-spacing: .1em;
+          text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+          table {
+            border: 0;
+          }
+
+          table {
+            font-size: 1.3em;
+          }
+
+          table thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+          }
+
+          table tr {
+            border-bottom: 3px solid #ddd;
+            display: block;
+            margin-bottom: .625em;
+          }
+
+          table td {
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: .8em;
+            text-align: right;
+          }
+
+          table td::before {
+            /*
+            * aria-label has no advantage, it won't be read inside a table
+            content: attr(aria-label);
+            */
+            content: attr(data-label);
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+
+          table td:last-child {
+            border-bottom: 0;
+          }
+        }
+        i{
+            margin-left: 20px;
+        }
+        .fixed-height-chart{
+          height: 600px;
+        }
+        .color-container{
+            display:block;
+        }
+    </style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+{% endblock %}
+{% block content %}
+    <div id="alert-adder">
+
+    </div>
+     <div class="wrapper wrapper-color">
+         <div id="task-multi4">
+             <div class="Grid Grid--gutters Grid--cols-6 u-textCenter">
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <select name="peopleCategory" class="input-jumbotron" id="peopleCategory">
+                             {% for i in categoriesName %}
+                                <option value="{{i.divName}}">{{i.divName}}</option>
+                             {% endfor %}
+                         </select>
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="text" class="input-jumbotron" id="fullName" placeholder="Full Name" name="fullName" value="A" required>
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="date" class="input-jumbotron" id="birthDate" placeholder="birthDate" name="birthDate" value="2013-01-08" required>
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="time" class="input-jumbotron" id="birthTime" placeholder="Time" name="birthTime" value="08:56" required>
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="text" class="input-jumbotron" id="location" placeholder="Location" name="location" value="India" required>
+                     </div>
+                 </div>
+             </div>
+             <div class="Grid Grid--gutters Grid--cols-6 u-textCenter">
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="text" class="input-jumbotron" id="latitude" placeholder="Latitude" name="latitude">
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="text" class="input-jumbotron" id="longitude" placeholder="Longitude" name="longitude">
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <button onclick="view_scores()" class="combutton">View Scores</button>
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <input type="text" class="input-jumbotron" id="chartName" placeholder="Chart Name" name="chartName">
+                     </div>
+                 </div>
+                 <div class="Grid-cell">
+                     <div class="Demo content-1of6">
+                         <button id="multi4SaveChart" class="combutton">Save Chart</button>
+                     </div>
+                 </div>
+             </div>
+             <div id="hide-outs" class="hide-out">
+                 <div class="Grid Grid--gutters Grid--cols-2 u-textCenter">
+                    <div class="Grid-cell">
+                        <div class="Demo content-1of2">
+                            <textarea class="input-jumbotron" id="combinations" placeholder="Added Combinations" name="Combinations" rows="5" disabled>Added Combinations</textarea>
+                            <button id="clear-combinations" class="combutton">Clear</button>
+                        </div>
+                    </div>
+                    <div class="Grid-cell">
+                        <div class="Demo content-1of2">
+                            <input type="text" class="input-jumbotron2" id="addComb" placeholder="Add Combination" name="addComb" >
+                            <button id="addCombinations" class="combutton">Add Combinations</button>
+                            <button id="viewChart" class="combutton">View Chart</button>
+                        </div>
+                    </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+    <div id="earth-loader" class="loader-container">
+        <div class="wrapper">
+            <div class="Grid Grid--full u-textCenter">
+                <div class="Grid-cell">
+                    <div class="Demo content-1of1">
+                        <div class="planet planet-earth">
+                            <div class="container">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                                <div class="earth"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="Grid Grid--gutters Grid--cols-12 u-textCenter" id="color-picker-add">
+
+    </div>
+
+    <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
+        <div class="Grid-cell">
+            <div class="Demo content-1of3">
+                <select name="peopleCategory" class="input-jumbotron" id="combination-apply">
+                    {% for i in CombGrpNames %}
+                        <option value="{{i.groupName}}">{{i.groupName}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="Grid-cell">
+            <div class="Demo content-1of3">
+                <button type="submit" id="applycomb" class="combutton">Apply Combinations</button>
+            </div>
+        </div>
+        <div class="Grid-cell">
+            <div class="Demo content-1of3">
+                <button type="submit" id="applyColorBtn" class="combutton">Apply Colors</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-height-chart">
+        <canvas id="combination-chart" ></canvas>
+    </div>
+
+
+
+    <script type="text/javascript">
+    let availableTags = [];
+    let nameLis;
+    let resultDic;
+    function add_available_tags(resultDic){
+        for (let x in resultDic) {
+              availableTags.push(x);
+            }
+    }
+
+       function view_scores(){
+           var loaderModal = document.getElementById("earth-loader");
+           loaderModal.style.display = "block";
+           $.ajax({
+              type:'GET',
+              url:'{% url "multi4Data" %}',
+              data:
+              {
+                  peopleCategory: $("#peopleCategory").val(),
+                  fullName:$("#fullName").val(),
+                  birthDate:$("#birthDate").val(),
+                  birthTime:$("#birthTime").val(),
+                  location:$("#location").val(),
+                  csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+              },
+              success: function(response){
+                nameLis = (response.nameLis);
+                resultDic = (response.resultDic);
+                add_available_tags(response.resultDic);
+                var hideOutModal = document.getElementById("hide-outs");
+                hideOutModal.style.display = "block";
+                loaderModal.style.display = "none";
+              },
+              })
+       }
+
+    </script>
+    <script>
+
+      $( function() {
+
+        $( "#addComb" ).autocomplete({
+          source: availableTags
+        });
+      } );
+    </script>
+    <script>
+        let addedCombLis= [];
+        var adCombBtn = document.getElementById("addCombinations");
+        adCombBtn.onclick = function() {
+            addedCombLis.push($("#addComb").val());
+            document.getElementById("addComb").value = "";
+            document.getElementById("combinations").value = addedCombLis.toString();
+        }
+    </script>
+    <script>
+
+    var myChart=null;
+    function draw_chart(nameLis, graphData){
+        if(myChart!=null){
+          myChart.destroy();
+        }
+        $(function(){
+            var data = {
+                        labels: nameLis,
+                        datasets: graphData
+            };
+            //options
+            var options = {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                  },
+                  maintainAspectRatio: false,
+            };
+            var ctx = document.getElementById("combination-chart").getContext("2d");
+            ctx.height = 200;
+            myChart = new Chart(ctx, { type: "line", data: data, options: options});
+              });
+    }
+
+    </script>
+    <script>
+
+        function color_pickers(){
+            let innerClrPicker = "";
+            var colorModal = document.getElementById("color-picker-add");
+            document.getElementById("color-picker-add").innerHTML = "";
+            for (let z in addedCombLis){
+                innerClrPicker += "<div class='Grid-cell'><div class='Demo content-1of12'>"+ addedCombLis[z] +" <input type='color' id='"+addedCombLis[z]+"'value='#eb8f34'></div></div>"
+            }
+
+            colorModal.insertAdjacentHTML('afterbegin', innerClrPicker);
+        }
+    </script>
+    <script>
+        let graphData = [];
+        let combs;
+        var viewChartBtn = document.getElementById("viewChart");
+        viewChartBtn.onclick = function() {
+            graphData = []
+            for (let x in addedCombLis) {
+              console.log(addedCombLis[x], resultDic[addedCombLis[x]]["pnt"]);
+                graphData.push({
+                    label: addedCombLis[x],
+                    data: resultDic[addedCombLis[x]]["pnt"],
+                    backgroundColor:"#eb8f34" ,
+                    borderColor: "#eb8f34",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                });
+            }
+        draw_chart(nameLis, graphData);
+        color_pickers()
+        }
+    </script>
+
+    <script>
+        var clearCombBtn = document.getElementById("clear-combinations");
+        clearCombBtn.onclick = function() {
+            addedCombLis= [];
+            document.getElementById("combinations").value = "";
+        }
+    </script>
+    <script>
+    var searchInput = 'location';
+
+    $(document).ready(function () {
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+            types: ['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var near_place = autocomplete.getPlace();
+            document.getElementById('latitude').value = near_place.geometry.location.lat();
+            document.getElementById('longitude').value = near_place.geometry.location.lng();
+
+            document.getElementById('latitude').innerHTML = near_place.geometry.location.lat();
+            document.getElementById('longitude').innerHTML = near_place.geometry.location.lng();
+        });
+        });
+        $(document).on('change', '#'+searchInput, function () {
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            document.getElementById('latitude').innerHTML = '';
+            document.getElementById('longitude').innerHTML = '';
+    });
+    </script>
+    <script>
+        var saveChartBtn = document.getElementById("multi4SaveChart");
+        saveChartBtn.onclick = function() {
+            $.ajax({
+              type:'GET',
+              url:'{% url "multiple4ChartSave" %}',
+              data:
+              {
+                  peopleCategory: $("#peopleCategory").val(),
+                  fullName:$("#fullName").val(),
+                  birthDate:$("#birthDate").val(),
+                  birthTime:$("#birthTime").val(),
+                  location:$("#location").val(),
+                  chartName:$("#chartName").val(),
+                  combLis: addedCombLis.toString(),
+                  csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+              },
+              success: function(response){
+                var d1 = document.getElementById('alert-adder');
+                        d1.insertAdjacentHTML('beforeend', "<div class='comman-alert success'>Chart is saved</div>");
+                        $("#alert-adder").children().delay(5000).fadeOut(800);
+              },
+              })
+
+        }
+    </script>
+    <script>
+        let combDic = {};
+        var applyColorButton = document.getElementById("applyColorBtn");
+        applyColorButton.onclick = function() {
+
+            graphData = []
+            for (let x in addedCombLis) {
+                graphData.push({
+                    label: combDic[addedCombLis[x]],
+                    data: resultDic[addedCombLis[x]]["pnt"],
+                    backgroundColor:$("#"+addedCombLis[x]).val() ,
+                    borderColor:$("#"+addedCombLis[x]).val(),
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+                });
+            }
+        draw_chart(nameLis, graphData);
+        }
+
+    </script>
+    <script>
+        var applyCombBtn = document.getElementById("applycomb");
+        applyCombBtn.onclick = function() {
+            $.ajax({
+              type:'GET',
+              url:'{% url "applyingCombChg" %}',
+              data:
+              {
+                  combinationApply: $("#combination-apply").val(),
+                  csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+              },
+              success: function(response){
+                 combDic = response.combDic;
+                 console.log(combDic);
+              }
+            })
+        }
+
+    </script>
+    <script>
+      var aTags = [];
+        $( function() {
+            $( "#fullName").autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : "{% url 'nchartlink' %}",
+                        success: function(response){
+                            aTags = response;
+                        },
+                    });
+                    response($.map(aTags, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#location').val(ui.item.place_of_birth)
+                  $('#latitude').val(ui.item.coordinates_lan)
+                  $('#longitude').val(ui.item.coordinates_lon)
+                  $('#birthDate').val(ui.item.date_of_birth)
+                  $('#birthTime').val(ui.item.time_of_birth)
+              },
+            });
+        });
+    </script>
+
+{% endblock %}

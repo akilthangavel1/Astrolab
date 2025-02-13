@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB7h3PspGaJV_aba1ZkPz9jh-KkGQaKYfw&libraries=places"></script>
+    <script>
+    var searchInput = 'p1location';
+
+    $(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+        types: ['geocode'],
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var near_place = autocomplete.getPlace();
+        document.getElementById('p1lat').value = near_place.geometry.location.lat();
+        document.getElementById('p1lon').value = near_place.geometry.location.lng();
+
+        document.getElementById('p1lat').innerHTML = near_place.geometry.location.lat();
+        document.getElementById('p1lon').innerHTML = near_place.geometry.location.lng();
+    });
+    });
+    $(document).on('change', '#'+searchInput, function () {
+        document.getElementById('p1lat').value = '';
+        document.getElementById('p1lon').value = '';
+        document.getElementById('p1lat').innerHTML = '';
+        document.getElementById('p1lon').innerHTML = '';
+    });
+    </script>
+    <script>
+    var searchInput1 = 'p2location';
+
+    $(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput1)), {
+        types: ['geocode'],
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var near_place = autocomplete.getPlace();
+        document.getElementById('p2lat').value = near_place.geometry.location.lat();
+        document.getElementById('p2lon').value = near_place.geometry.location.lng();
+
+        document.getElementById('p2lat').innerHTML = near_place.geometry.location.lat();
+        document.getElementById('p2lon').innerHTML = near_place.geometry.location.lng();
+    });
+    });
+    $(document).on('change', '#'+searchInput1, function () {
+        document.getElementById('p2lat').value = '';
+        document.getElementById('p2lon').value = '';
+        document.getElementById('p2lat').innerHTML = '';
+        document.getElementById('p2lon').innerHTML = '';
+    });
+    </script>
+    <script>
+        var availableTags = [
+
+        ];
+        $( function() {
+            $( "#fname" ).autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : {% url 'nchartlink' %},
+                        success: function(response){
+                            availableTags = response;
+                        },
+                    });
+                    response($.map(availableTags, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#p1location').val(ui.item.place_of_birth)
+                  $('#p1lat').val(ui.item.coordinates_lan)
+                  $('#p1lon').val(ui.item.coordinates_lon)
+                  $('#p1date').val(ui.item.date_of_birth)
+                  $('#p1time').val(ui.item.time_of_birth)
+              },
+            });
+        });
+    </script>
+    <script>
+        var availableTags1 = [
+
+        ];
+        $( function() {
+            $( "#p2fname" ).autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : {% url 'nchartlink' %},
+                        success: function(response){
+                            availableTags1 = response;
+                        },
+                    });
+                    response($.map(availableTags1, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#p2location').val(ui.item.place_of_birth)
+                  $('#p2lat').val(ui.item.coordinates_lan)
+                  $('#p2lon').val(ui.item.coordinates_lon)
+                  $('#p2date').val(ui.item.date_of_birth)
+                  $('#p2time').val(ui.item.time_of_birth)
+              },
+            });
+        });
+    </script>
+    <script type="text/javascript">
+    $("#subButton").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "maptesting" %}',
+            data:
+            {
+                task:$("#task").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success:function(){
+                  alert('Saved');
+                    }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+    $("#subButton1").click(function(e){
+        e.preventDefault();
+        let p1fname = $("#fname").val();
+        let p1location = $("#p1location").val();
+        let p1lat = $("#p1lat").val();
+        let p1lon = $("#p1lon").val();
+        let p1date = $("#p1date").val();
+        let p1time = $("#p1time").val();
+
+        $.ajax({
+            type:'GET',
+            url:'{% url "homedegree" %}',
+            data:
+            {
+                pfname: p1fname,
+                plocation: p1location,
+                plat: p1lat,
+                plon: p1lon,
+                pdate: p1date,
+                ptime: p1time,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response){
+                  let deg_lis = response;
+                  console.log(deg_lis);
+                  let a= deg_lis[0]['sudegree']
+                  $('#p1su').val("GeeksForGeeks");
+                  console.log(a);
+             },
+            })
+        });
+</script>
+</head>
+<style>
+
+
+body {
+  margin:0;
+}
+* {
+  box-sizing: border-box;
+}
+
+.input-type-1{
+    width:90%;
+    display:block;
+    height: 40px;
+
+}
+.input-type-2{
+    width:45%;
+    height: 40px;
+
+}
+.right{
+    float:right;
+    width: 40%;
+    margin: 4%;
+    background-color: #cce0ff;
+}
+.left{
+    float:left;
+    width: 40%;
+    margin:4%;
+    background-color: #f2e6d9;
+}
+.center{
+    text-align: center;
+    clear: both;
+}
+
+
+.col-75 {
+    clear: both;
+    width: 100%;
+    margin: 30px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+/* Start Buttons */
+.signupbutton{
+    overflow: hidden;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    padding: 7px 20px 7px 20px;
+    margin: 8px 5px 1px 3px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+</style>
+<body>
+ <!-- NAVBAR START-->
+
+    <div class="navbarmenu">
+        <a class="navbarmenulink" href="{% url 'homemain' %}">Home</a>
+        <a class="navbarmenulink" href="{% url 'p2phome' %}">P1vsP1</a>
+        <a class="navbarmenulink" href="{% url 'p1home' %}">P1 pxp</a>
+        <a class="navbarmenulink" href="{% url 'p1xp2exform' %}">P1xP2 Exact</a>
+        <a class="navbarmenulink" href="{% url 'axhome' %}">Ax Report</a>
+        <a class="navbarmenulink" href="{% url 'ir_form' %}">IR Report</a>
+        <a class="navbarmenulink" href="{% url 'impeoples' %}">IM People</a>
+<!--        <a class="navbarmenulink" href="{% url 'render_pdf' %}">PDF</a>-->
+    </div>
+    <!-- NAVBAR ENDS -->
+<div>
+    <div class="left">
+        <div class="col-75">
+            <div><h3>PERSON 1</h3></div>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <label for="fname">Full Name</label><br/>
+                <input class="input-type-1" type="text" id="fname" name="p1fname" placeholder="Full Name"><br/>
+                <label for="p1location">Location</label><br/>
+                <input class="input-type-1" type="text" id="p1location" name="p1location"><br/>
+                <input class="input-type-2" type="text" id="p1lat" name="p1lat" placeholder="Latitude">
+                <input class="input-type-2" type="text" id="p1lon" name="p1lon" placeholder="Longitude"><br/><br/>
+                <input class="input-type-2" type="date" id='p1date' name="p1date">
+                <input class="input-type-2" type="time" id='p1time' name="p1time"><br/><br/>
+                <input class="input-type-2" type="text" id="p1su" name="p1su" placeholder="SU Degree">
+                <input class="input-type-2" type="text" id="p1mo" name="p1mo" placeholder="MO Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p1me" name="p1me" placeholder="ME Degree">
+                <input class="input-type-2" type="text" id="p1ma" name="p1ma" placeholder="MA Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p1ju" name="p1ju" placeholder="JU Degree">
+                <input class="input-type-2" type="text" id="p1ve" name="p1ve" placeholder="VE Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p1sa" name="p1sa" placeholder="SA Degree">
+                <input class="input-type-2" type="text" id="p1ra" name="p1ra" placeholder="RA Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p1ke" name="p1ke" placeholder="KE Degree">
+                <input class="input-type-2" type="text" id="p1as" name="p1as" placeholder="AS Degree"><br/><br/>
+
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="col-75">
+            <div><h3>PERSON 2</h3></div>
+            <br>
+                <label for="p2fname">Full Name</label><br/>
+                <input class="input-type-1" type="text" id="p2fname" name="p2fname" placeholder="Full Name"><br/>
+                <label for="p2location">Location</label><br/>
+                <input class="input-type-1" type="text" id="p2location" name="p2location"><br/>
+                <input class="input-type-2" type="text" id="p2lat" name="p2lat" placeholder="Latitude">
+                <input class="input-type-2" type="text" id="p2lon" name="p2lon" placeholder="Longitude"><br/><br/>
+                <input class="input-type-2" type="date" id='p2date' name="p2date">
+                <input class="input-type-2" type="time" id='p2time' name="p2time"><br/><br/>
+                <input class="input-type-2" type="text" id="p2su" name="p1su" placeholder="SU Degree">
+                <input class="input-type-2" type="text" id="p2mo" name="p1mo" placeholder="MO Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p2me" name="p1me" placeholder="ME Degree">
+                <input class="input-type-2" type="text" id="p2ma" name="p1ma" placeholder="MA Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p2ju" name="p1ju" placeholder="JU Degree">
+                <input class="input-type-2" type="text" id="p2ve" name="p1ve" placeholder="VE Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p2sa" name="p1sa" placeholder="SA Degree">
+                <input class="input-type-2" type="text" id="p2ra" name="p1ra" placeholder="RA Degree"><br/><br/>
+                <input class="input-type-2" type="text" id="p2ke" name="p1ke" placeholder="KE Degree">
+                <input class="input-type-2" type="text" id="p2as" name="p1as" placeholder="AS Degree"><br/><br/>
+
+
+        </div>
+    </div>
+</div>
+<div class="center">
+    <button class="signupbutton" type="submit" id="subButton">Generate Degrees</button>
+    <button class="signupbutton" type="submit" >Match</button>
+    <button class="signupbutton" type="submit" disabled>Show Map</button>
+</div>
+</form>
+</body>
+</html>

@@ -1,0 +1,224 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+    .content-center {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    background: rgb(239, 243, 248);
+    padding: 10px;
+    }
+        @import url(https://fonts.googleapis.com/css?family=Roboto:100,regular,italic,500,700);
+    @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+    :root {
+      --main-color: #3498db;
+      --success-color: #2ecc71;
+      --error-color: #e74c3c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .input-body {
+      background-color: #f9fafb;
+      font-family: "Open Sans", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .select-option{
+    border: 2px solid #f0f0f0;
+      border-radius: 4px;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      width: 400px;
+    }
+
+    .form {
+      padding: 30px 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0 0 20px;
+      font-size : 18px;
+      text-transform: uppercase;
+      color: #5469d4;
+    }
+
+    .form-control {
+      margin-bottom: 10px;
+      padding-bottom: 20px;
+      position: relative;
+    }
+
+    .form-control label {
+      color: #777;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-control input {
+      border: 2px solid #f0f0f0;
+      border-radius: 4px;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .form-control input:focus {
+      outline: 0;
+      border-color: #777;
+    }
+
+    .form-control.success input {
+      border-color: var(--success-color);
+    }
+
+    .form-control.error input {
+      border-color: var(--error-color);
+    }
+
+    .form-control small {
+      color: var(--error-color);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      visibility: hidden;
+    }
+
+    .form-control.error small {
+      visibility: visible;
+    }
+
+    .form button {
+      cursor: pointer;
+      background-color: var(--main-color);
+      border: 2px solid var(--main-color);
+      border-radius: 4px;
+      color: #fff;
+      display: block;
+      font-size: 16px;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+    }
+</style>
+    <section>
+        <div id="alert-adder">
+
+        </div>
+        <div id="top-notch" class="input-body">
+            <div class="container">
+                <br>
+                <div style="float: right;"><a href="{% url 'addMultipleCategoryDivision' %}">Add Category?</a></div>
+
+                    <form id="addpeople-category-form" class="form">
+                        <div class="form-control">
+                            <label for="password">Categories</label>
+                            <select id="peopleCategory" class="select-option" name="peopleCategory">
+                                {% for i in categoryNames %}
+                                <option value="{{i.divName}}">{{i.divName}}</option>
+                                {% endfor %}
+                            </select><br>
+                        </div>
+                        <div class="form-control">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName"><br>
+                        </div>
+                        <div class="form-control">
+                            <label for="birthDateTime">Birth Date Time</label>
+                            <input type="datetime-local" id="birthDateTime" name="birthDateTime"><br>
+                        </div>
+                        <div class="form-control">
+                            <label for="birthLocation">Birth Location</label>
+                            <input type="text" id="birthLocation" name="birthLocation"><br>
+                        </div>
+                        <button type="submit" name="submit" value="Add People">SUBMIT</button><br>
+                    <a class="ssolink" href="{% url 'multipleCategoryHome' %}">Back to Multiple#3</a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $(document).on('submit', "#addpeople-category-form", function(e, response){ 
+            e.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: '{% url "addpeoplecategory" %}',
+                data:
+                {
+                    peopleCategory : $("#peopleCategory").val(),
+                    fullName: $("#fullName").val(),
+                    birthDateTime: $("#birthDateTime").val(),
+                    birthLocation: $("#birthLocation").val(),
+                },
+                success: function(response){
+                  console.log("Saved");
+                  let peopleCategory = $("#peopleCategory").val();
+                  let fullName = $("#fullName").val();
+                  document.getElementById("addpeople-category-form").reset();
+                  var d1 = document.getElementById('alert-adder');
+                        d1.insertAdjacentHTML('beforeend', "<div class='comman-alert success'>Category is saved</div>");
+                        $("#alert-adder").children().delay(5000).fadeOut(800);
+                },
+            })
+        });
+    </script>
+    <script>
+        var searchInput = 'birthLocation';
+        $(document).ready(function () {
+            var autocomplete;
+            autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+                types: ['geocode'],
+            });
+        });
+    </script>
+    <script>
+      var availableTags = [];
+        $( function() {
+            $( "#fullName" ).autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : "{% url 'nchartlink' %}",
+                        success: function(response){
+                            availableTags = response;
+                        },
+                    });
+                    response($.map(availableTags, function(item){
+                    return {
+                      
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $('#birthLocation').val(ui.item.place_of_birth)
+                  let dtime = ui.item.date_of_birth + "T"+ (ui.item.time_of_birth.slice(0, 5))
+                  $('#birthDateTime').val(dtime)
+              },
+            });
+        });
+    </script>
+{% endblock %}

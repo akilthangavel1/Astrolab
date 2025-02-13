@@ -1,0 +1,544 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+.wrapper{
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-gap: 1em;
+  grid-auto-rows: minmax(100px, auto);
+}
+.wrapper > div{ 
+  background: rgb(255, 255, 255);
+  padding: 1em;
+}
+.wrapper > div:nth-child(odd){ 
+  background: rgb(255, 255, 255);
+  padding: 1em;
+}
+.nested{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  /* grid-column-gap: 1em;
+  grid-row-gap: 1em; */
+  grid-gap: 1em;    
+  grid-auto-rows: minmax(20px, auto);
+}
+.nested > div{
+  padding: 1em;
+}
+table{
+  
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  empty-cells: show;
+}
+td {
+  background-color: white;
+  border-collapse: collapse;
+  border-spacing: 1px;
+  border: 1px solid #b3b3b3;
+  width: 150px;
+  height: 20px;
+  text-align: center;
+  padding: 1px;
+}
+
+#show_time1 {
+    width: 100%;
+    text-align: center;
+}
+#show_time2 {
+    width: 100%;
+    text-align: center;
+}
+#show_time3 {
+    width: 100%;
+    text-align: center;
+}
+#show_time4 {
+    width: 100%;
+    text-align: center;
+}
+#show_time5 {
+    width: 100%;
+    text-align: center;
+}
+#show_time6 {
+    width: 100%;
+    text-align: center;
+}
+#show_time7 {
+    width: 100%;
+    text-align: center;
+}
+#show_time8 {
+    width: 100%;
+    text-align: center;
+}
+#show_time1 {
+    width: 100%;
+    text-align: center;
+}
+
+
+
+#td1, #td2, #td9, #td10, #td17, #td18, #td25, #td26, #td33, #td34,
+#td47, #td48, #td55, #td56, #td63, #td64, #td71, #td72, #td79, #td80, 
+#td123, #td124, #td131, #td132, #td139 , #td140, #td147, #td148, #td155, #td156{
+  background-color: #4bb1e0;
+}
+#td3, #td4, #td11, #td12, #td19, #td20, #td27, #td28, #td35, #td36,
+#td87, #td88, #td95, #td96, #td103, #td104, #td111, #td112, #td119, #td120, 
+#td121, #td122, #td129, #td130, #td138 , #td137, #td145, #td146, #td153, #td154{
+  background-color: #ebe372;
+}
+#td5, #td6, #td13, #td14, #td21, #td22, #td29, #td30, #td37, #td38,
+#td81, #td82, #td89, #td90, #td97, #td98, #td105, #td106, #td113, #td114, 
+#td127, #td128, #td135, #td136, #td143 , #td144, #td151, #td152, #td159, #td160{
+  background-color: #dd973bc2;
+}
+#td7, #td8, #td15, #td16, #td23, #td24, #td31, #td32, #td39, #td40,
+#td125, #td126, #td133, #td134, #td141 , #td142, #td149, #td150, #td157, #td158,
+#td41, #td42, #td49, #td50, #td57, #td58, #td65, #td66, #td73, #td74{
+  background-color: #d64ef1c2;
+}
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #04AA6D;
+}
+
+.inputboxes{
+  height: 40px;
+  width: 100%;
+}
+.buttons {
+  height: 40px;
+  width: 200px;
+}
+</style>
+
+
+
+<div class="wrapper">
+  <div>
+      <div class="nested">
+        <div>
+          <input type="text" class="inputboxes" id="fname1" name="fname">
+        </div>
+        <div>
+          <button class="buttons" onclick="add_tables(1)">Click me</button>
+        </div>
+      </div>
+      <div id="show_time1">
+      </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname2" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(2)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time2">
+    </div>
+  </div>
+  <div>
+      <div class="nested">
+        <div>
+          <input type="text" class="inputboxes" id="fname3" name="fname">
+        </div>
+        <div>
+          <button class="buttons" onclick="add_tables(3)">Click me</button>
+        </div>
+      </div>
+      <div id="show_time3">
+      </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname4" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(4)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time4">
+    </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname5" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(5)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time5">
+    </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname6" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(6)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time6">
+    </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname7" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(7)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time7">
+    </div>
+  </div>
+  <div>
+    <div class="nested">
+      <div>
+        <input type="text" class="inputboxes" id="fname8" name="fname">
+      </div>
+      <div>
+        <button class="buttons" onclick="add_tables(8)">Click me</button>
+      </div>
+    </div>
+    <div id="show_time8">
+    </div>
+  </div>
+</div>
+<table>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname1").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname2").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname3").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname4").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname5").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname6").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname7").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+<script>
+  var availableTags = [];
+    $( function() {
+        $( "#fname8").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type : 'GET',
+                    data: request ,
+                    url : "{% url 'nchartlink' %}",
+                    success: function(response){
+                        availableTags = response;
+                    },
+                });
+                response($.map(availableTags, function(item){
+                return {
+                    place_of_birth: item.place_of_birth,
+                    value: item.value,
+                    coordinates_lan : item.coordinates_lan,
+                    coordinates_lon : item.coordinates_lon,
+                    date_of_birth : item.date_of_birth,
+                    time_of_birth : item.time_of_birth,
+                }
+            }))
+          },
+          select: function(event, ui){
+              $(this).val(ui.item.value)
+             
+          },
+        });
+    });
+</script>
+
+<script type="text/javascript">
+let tableCount = 1;
+function add_tables(tv) {
+  tableCount = tv;
+  $.ajax({
+          type:'GET',
+          url:'{% url "astroTables" %}',
+          data:
+            {
+                personname: $("#fname"+tableCount.toString()).val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+          success: function(response){
+            view_tables(response.resultDic, tableCount);
+    },
+  })
+}
+</script>
+<script>
+  function view_tables(resultDic, tableCount) {
+    let text = "<table style='width: 100%;'>";
+    var points = new Array(21);
+    var label = points.length;
+    var eightpoints = new Array(9);
+    var eightlabel = eightpoints.length;
+    let rowCount = 0;
+    let colCount = 0;
+    let tempHtml;
+    classCount = 1;
+    for (var i = 1; i < label; i++) {    
+      rowCount = i;
+      tempHtml += "<tr>"
+      for (var j = 1; j < eightlabel; j++) {
+        colCount = j;
+        let tempVar = "";
+        for (let k = 0; k < resultDic.length; k++) {
+          if ((resultDic[k][0] == rowCount )){
+            if(resultDic[k][1] == colCount ){
+              tempVar = resultDic[k][2] + resultDic[k][3];
+              tempHtml += "<td id='td"+classCount+"'>" + resultDic[k][2] + resultDic[k][3] + "</td>"
+              classCount += 1
+            }  
+          }  
+        }
+        if (tempVar.length > 1){
+          console.log(rowCount, colCount, tempVar);
+
+        }else{
+          console.log(rowCount, colCount);
+          tempHtml += "<td id='td"+classCount+"'>" + "  " + "</td>"
+          classCount += 1
+        }
+      }  
+
+      tempHtml += "</tr>"
+    }  
+    text += tempHtml 
+    text += "</table>"
+    document.getElementById("show_time"+tableCount).innerHTML = text;
+
+  }
+</script>
+
+{% endblock %}

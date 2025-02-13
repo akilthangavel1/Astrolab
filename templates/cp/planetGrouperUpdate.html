@@ -1,0 +1,34 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+    .content-center {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    background: rgb(239, 243, 248);
+    padding: 10px;
+    }
+</style>
+    <div class="content-center">
+        <div style="float: right;"><a href="{% url 'addMultipleCategoryDivision' %}">Add Category?</a></div>
+        <form method="post">
+            {% csrf_token %}
+            <label for="groupName">Group Name</label>
+            <select id="groupName" name="groupName">
+                <option value="{{gpList.groupName}}">{{gpList.groupName}}</option>
+                {% for i in gpNameList %}
+                {% if i.groupName|lower !=  gpList.groupName|lower %}
+                <option value="{{i.groupName}}">{{i.groupName}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <br>
+            <label for="planetName">Planet Name</label>
+            <input type="text" value="{{gpList.planetName}}" id="planetName" name="planetName"><br>
+            <label for="planetChangedName">Planet Changed Name</label>
+            <input type="text" value="{{gpList.planetChangedName}}" id="planetChangedName" name="planetChangedName"><br>
+            <input type="submit" name="submit" value="Submit"><br>
+        </form>
+    </div>
+
+{% endblock %}

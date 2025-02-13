@@ -1,0 +1,2076 @@
+{% extends 'base1.html' %}
+{% block content %}
+<head>
+    <script>
+
+      var planet_dic= {};
+    </script>
+    <script>
+
+          function planet_groupers_trigger(glist){
+               $.ajax({
+                 type:'GET',
+                 url:'{% url "getgcHome" %}',
+                 data:
+                 {
+                     glist:$("#glist").val(),
+                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                 },
+                 success: function(response){
+                 planet_dic = response.gcDic;
+
+                 },
+                 })
+          }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#glist").click(function(){
+                let glist =  $("#glist").val();
+
+                planet_groupers_trigger(glist);
+
+            });
+        });
+    </script>
+
+  <script type="text/javascript">
+  let date_lis;
+  $(document).on('submit','#task-form',function(e){
+      e.preventDefault();
+      $.ajax({
+          type:'GET',
+          url:'{% url "multiple_rangeft" %}',
+          data:
+          {
+              fdate:$("#fdate").val(),
+              tdate:$("#tdate").val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+          },
+
+          })
+      });
+  </script>
+  <script type="text/javascript">
+    $(document).on('submit','#clear-form',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "mclear" %}',
+            data:
+            {
+                fdate:$("#fdate").val(),
+                tdate:$("#tdate").val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+
+            })
+        });
+    </script>
+  <script>
+    let interDataLis;
+    var myChart=null;
+
+    let one;
+    let two;
+    let three;
+    let four;
+    let five;
+    let six;
+    let seven;
+    let eight;
+    let nine;
+    let ten;
+    let one_puntaje_lis;
+    let two_puntaje_lis;
+    let three_puntaje_lis;
+    let four_puntaje_lis;
+    let five_puntaje_lis;
+    let six_puntaje_lis;
+    let seven_puntaje_lis;
+    let eight_puntaje_lis;
+    let nine_puntaje_lis;
+    let ten_puntaje_lis;
+
+
+    function drawChart(){
+        if(myChart!=null){
+          myChart.destroy();
+        }
+
+
+                $(function(){
+
+              //get the line chart canvas
+
+
+              //line chart data
+              var data = {
+                labels: {{ dateLis|safe}},
+                datasets: {{ graphData|safe}}
+              };
+
+              //options
+              var options = {
+                responsive: true,
+                title: {
+                  display: true,
+                  position: "top",
+                  text: "Line Graph",
+                  fontSize: 18,
+                  fontColor: "#111"
+                },
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: {
+                    fontColor: "#333",
+                    fontSize: 16
+                  }
+                }
+              };
+              var ctx = document.getElementById("planetchart").getContext("2d");
+
+              //create Chart class object
+              myChart = new Chart(ctx, { type: "line", data: data, options: options});
+
+              });
+
+    }
+ window.onload = drawChart;
+  </script>
+
+      <script>
+
+
+
+         </script>
+
+</head>
+<style>
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+.tradetdsell {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: red;
+
+}
+.tradetable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width:95%;
+  margin-top : 50px;
+}
+.tradeth{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 15px;
+  text-align: center;
+}
+.tradetd {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+.tradetdbuy {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: green;
+}
+
+.tradetdsell {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  color: red;
+
+}
+.tradetdwin{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffff99;
+  text-align: center;
+}
+.tradetdloss{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffb3ff;
+  text-align: center;
+}
+.tradetdbbcons{
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #eaccfc;
+  text-align: center;
+}
+
+.tradetdgreen60 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #99d6ad;
+  text-align: center;
+}
+.tradetdgreen70 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #80cc99;
+  text-align: center;
+}
+.tradetdgreen80 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #66c285;
+  text-align: center;
+}
+.tradetdgreen90 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #4cb870;
+  text-align: center;
+}
+.tradetdgreen100 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #33ad5c;
+  text-align: center;
+}
+.tradetdred50 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffb2b2;
+  text-align: center;
+}
+.tradetdred40 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff9999;
+  text-align: center;
+}
+.tradetdred30 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color:  #ff8080;
+  text-align: center;
+}
+.tradetdred20 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff6666;
+  text-align: center;
+}
+.tradetdred10 {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ff4c4c;
+  text-align: center;
+}
+.tradetdyellow {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 5px;
+  background-color: #ffffb3;
+  text-align: center;
+}
+
+.tradetr:nth-child(even) {
+  background-color: #edf0f0;
+}
+* {
+  box-sizing: border-box;
+}
+
+.tradecontainer {
+  border-radius: 5px;
+  background-color: #e6eeff;
+  padding: 10px;
+  text-align: right;
+  margin:20px;
+}
+.tradeselect{
+  width: 10%;
+  padding: 8px 10px;
+  margin: 8px 4px;
+  box-sizing: border-box;
+  border: 2px solid #d9d9d9;
+  border-radius: 12px;
+}
+
+.tradebutton {
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 20px 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+  border-radius: 8px;
+}
+
+
+.tradebutton:hover {
+  background-color: #b3ecff;
+  color: black;
+}
+.tradeul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #002699;
+}
+
+.tradeli {
+    float: left;
+}
+
+.tradeli .tradea, .tradedropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 25px;
+    text-decoration: none;
+}
+
+.tradeli .tradea:hover, .tradedropdown:hover .tradedropbtn {
+    background-color: #4da6ff;
+}
+
+.tradeli .tradedropdown {
+    display: inline-block;
+}
+
+.tradedropdown-content {
+    display: none;
+    position: absolute;
+    background-color:#f1f1f1;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.tradedropdown-content .tradea {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.tradedropdown-content .tradea:hover {background-color: #4da6ff}
+
+.tradedropdown:hover .tradedropdown-content {
+    display: block;
+}
+
+.hpcoupon {
+  width: 30.3%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 600px;
+  text-align : center;
+  float : left;
+  margin : 25px;
+
+}
+
+.hpcontainer {
+  padding: 1px;
+  background-color: #dfbf9f;
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #4CAF50;
+
+}
+.tradetitles{
+  text-align: center;
+  text-transform: uppercase;
+  color: #cc6600;
+
+}
+.tradesubtitles{
+    text-align: center;
+    text-transform: uppercase;
+    color: #ff8000;
+}
+
+    /* Start style.css  */
+* {
+
+    box-sizing: border-box;
+}
+
+
+body {
+    color: #888;
+    background: white;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+/* Start HR TAG */
+hr.new1 {
+  border-top: 1px solid red;
+}
+/* END HR TAG */
+/* Start Logo Menu */
+
+.navbarlogo {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.brandlogo .brandlogolink {
+    overflow: hidden;
+    background-color:#f2f2f2;
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+
+.navbarlogo .navbarlogolink {
+    float: right;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+/* End Logo Menu */
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    margin : 15px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* End Buttons */
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+/* End style.css */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  text-align: center;
+}
+.flex-item-sidemenu {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 20%;
+}
+
+.flex-item-constanttable {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-eventtable{
+  /* background-color: dodgerblue; */
+  padding: 10px;
+  flex: 40%;
+}
+
+.flex-item-housetable {
+  /* background-color: #f1f1f1; */
+  padding: 50px;
+  flex: 80%;
+}
+.flex-item-signcheckbox {
+  /* background-color: #f1f1f1; */
+  padding: 50px;
+  flex: 10%;
+}
+/* Responsive layout - makes a one column-layout instead of two-column layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
+/* Start EVENT Table ONE*/
+.eventtable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.eventtd{
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.eventth {
+    padding: 8px;
+    border: 1px solid  #b3b3b3;
+    text-align: center;
+}
+
+
+
+.eveonetr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+.evetwotr:nth-child(even) {
+    background-color: #ffddcc;
+}
+
+.housesigntr:nth-child(even) {
+    background-color: #cce0ff;
+}
+
+/* End EVENT Table ONE*/
+/* Start HOUSE Table */
+.housetable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.houseth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+.housetd{
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    padding: 8px;
+    text-align: center;
+
+}
+.housetdorange {
+  border: 1px solid #A9A9A9;
+  border-collapse: collapse;
+  padding: 8px;
+  background-color: #ffbf80;
+  text-align: center;
+}
+
+
+
+
+
+
+.housetr:nth-child(even) {
+    background-color: #e6f0ff;
+}
+
+/* End HOUSE Table */
+/* Start CONSTANT Table */
+.constanttable {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    width: 90%;
+    color: black;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-style: hidden;
+    margin-top : 50px;
+    margin-bottom : 50px;
+  }
+
+.constanttd{
+    border: 1px solid  #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+.constantth {
+    padding: 8px;
+    border: 1px solid  #dddddd;
+    text-align: center;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+
+.basictr:nth-child(even) {
+    background-color: #e6ecff;
+}
+.conjtr:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr180:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr120l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr120g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr90l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr90g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr60l:nth-child(even) {
+    background-color: #e6ecff;
+}
+
+.tr60g:nth-child(even) {
+    background-color: #f2e6ff;
+}
+
+.tr150g:nth-child(even) {
+    background-color: #ffd6cc;
+}
+
+/* End CONSTANT Table */
+/* H2 TITLE STYLE */
+.titleh2 {
+  display: block;
+  font-size: 1.8em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H2 TITLE END */
+/* H3 TITLE STYLE */
+.titleh3 {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  text-align:center;
+}
+/* H3 TITLE END */
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+  width: 95%;
+  height: 480px;
+  margin: 100px auto;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed;
+  bottom: 0;
+  background-color: #fefefe;
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+.checkflex-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  text-align: center;
+}
+
+.checkflex-item-left {
+  background-color: #f1f1f1;
+  padding: 10px;
+  flex: 10%;
+}
+
+.checkflex-item-right {
+  background-color: dodgerblue;
+  padding: 10px;
+  flex: 10%;
+}
+
+/* Responsive layout - makes a one column-layout instead of a two-column layout */
+@media (max-width: 800px) {
+  .checkflex-item-right, .checkflex-item-left {
+    flex: 100%;
+  }
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<body>
+
+  <!-- <h2>Bottom Modal</h2> -->
+
+  <!-- Trigger/Open The Modal -->
+
+
+
+    <hr class="new1">
+    <div class="chart-container">
+    <canvas id="planetchart" width="800" height="450"></canvas>
+    </div>
+    <br><br><br><br><br><br>
+    <script type="text/javascript">
+      $("#subButton1").click(function(e){
+          e.preventDefault();
+          $.ajax({
+              type:'POST',
+              url:'{% url "maptesting" %}',
+              data:
+              {
+                  fname:$("#fname").val(),
+                  p1location:$("#p1location").val(),
+                  p1lat:$("#p1lat").val(),
+                  p1lon:$("#p1lat").val(),
+                  p1date:$("#p1date").val(),
+                  p1time:$("#p1time").val(),
+                  p1su:$("#p1su").val(),
+                  p1mo:$("#p1mo").val(),
+                  p1me:$("#p1me").val(),
+                  p1ma:$("#p1ma").val(),
+                  p1ju:$("#p1ju").val(),
+                  p1ve:$("#p1ve").val(),
+                  p1sa:$("#p1sa").val(),
+                  p1ra:$("#p1ra").val(),
+                  p1ke:$("#p1ke").val(),
+                  p1as:$("#p1as").val(),
+                  csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+              },
+              success:function(){
+                    alert('Saved');
+                      }
+              })
+          });
+      </script>
+      <script type="text/javascript">
+        $("#subButton2").click(function(e){
+            e.preventDefault();
+            let p1fname = $("#fname").val();
+            let p1location = $("#p1location").val();
+            let p1lat = $("#p1lat").val();
+            let p1lon = $("#p1lon").val();
+            let p1date = $("#p1date").val();
+            let p1time = $("#p1time").val();
+
+            $.ajax({
+                type:'GET',
+                url:'{% url "homedegree" %}',
+                data:
+                {
+                    pfname: p1fname,
+                    plocation: p1location,
+                    plat: p1lat,
+                    plon: p1lon,
+                    pdate: p1date,
+                    ptime: p1time,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(response){
+                      let deg_lis = response;
+                      console.log(deg_lis);
+                      $('#p1su').val(deg_lis[0]['sudegree']);
+                      $('#p1mo').val(deg_lis[0]['modegree']);
+                      $('#p1me').val(deg_lis[0]['medegree']);
+                      $('#p1ma').val(deg_lis[0]['madegree']);
+                      $('#p1ju').val(deg_lis[0]['judegree']);
+                      $('#p1ve').val(deg_lis[0]['vedegree']);
+                      $('#p1sa').val(deg_lis[0]['sadegree']);
+                      $('#p1ra').val(deg_lis[0]['radegree']);
+                      $('#p1ke').val(deg_lis[0]['kedegree']);
+                      $('#p1as').val(deg_lis[0]['asdegree']);
+                      console.log(a);
+                 },
+                })
+            });
+
+</script>
+    <script>
+      var availableTags = [];
+        $( function() {
+            $( "#fname" ).autocomplete({
+                source: function(request, response){
+                    $.ajax({
+                        type : 'GET',
+                        data: request ,
+                        url : "{% url 'nchartlink' %}",
+                        success: function(response){
+                            availableTags = response;
+                        },
+                    });
+                    response($.map(availableTags, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#p2location').val(ui.item.place_of_birth)
+                  $('#p1lat').val(ui.item.coordinates_lan)
+                  $('#p1lon').val(ui.item.coordinates_lon)
+                  $('#secdate').val(ui.item.date_of_birth)
+                  $('#sectime').val(ui.item.time_of_birth)
+              },
+            });
+        });
+    </script>
+<script>
+  $("#mondays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#tuesdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#wednesdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#thursdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#fridays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#saturdays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#sundays").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#specific15").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#specific115").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#specific110").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'True');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+  $("#SuSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsSu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+
+  $("#SuMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsMo").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsMo');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#SuMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuSu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsMe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsMe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+
+  $("#SuMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsMa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsMa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+  $("#SuJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsJu").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsJu');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+
+  $("#SuVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsVe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsVe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#SuSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsSa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsSa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+  $("#SuRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsRa").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsRa');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+
+  $("#SuKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsKe").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsKe');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#SuAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SuAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+
+  $("#MoAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MoAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+  });
+
+  $("#MeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#MaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'MaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#JuAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'JuAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#VeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'VeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#SaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'SaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#RaAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'RaAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#KeAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'KeAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+  $("#AsAs").on('change', function() {
+  if ($(this).is(':checked')) {
+    $(this).attr('value', 'AsAs');
+  } else {
+    $(this).attr('value', 'False');
+  }
+
+  });
+</script>
+<script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  document.getElementById('myBtn').style.visibility = 'hidden';
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the button, open the modal
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+
+{% endblock %}

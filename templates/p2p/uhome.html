@@ -1,0 +1,41 @@
+{% extends 'base1.html' %}
+{% block content %}
+<style>
+.container-name div {
+    display: inline-block;
+	width: 500px;
+	min-height: 50px;
+	background-color: #eee;
+	height: auto;
+  }
+</style>
+<div id="table_container">
+    <div class="row">
+        <div class="column">
+            <div class="container-name">
+            <div class="div1">
+            <input type="text" id="fname" name="fname" placeholder="Full Name">
+            </div>
+            <div class="div2"><label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="Location">
+                </div>
+            </div>
+            <div class="div-inline">
+
+
+            <label for="fname">Full Name</label>
+            <input type="text" id="lat" name="lat" placeholder="Latitude">
+            <label for="fname">Full Name</label>
+            <input type="text" id="lon" name="lon" placeholder="Longitude">
+            <label for="fname">Full Name</label>
+            <input type="text" id="bdate" name="bdate" placeholder="Birth Date">
+            <label for="fname">Full Name</label>
+            <input type="text" id="btime" name="btime" placeholder="Birth Time">
+            </div>
+        </div>
+        <div class="column">
+            Ak
+        </div>
+    </div>
+</div>
+{% endblock %}

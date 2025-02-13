@@ -1,0 +1,388 @@
+{% extends 'base1.html' %}
+{% block head %}
+
+    <style>
+        .wrapper{
+          max-width: 100%;
+          margin: auto;
+          border: 10px solid white;
+          background-color: white;
+        }
+        .wrapper-color{
+          background-color: #edf4ff;
+        }
+        /*Basic Grid Styles*/
+        .Grid {
+          display: flex;
+          flex-flow: row;
+          flex-wrap: wrap;
+        }
+        .u-textCenter {
+         text-align: center;
+        }
+        .Grid-cell {
+          flex: 1;
+        }
+
+        .Demo {
+          padding: .8em 1em 0;
+          margin-bottom: 1em;
+          background: $demoMain;
+          transition: background-color 0.3s ease;
+          border: 1px solid $demoBorder;
+          border-radius: 3px;
+          &:after {
+            content: "";
+            display: block;
+            margin-top: .8em;
+            height: 1px;
+           }
+          &:hover {
+            background: $demoMainDark;
+          }
+        }
+
+        .Demo.Holly {
+            background: $demoHolly;
+            &:hover {
+              background: $demoHollyDark;
+            }
+          }
+
+
+
+        // Grid Style Modifiers
+
+        /* With gutters*/
+        $gutter: 1em;
+        .Grid--gutters {
+          margin-left: -$gutter;
+          .Grid-cell {
+            padding-left: $gutter;
+          }
+          .Grid--nested {
+            .Grid-cell:first-of-type {
+              .Demo {
+                margin-right: 1em;
+              }
+            }
+          }
+        }
+
+
+
+
+        /* Justify per row*/
+        .Grid--right {
+          justify-content: flex-end;
+        }
+        .Grid--center {
+          justify-content: center;
+        }
+
+        /* Alignment per row */
+        .Grid--top {
+          align-items: flex-start;
+        }
+        .Grid--bottom {
+          align-items: flex-end;
+        }
+        .Grid--center {
+          align-items: center;
+        }
+
+        /* Alignment per cell */
+        .Grid-cell--top {
+          align-self: flex-start;
+        }
+        .Grid-cell--bottom {
+          align-self: flex-end;
+        }
+        .Grid-cell--center {
+          align-self: center;
+        }
+
+        // Menu
+        .navigation {
+          list-style: none;
+          /*background: deepskyblue;*/
+          background: $demoHolly;
+          margin: 0 0 1em;
+          border: 1px solid $demoBorder;
+          border-radius: 3px;
+
+          display: flex;
+
+          -webkit-flex-flow: row wrap;
+          justify-content: flex-end;
+            a {
+              text-decoration: none;
+              display: block;
+              padding: 1em;
+              color: #333;
+              &:hover {
+                background: darken($demoHolly, 10%);
+                border-radius:3px;
+              }
+            }
+          &:hover {
+            background: $demoHollyDark;
+          }
+        }
+
+        @media all and (max-width: 800px) {
+          .navigation {
+            justify-content: space-around;
+          }
+        }
+
+        @media all and (max-width: 600px) {
+          .navigation {
+            -webkit-flex-flow: column wrap;
+            flex-flow: column wrap;
+            padding: 0;
+            a {
+              text-align: center;
+              padding: 10px;
+              border-top: 1px solid rgba(255,255,255,0.3);
+              border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+            li:last-of-type a {
+              border-bottom: none;
+            }
+          }
+        }
+
+
+        /*===========================================*/
+        /* Base classes for all media - Mobile first */
+        .Grid--cols-2 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-3 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-4 > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        .Grid--cols-6 > .Grid-cell {
+          flex: 0 0 calc(50% - #{$gutter});
+        }
+
+        .Grid--cols-12 > .Grid-cell {
+          flex: 0 0 calc(33.3333% - #{$gutter});
+        }
+
+        .Grid--holly-grail {
+          .aside, .main {
+            flex: 1 100%;
+          }
+        }
+
+        /* One of -- columns*/
+        .Grid--1of2 > .Grid-cell,
+        .Grid--1of4 > .Grid-cell:first-of-type,
+        .Grid--1of3 > .Grid-cell:first-of-type{
+          flex: 0 0 100%;
+        }
+        .Grid--1of6 > .Grid-cell:first-of-type {
+          flex: 0 0 50%;
+        }
+
+        .Grid--fit > .Grid-cell {
+          flex: 1;
+        }
+        .Grid--full > .Grid-cell {
+          flex: 0 0 100%;
+        }
+
+        /* Tablet (medium) screens */
+        @media (min-width: 30em) {
+          .Grid--cols-4 > .Grid-cell {
+            flex: 0 0 calc(50% - #{$gutter});
+          }
+          .Grid--cols-6 > .Grid-cell {
+            flex: 0 0 calc(33.3333% - #{$gutter});
+          }
+          .Grid--cols-12 > .Grid-cell {
+            flex: 0 0 calc(16.6666% - #{$gutter});
+          }
+          .Grid--holly-grail {
+            .aside {
+              flex: 1 calc(25% - #{$gutter});
+            }
+          }
+          .Grid--1of2 > .Grid-cell {
+            flex: 0 0 50%;
+          }
+          .Grid--1of6 > .Grid-cell:first-of-type {
+            flex: 0 0 30%;
+          }
+          .Grid--1of4 > .Grid-cell:first-of-type {
+            flex: 0 0 50%;
+          }
+          .Grid--1of3 > .Grid-cell:first-of-type {
+            flex: 0 0 100%;
+          }
+        }
+
+        /* Large screens */
+        @media (min-width: 48em) {
+          .Grid--cols-2 > .Grid-cell,
+          .Grid--cols-3 > .Grid-cell,
+          .Grid--cols-4 > .Grid-cell,
+          .Grid--cols-6 > .Grid-cell,
+          .Grid--cols-12 > .Grid-cell{
+            flex: 1;
+          }
+        .Grid--holly-grail {
+            .main    { flex: 2; }
+            .aside   { flex: 1; }
+            .aside-1 { order: 1; }
+            .main    { order: 2; }
+            .aside-2 { order: 3; }
+        }
+        .Grid--1of2 > .Grid-cell {
+            flex: 0 0 50%;
+        }
+        .Grid--1of6 > .Grid-cell:first-of-type {
+            flex: 0 0 16.6666%;
+        }
+        .Grid--1of4 > .Grid-cell:first-of-type {
+            flex: 0 0 25%;
+        }
+        .Grid--1of3 > .Grid-cell:first-of-type {
+            flex: 0 0 30%;
+        }
+        .Grid--gutters.Grid--nested {
+            .Grid-cell:first-of-type {
+              .Demo {
+                margin-right: 0;
+              }
+            }
+          }
+        }
+        .input-jumbotron {
+          padding: 5px;
+          width: 70%;
+          font-size: 17px;
+          font-family: Proxima Nova;
+          border: 1px solid #aaaaaa;
+        }
+        .input-jumbotron2 {
+          padding: 5px;
+          width: 50%;
+          font-size: 17px;
+          font-family: Proxima Nova;
+          border: 1px solid #aaaaaa;
+        }
+
+        button{
+            padding: 7px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        textarea {
+         height: auto;
+        }
+        .hide-out{
+         display:none;
+        }
+    </style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+{% endblock %}
+{% block content %}
+
+
+    <div class="Grid Grid--gutters Grid--cols-1 u-textCenter">
+        <div class="Grid-cell">
+            <div class="Grid-cell">
+                <div class="Demo content-1of1">
+                    <canvas id="combination-chart" style="position: relative; height:60vh; width:80vw"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    let availableTags = [];
+    let nameLis = {{ nameLis| safe}};
+    console.log(nameLis);
+    let resultDic = {{data| safe}};
+
+
+
+    </script>
+
+    <script>
+
+        let addedCombLis= {{ combinations| safe }};
+
+    </script>
+    <script>
+
+    var myChart=null;
+    function draw_chart(nameLis, graphData){
+        if(myChart!=null){
+          myChart.destroy();
+        }
+        $(function(){
+            var data = {
+                        labels: nameLis,
+                        datasets: graphData
+            };
+            //options
+            var options = {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                  }
+            };
+            var ctx = document.getElementById("combination-chart").getContext("2d");
+            myChart = new Chart(ctx, { type: "line", data: data, options: options});
+              });
+    }
+
+    </script>
+
+    <script>
+        let graphData = [];
+        let combs;
+        function tiggerChart() {
+            graphData = []
+            for (let x in addedCombLis) {
+              console.log(addedCombLis[x]);
+              console.log(resultDic[addedCombLis[x]]["pnt"]);
+              graphData.push({
+                    label: addedCombLis[x],
+                    data: resultDic[addedCombLis[x]],
+                    backgroundColor:"#eb8f34" ,
+                    borderColor: "#eb8f34",
+                    fill: false,
+                    lineTension: 0,
+                    radius: 5,
+              });
+            }
+        console.log(graphData);
+        draw_chart(nameLis, graphData);
+
+        }
+        tiggerChart();
+    </script>
+
+{% endblock %}

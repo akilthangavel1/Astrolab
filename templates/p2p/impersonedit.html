@@ -1,0 +1,288 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB7h3PspGaJV_aba1ZkPz9jh-KkGQaKYfw&libraries=places"></script>
+    <script>
+    var searchInput = 'search_input';
+
+    $(document).ready(function () {
+    var autocomplete;
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+        types: ['geocode'],
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var near_place = autocomplete.getPlace();
+        document.getElementById('loc_lat').value = near_place.geometry.location.lat();
+        document.getElementById('loc_long').value = near_place.geometry.location.lng();
+
+        document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
+        document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
+    });
+    });
+    $(document).on('change', '#'+searchInput, function () {
+        document.getElementById('latitude_input').value = '';
+        document.getElementById('longitude_input').value = '';
+
+        document.getElementById('latitude_view').innerHTML = '';
+        document.getElementById('longitude_view').innerHTML = '';
+    });
+    </script>
+     <script>
+        let local_source = [];
+          $( function() {
+            $( "#fname" ).autocomplete({
+              source: function(request, response){
+              $.ajax({
+                type : 'GET',
+                data: request ,
+                url : {% url 'nchartlink' %},
+                success: function(response){
+                    local_source = response;
+                },
+              });
+                response($.map(local_source, function(item){
+                    return {
+                        place_of_birth: item.place_of_birth,
+                        value: item.value,
+                        coordinates_lan : item.coordinates_lan,
+                        coordinates_lon : item.coordinates_lon,
+                        date_of_birth : item.date_of_birth,
+                        time_of_birth : item.time_of_birth,
+                    }
+                }))
+              },
+              select: function(event, ui){
+                  $(this).val(ui.item.value)
+                  $('#search_input').val(ui.item.place_of_birth)
+                  $('#loc_lat').val(ui.item.coordinates_lan)
+                  $('#loc_long').val(ui.item.coordinates_lon)
+                  $('#bd').val(ui.item.date_of_birth)
+                  $('#bt').val(ui.item.time_of_birth)
+              },
+            });
+          } );
+    </script>
+<style>
+body {
+  font-family: Arial;
+  background-color: white;
+  background-repeat: no-repeat;
+  height: 500px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.datainput {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 70%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 30%;
+}
+
+.center {
+
+}
+/* Start HR TAG */
+hr.new1 {
+  border-top: 1px solid red;
+}
+/* END HR TAG */
+/* Start Logo Menu */
+
+.navbarlogo {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.brandlogo .brandlogolink {
+    overflow: hidden;
+    background-color:#f2f2f2;
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+
+
+.navbarlogo .navbarlogolink {
+    float: right;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+/* End Logo Menu */
+/* Start Buttons */
+.signupbutton{
+    float: right;
+    overflow: hidden;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    padding: 6px 20px;
+    text-decoration: none;
+    font-family: 'Roboto Slab', serif;
+    background-color: white;
+    border: 1px solid #008CBA;
+    margin : 15px;
+
+}
+
+.signupbutton:hover {
+  background-color: #008CBA;
+  color: white;
+}
+/* End Buttons */
+/* Start Menu Nav Bar second menu */
+
+
+.navbarmenu {
+    overflow: hidden;
+    background-color:#f2f2f2;
+}
+
+.navbarmenu .navbarmenulink {
+    float: left;
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    padding: 22px 30px;
+    text-decoration: none;
+}
+
+.menudropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.menudropdown .menudropbtn {
+    font-size: 12px;
+    border: none;
+    outline: none;
+    color:#333;
+    padding: 22px 30px;
+    background-color: inherit;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+.menudropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.menudropdown-content .menudropdownlink {
+    float: none;
+    font-size: 12px;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.menudropdown-content .menudropdownlink:hover {
+    background-color:#e6eeff;
+}
+
+.menudropdown:hover .menudropdown-content {
+    display: block;
+}
+/* End Menu Nav Bar second menu */
+</style>
+<body>
+ <!-- NAVBAR START-->
+
+    <div class="navbarmenu">
+        <a class="navbarmenulink" href="{% url 'homemain' %}">Home</a>
+        <a class="navbarmenulink" href="{% url 'p2phome' %}">P1vsP1</a>
+        <a class="navbarmenulink" href="{% url 'p1home' %}">P1 pxp</a>
+        <a class="navbarmenulink" href="{% url 'p1xp2exform' %}">P1xP2 Exact</a>
+        <a class="navbarmenulink" href="{% url 'axhome' %}">Ax Report</a>
+        <a class="navbarmenulink" href="{% url 'ir_form' %}">IR Report</a>
+<!--        <a class="navbarmenulink" href="{% url 'render_pdf' %}">PDF</a>-->
+    </div>
+    <!-- NAVBAR ENDS -->
+
+<div class="container">
+  <form method="post">
+    {% csrf_token %}
+      <input type="hidden" name="id" value="{{imPeopleData.id}}" >
+      <label for="fname">Full Name</label>
+      <input type="text" id="fname" name="fname" value="{{imPeopleData.fullname}}" placeholder="Your name..">
+      <label for="search_input">Location</label>
+      <input type="text" name = "location" id="search_input" value="{{imPeopleData.place_of_birth}}" placeholder="Type address..." />
+      <label for="loc_lat">Lat</label>
+      <input type="text" id="loc_lat" name="loc_lat" value="{{imPeopleData.coordinates_lan}}" placeholder="Latitude">
+      <label for="loc_long">Lon</label>
+      <input type="text" id="loc_long" name="loc_long" value="{{imPeopleData.coordinates_lon}}" placeholder="Longitude">
+      <label for="bd">Birth DayTime</label>
+      <input class='datainput' type="date" id="bd" value="{{imPeopleData.date_of_birth|date:'Y-m-d' }}" name="birthdaydate">
+      <label for="bt">Birth DayTime</label>
+      <input class='datainput' type="time" id="bt" value="{{imPeopleData.time_of_birth|date:'H:i'}}" name="birthdaytime">
+      <label for="bt">TimeZone ID</label>
+      <input class='datainput' type="text" id="tzid" value="{{imPeopleData.time_zone}}" name="tzid">
+      <label for="bt">TimeZone Name</label>
+      <input class='datainput' type="text" id="tzname" value="{{imPeopleData.timeZoneId}}" name="tzname">
+      <label for="bt">TZ time</label>
+      <input class='datainput' type="text" id="tztime" value="{{imPeopleData.timeZoneName}}" name="tztime">
+      <input type="submit" value="Submit">
+  </form>
+</div>
+</body>
+</html>
